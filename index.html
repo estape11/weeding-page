@@ -196,10 +196,11 @@
   }
   .ftile-icon svg { width: 22px; height: 22px; stroke: var(--gold-lt); fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
   .ftile-name {
+    display: block;
     font-family: 'DM Serif Display', serif;
     font-size: 1rem; color: var(--fg);
   }
-  .ftile-desc { font-size: .72rem; color: var(--fg-muted); }
+  .ftile-desc { display: block; font-size: .72rem; color: var(--fg-muted); }
 
 
   /* ════════════════════════════════════════════════
@@ -636,32 +637,32 @@
 
   <div class="feature-grid">
     <button class="ftile" onclick="switchTab('itinerario')">
-      <div class="ftile-icon">
+      <span class="ftile-icon">
         <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="8.01" y2="14"/><line x1="12" y1="14" x2="12.01" y2="14"/><line x1="16" y1="14" x2="16.01" y2="14"/></svg>
-      </div>
-      <div class="ftile-name">Itinerario</div>
-      <div class="ftile-desc">El plan del día</div>
+      </span>
+      <span class="ftile-name">Itinerario</span>
+      <span class="ftile-desc">El plan del día</span>
     </button>
     <button class="ftile" onclick="switchTab('jam')">
-      <div class="ftile-icon">
+      <span class="ftile-icon">
         <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-      </div>
-      <div class="ftile-name">El Jam</div>
-      <div class="ftile-desc">Nuestra playlist</div>
+      </span>
+      <span class="ftile-name">El Jam</span>
+      <span class="ftile-desc">Nuestra playlist</span>
     </button>
     <button class="ftile" onclick="switchTab('fotos')">
-      <div class="ftile-icon">
+      <span class="ftile-icon">
         <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-      </div>
-      <div class="ftile-name">Fotos POV</div>
-      <div class="ftile-desc">Tu perspectiva</div>
+      </span>
+      <span class="ftile-name">Fotos POV</span>
+      <span class="ftile-desc">Tu perspectiva</span>
     </button>
     <button class="ftile" onclick="switchTab('recuerdos')">
-      <div class="ftile-icon">
+      <span class="ftile-icon">
         <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-      </div>
-      <div class="ftile-name">Recuerdos</div>
-      <div class="ftile-desc">Déjanos un mensaje</div>
+      </span>
+      <span class="ftile-name">Recuerdos</span>
+      <span class="ftile-desc">Déjanos un mensaje</span>
     </button>
   </div>
 </section>
