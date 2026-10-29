@@ -857,17 +857,17 @@ const fbDb = (() => {
       orderByChild(f) { _order = f; return self; },
       on(_ev, cb) {
         const poll = () => {
-          let url = `${DB_URL}/${path}.json`;
-          if (_order) url += `?orderBy=%22${_order}%22&limitToLast=100`;
-          fetch(url).then(r => r.ok ? r.json() : null).then(data => {
-            if (!data) { cb({ val:()=>null, forEach:()=>{} }); return; }
-            const entries = Object.entries(data).map(([k,v]) => ({ key:k, _v:v }));
-            if (_order) entries.sort((a,b) => (a._v[_order]||0) - (b._v[_order]||0));
-            cb({
-              val: () => data,
-              forEach: fn => entries.forEach(e => fn({ key:e.key, val:()=>e._v }))
-            });
-          }).catch(()=>{});
+          fetch(`${DB_URL}/${path}.json`)
+            .then(r => r.ok ? r.json() : null)
+            .then(data => {
+              if (!data || data.error) { cb({ val:()=>null, forEach:()=>{} }); return; }
+              const entries = Object.entries(data).map(([k,v]) => ({ key:k, _v:v }));
+              if (_order) entries.sort((a,b) => (a._v[_order]||0) - (b._v[_order]||0));
+              cb({
+                val: () => data,
+                forEach: fn => entries.forEach(e => fn({ key:e.key, val:()=>e._v }))
+              });
+            }).catch(()=>{});
         };
         poll();
         return setInterval(poll, 6000);
@@ -939,6 +939,8 @@ function switchTab(id) {
     document.getElementById('tab-' + t).classList.toggle('active', t === id);
     document.getElementById('nb-'  + t).classList.toggle('on',     t === id);
   });
+  if (id === 'recuerdos') initMsgListener();
+  if (id !== 'juegos') window._snakePause && window._snakePause();
   window.scrollTo(0, 0);
 }
 
@@ -999,15 +1001,21 @@ function showFormSuccess(nombre) {
 function loadMsgs() { try { return JSON.parse(localStorage.getItem(MKEY) || '[]'); } catch { return []; } }
 function saveMsgs(m) { try { localStorage.setItem(MKEY, JSON.stringify(m)); } catch {} }
 
-if (FB_READY && fbDb) {
-  fbDb.ref('mensajes').orderByChild('ts').on('value', snap => {
-    const msgs = [];
-    snap.forEach(child => msgs.unshift(child.val()));
-    renderMsgs(msgs);
-  });
-} else {
-  renderMsgs(loadMsgs().slice().reverse());
-  showFbNotice();
+/* Lazy-init: guestbook Firebase listener starts only when Recuerdos tab is first opened */
+let _msgListenerStarted = false;
+function initMsgListener() {
+  if (_msgListenerStarted) return;
+  _msgListenerStarted = true;
+  if (FB_READY && fbDb) {
+    fbDb.ref('mensajes').orderByChild('ts').on('value', snap => {
+      const msgs = [];
+      snap.forEach(child => msgs.unshift(child.val()));
+      renderMsgs(msgs);
+    });
+  } else {
+    renderMsgs(loadMsgs().slice().reverse());
+    showFbNotice();
+  }
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -1347,12 +1355,15 @@ function siguienteAdivina() {
     running = true;
     loop = setInterval(step, 180);
   };
+  window._snakePause = function() { if (running) { clearInterval(loop); running = false; } };
+  window._snakeState = () => ({ running, score, dir: {...dir}, nextDir: {...nextDir},
+    head: snake[0] ? {...snake[0]} : null, food: food ? {...food} : null });
   // Keyboard
   document.addEventListener('keydown', e => {
     if (!running) return;
     const map = { ArrowUp:{x:0,y:-1}, ArrowDown:{x:0,y:1}, ArrowLeft:{x:-1,y:0}, ArrowRight:{x:1,y:0} };
     const nd = map[e.key];
-    if (nd && !(nd.x === -dir.x && nd.y === -dir.y)) { nextDir = nd; e.preventDefault(); }
+    if (nd && !(nd.x === -nextDir.x && nd.y === -nextDir.y)) { nextDir = nd; e.preventDefault(); }
   });
   // Touch swipe
   let tx = 0, ty = 0;
@@ -1367,7 +1378,7 @@ function siguienteAdivina() {
     let nd;
     if (Math.abs(dx) > Math.abs(dy)) nd = dx > 0 ? {x:1,y:0} : {x:-1,y:0};
     else                              nd = dy > 0 ? {x:0,y:1} : {x:0,y:-1};
-    if (!(nd.x === -dir.x && nd.y === -dir.y)) nextDir = nd;
+    if (!(nd.x === -nextDir.x && nd.y === -nextDir.y)) nextDir = nd;
   }, { passive: true });
 })();
 
