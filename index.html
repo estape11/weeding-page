@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Susy &amp; Luis</title>
+  <meta name="theme-color" content="#1A2D22">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Jost:wght@300;400;500&display=swap">
+  <style>
+  /*
+    Layout : mobile-first bottom-tab app (NFC day-of wedding)
+    Palette: deep green #1A2D22 · ivory #F7F2E8 · gold #C9A84C
+    Type   : DM Serif Display (display) · Jost 300/400 (body)
+    Photos : hero=pareja.jpg · venues=boda_legal+recepcion
+  */
+  :root {
+    --green:    #1A2D22;
+    --green2:   #243C2E;
+    --ivory:    #F7F2E8;
+    --ivory2:   #EDE8DC;
+    --white:    #FFFFFF;
+    --gold:     #C9A84C;
+    --gold-lt:  #E0C878;
+    --fg:       #1C1810;
+    --fg-mid:   #5A4228;
+    --fg-muted: #9A8060;
+    --div:      rgba(26,45,34,.12);
+    --nav-h:    64px;
+    color-scheme: light;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { height: 100%; }
+  body {
+    background: var(--ivory);
+    color: var(--fg);
+    font-family: 'Jost', system-ui, sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100%;
+    overflow-x: hidden;
+    padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* ── Tabs ── */
+  .tab { display: none; }
+  .tab.active { display: block; }
+
+  /* ── Bottom nav ── */
+  .bnav {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+    height: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--green);
+    display: flex;
+  }
+  .nb {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 3px;
+    background: none; border: none; cursor: pointer;
+    color: rgba(240,228,200,.45);
+    font-family: 'Jost', sans-serif;
+    transition: color .2s;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nb.on { color: var(--gold-lt); }
+  .nb svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .nb span { font-size: .5rem; letter-spacing: .08em; text-transform: uppercase; }
+  .nb svg { width: 18px; height: 18px; }
+
+  /* ── Utility ── */
+  .pad {
+    padding-left:  max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
+  }
+  .inner { max-width: 680px; margin: 0 auto; }
+  .gold-label {
+    font-size: .62rem; letter-spacing: .28em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: .7rem; display: block;
+  }
+
+  /* ════════════════════════════════════════════════
+     TAB 1 — INICIO
+  ════════════════════════════════════════════════ */
+
+  /* Hero */
+  .hero {
+    position: relative; height: 100vh; height: 100svh; min-height: 500px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: flex-end;
+    text-align: center;
+    background: url('pareja.jpg') center 30% / cover no-repeat;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(15,25,18,.25) 0%,
+      rgba(15,25,18,.10) 35%,
+      rgba(15,25,18,.55) 65%,
+      rgba(15,25,18,.88) 100%
+    );
+  }
+  .hero-content {
+    position: relative; z-index: 1;
+    padding-top: 0;
+    padding-bottom: max(40px, calc(env(safe-area-inset-bottom, 0px) + 32px));
+    padding-left:  max(24px, env(safe-area-inset-left, 0px));
+    padding-right: max(24px, env(safe-area-inset-right, 0px));
+    width: 100%;
+  }
+  .hero-pre {
+    font-size: .62rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--gold-lt); opacity: .85;
+    margin-bottom: 1rem;
+    animation: up .9s .3s both;
+  }
+  .hero-names {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(3.4rem, 16vw, 6rem);
+    line-height: .95;
+    color: #fff;
+    animation: up 1.1s .5s both;
+  }
+  .hero-amp {
+    display: block;
+    color: var(--gold-lt);
+    font-size: clamp(2rem, 10vw, 3.5rem);
+    margin: .08em 0;
+  }
+  .hero-date {
+    margin-top: 1.4rem;
+    font-size: .7rem; letter-spacing: .25em; text-transform: uppercase;
+    color: rgba(240,228,200,.75);
+    animation: up 1.1s .7s both;
+  }
+  .hero-cta {
+    margin-top: 2rem;
+    display: inline-flex; align-items: center; gap: .7rem;
+    padding: .75rem 2rem;
+    background: var(--gold);
+    color: var(--green);
+    font-family: 'Jost', sans-serif;
+    font-size: .7rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
+    border: none; cursor: pointer;
+    animation: up 1.1s .9s both;
+    transition: background .2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .hero-cta:hover { background: var(--gold-lt); }
+  .hero-cta svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Welcome + feature tiles */
+  .welcome-band {
+    background: var(--green);
+    padding-block: 2rem;
+    padding-left:  max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
+    text-align: center;
+  }
+  .welcome-band p {
+    color: rgba(240,228,200,.75);
+    font-size: .9rem; max-width: 420px; margin: 0 auto;
+    line-height: 1.8;
+  }
+  .feature-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1px; background: var(--div);
+    border-top: 1px solid var(--div);
+  }
+  .ftile {
+    background: var(--white);
+    padding: 1.8rem 1.2rem 1.5rem;
+    text-align: center; cursor: pointer;
+    transition: background .18s;
+    -webkit-tap-highlight-color: transparent;
+    border: none; font-family: 'Jost', sans-serif;
+    display: flex; flex-direction: column; align-items: center; gap: .5rem;
+  }
+  .ftile:hover { background: var(--ivory2); }
+  .ftile:active { background: var(--ivory2); }
+  .ftile-icon {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: .3rem;
+  }
+  .ftile-icon svg { width: 22px; height: 22px; stroke: var(--gold-lt); fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .ftile-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1rem; color: var(--fg);
+  }
+  .ftile-desc { font-size: .72rem; color: var(--fg-muted); }
+
+
+  /* ════════════════════════════════════════════════
+     TAB 2 — ITINERARIO
+  ════════════════════════════════════════════════ */
+  .tab-header {
+    background: var(--green);
+    padding-top: calc(env(safe-area-inset-top, 0px) + 2.5rem);
+    padding-bottom: 2.5rem;
+    /* horizontal handled by .pad class */
+  }
+  .tab-eyebrow {
+    font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
+    color: rgba(240,228,200,.55); margin-bottom: .5rem;
+  }
+  .tab-header .gold-label { color: var(--gold-lt); }
+  .tab-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 7vw, 2.8rem);
+    font-style: italic; color: #F5EDD8;
+    line-height: 1.1;
+  }
+  .tab-header h2 em { font-style: italic; color: var(--gold-lt); }
+
+  /* Venues */
+  .venues {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: var(--div);
+  }
+  .venue-card {
+    position: relative; aspect-ratio: 4/3; overflow: hidden;
+  }
+  .venue-card img {
+    width: 100%; height: 100%; object-fit: cover;
+    display: block; transition: transform .4s;
+  }
+  .venue-card:hover img { transform: scale(1.04); }
+  .venue-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(15,25,18,.85) 40%, transparent 100%);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: .9rem 1rem;
+  }
+  .venue-tag { font-size: .58rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: .25rem; }
+  .venue-name { font-family: 'DM Serif Display', serif; font-size: .95rem; color: #fff; line-height: 1.2; }
+
+  /* Timeline */
+  .timeline-wrap {
+    padding-block: 2rem 1rem;
+    padding-left:  max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
+  }
+  .tl { position: relative; }
+  .tl::before {
+    content: ''; position: absolute;
+    left: 14px; top: 8px; bottom: 0;
+    width: 1px; background: var(--div);
+  }
+  .tl-row {
+    display: flex; gap: 1.1rem; padding-bottom: 1.6rem;
+    position: relative;
+  }
+  .tl-bullet {
+    width: 29px; flex-shrink: 0; display: flex;
+    flex-direction: column; align-items: center; padding-top: 2px;
+  }
+  .tl-dot {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: var(--ivory2); border: 2px solid var(--gold);
+    flex-shrink: 0; position: relative; z-index: 1;
+  }
+  .tl-dot.now { background: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,.25); }
+  .tl-body { flex: 1; min-width: 0; }
+  .tl-time { font-size: .68rem; font-weight: 400; color: var(--gold); letter-spacing: .05em; font-variant-numeric: tabular-nums; }
+  .tl-event { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--fg); margin: .1rem 0 .2rem; }
+  .tl-note { font-size: .78rem; color: var(--fg-muted); line-height: 1.55; }
+
+  /* ════════════════════════════════════════════════
+     TAB 3 — JAM
+  ════════════════════════════════════════════════ */
+  .jam-content { padding-block: 1.5rem 2rem; /* horizontal → .pad */ }
+  .spotify-frame {
+    border-radius: 14px; overflow: hidden;
+    background: #121212; margin-bottom: 1.5rem;
+  }
+  .spotify-frame iframe { display: block; width: 100%; border: none; }
+  .spotify-ph {
+    padding: 3rem 1.5rem;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 1rem; text-align: center;
+  }
+  .spotify-ph svg { width: 52px; height: 52px; }
+  .spotify-ph-title { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.3rem; color: #fff; }
+  .spotify-ph-sub { font-size: .78rem; color: rgba(255,255,255,.5); max-width: 260px; line-height: 1.6; }
+  .info-box {
+    background: var(--ivory2);
+    border-left: 3px solid var(--gold);
+    padding: 1rem 1.2rem;
+    font-size: .85rem; color: var(--fg-mid); line-height: 1.7;
+  }
+  .info-box strong { font-weight: 500; color: var(--fg); }
+
+  /* ════════════════════════════════════════════════
+     TAB 4 — FOTOS
+  ════════════════════════════════════════════════ */
+  .fotos-content { padding-block: 1.5rem 2rem; /* horizontal → .pad */ }
+  .upload-btn {
+    width: 100%; padding: 1.8rem;
+    background: var(--green); color: var(--gold-lt);
+    border: none; cursor: pointer;
+    display: flex; flex-direction: column;
+    align-items: center; gap: .8rem;
+    position: relative;
+    transition: background .2s;
+    -webkit-tap-highlight-color: transparent;
+    margin-bottom: 1.2rem;
+  }
+  .upload-btn:hover { background: var(--green2); }
+  .upload-btn input[type="file"] {
+    position: absolute; inset: 0; opacity: 0;
+    cursor: pointer; width: 100%; height: 100%;
+  }
+  .upload-btn svg { width: 36px; height: 36px; stroke: var(--gold-lt); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .upload-btn-text { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.1rem; }
+  .upload-btn-hint { font-size: .72rem; opacity: .65; letter-spacing: .05em; }
+  .foto-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin-bottom: 1.2rem; }
+  .foto-img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+  .foto-empty { text-align: center; padding: 1.5rem; font-size: .85rem; color: var(--fg-muted); font-style: italic; }
+
+  /* ════════════════════════════════════════════════
+     TAB 5 — RECUERDOS
+  ════════════════════════════════════════════════ */
+  .recuerdos-hero {
+    background: url('pareja2.jpg') center / cover no-repeat;
+    position: relative;
+    padding-top: calc(env(safe-area-inset-top, 0px) + 3rem);
+    padding-bottom: 3rem;
+    /* horizontal → .pad */
+  }
+  .recuerdos-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(15,25,18,.6), rgba(15,25,18,.75));
+  }
+  .recuerdos-hero > * { position: relative; z-index: 1; }
+  .recuerdos-hero h2 { font-family: 'DM Serif Display', serif; font-style: italic; font-size: clamp(2rem, 7vw, 2.8rem); color: #fff; line-height: 1.1; margin-bottom: .5rem; }
+  .recuerdos-hero p { font-size: .88rem; color: rgba(240,228,200,.75); max-width: 380px; }
+
+  .recuerdos-form { padding-block: 1.8rem 1rem; /* horizontal → .pad */ }
+  .fg2 { display: flex; flex-direction: column; gap: .35rem; margin-bottom: 1.1rem; }
+  .fl2 { font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--fg-muted); }
+  .fi2, .fta2 {
+    background: transparent; border: none;
+    border-bottom: 1.5px solid var(--div);
+    color: var(--fg); font-family: 'Jost', sans-serif;
+    font-size: .92rem; font-weight: 300;
+    padding: .6rem 0; outline: none;
+    transition: border-color .2s;
+    border-radius: 0; -webkit-appearance: none; width: 100%;
+  }
+  .fi2::placeholder, .fta2::placeholder { color: var(--fg-muted); opacity: .5; }
+  .fi2:focus, .fta2:focus { border-color: var(--gold); }
+  .fta2 { resize: vertical; min-height: 88px; }
+  .btn-send {
+    width: 100%; padding: .95rem;
+    background: var(--green); color: var(--gold-lt);
+    font-family: 'Jost', sans-serif;
+    font-size: .7rem; font-weight: 500; letter-spacing: .18em; text-transform: uppercase;
+    border: none; cursor: pointer;
+    transition: background .2s;
+    margin-bottom: 2rem;
+  }
+  .btn-send:hover { background: var(--green2); }
+  .btn-send:active { opacity: .85; }
+
+  .messages { padding-block: 0 1rem; /* horizontal → .pad */ }
+  .msg-divider {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .msg-divider::before, .msg-divider::after { content: ''; flex: 1; height: 1px; background: var(--div); }
+  .msg-divider span { font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--fg-muted); white-space: nowrap; }
+  .msg-card {
+    background: var(--white); border: 1px solid var(--div);
+    padding: 1.1rem 1.2rem; margin-bottom: .9rem;
+  }
+  .msg-name { font-family: 'DM Serif Display', serif; font-style: italic; color: var(--green); font-size: .95rem; margin-bottom: .4rem; }
+  .msg-text { font-size: .85rem; color: var(--fg-mid); line-height: 1.65; }
+  .msg-empty { text-align: center; padding: 1.5rem; font-size: .85rem; color: var(--fg-muted); font-style: italic; }
+
+  /* ── Form success state ── */
+  .form-success {
+    text-align: center; padding: 2.5rem 1rem;
+    animation: up .6s both;
+  }
+  .form-success-icon { font-size: 2.5rem; margin-bottom: .8rem; display: block; }
+  .form-success-title {
+    font-family: 'DM Serif Display', serif; font-style: italic;
+    font-size: 1.5rem; color: var(--green); margin-bottom: .4rem;
+  }
+  .form-success-sub { font-size: .84rem; color: var(--fg-muted); }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed; bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 12px);
+    left: 50%; transform: translateX(-50%) translateY(10px);
+    background: var(--green); color: var(--gold-lt);
+    padding: .65rem 1.4rem; font-size: .8rem; letter-spacing: .05em;
+    white-space: nowrap; z-index: 300;
+    opacity: 0; transition: opacity .3s, transform .3s;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ── Firebase placeholder notice ── */
+  .fb-notice {
+    background: var(--ivory2); border-left: 3px solid var(--gold);
+    padding: .8rem 1rem; font-size: .78rem; color: var(--fg-mid);
+    line-height: 1.6; margin-bottom: 1.5rem;
+  }
+  .fb-notice strong { color: var(--fg); font-weight: 500; }
+
+  /* ── Mini-juegos ── */
+  .game-cards { display: flex; flex-direction: column; gap: 1rem; padding-block: 1.5rem 2rem; }
+  .game-card {
+    width: 100%; background: var(--white); border: 1.5px solid var(--div);
+    border-radius: 14px; padding: 1.4rem 1.2rem; text-align: left;
+    cursor: pointer; display: flex; align-items: center; gap: 1.1rem;
+    transition: border-color .2s, box-shadow .2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .game-card:active { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,.15); }
+  .game-card-icon { font-size: 2.2rem; flex-shrink: 0; }
+  .game-card-title { font-weight: 500; color: var(--fg); font-size: .98rem; margin-bottom: .2rem; }
+  .game-card-sub { font-size: .78rem; color: var(--fg-muted); }
+
+  .game-view { padding-block: 1.5rem 2rem; }
+  .game-back {
+    display: inline-flex; align-items: center; gap: .4rem;
+    background: none; border: none; cursor: pointer; color: var(--fg-mid);
+    font-family: 'Jost', sans-serif; font-size: .8rem; letter-spacing: .08em;
+    text-transform: uppercase; margin-bottom: 1.5rem; padding: 0;
+  }
+  .game-back svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Game 1 — ¿Quién lo hace más? */
+  .quien-q {
+    font-family: 'DM Serif Display', serif; font-style: italic;
+    font-size: 1.45rem; color: var(--green); text-align: center;
+    margin-bottom: 2rem; line-height: 1.3; text-wrap: balance;
+  }
+  .quien-progress { text-align: center; font-size: .75rem; letter-spacing: .12em; color: var(--fg-muted); text-transform: uppercase; margin-bottom: 1.2rem; }
+  .quien-btns { display: flex; gap: .8rem; }
+  .quien-btn {
+    flex: 1; padding: 1rem .5rem; border: 1.5px solid var(--div); border-radius: 12px;
+    background: var(--white); cursor: pointer; font-family: 'Jost', sans-serif;
+    font-size: .95rem; font-weight: 500; color: var(--fg);
+    display: flex; flex-direction: column; align-items: center; gap: .4rem;
+    transition: border-color .2s, background .2s; -webkit-tap-highlight-color: transparent;
+  }
+  .quien-btn:active { border-color: var(--gold); background: rgba(201,168,76,.08); }
+  .quien-btn-emoji { font-size: 1.8rem; }
+  .quien-result {
+    text-align: center; padding: 2rem 1rem;
+    animation: up .6s both;
+  }
+  .quien-result-icon { font-size: 2.8rem; margin-bottom: .8rem; display: block; }
+  .quien-result-title { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.4rem; color: var(--green); margin-bottom: .5rem; }
+  .quien-result-sub { font-size: .82rem; color: var(--fg-muted); line-height: 1.6; }
+  .quien-answers { margin-top: 1.5rem; display: flex; flex-direction: column; gap: .5rem; }
+  .quien-answer-row { display: flex; justify-content: space-between; align-items: center; padding: .6rem .8rem; background: var(--white); border-radius: 8px; font-size: .82rem; }
+  .quien-answer-row strong { color: var(--gold); font-weight: 500; }
+
+  /* Game 1 — fase badge + colección + admin panel */
+  .quien-fase-badge {
+    display: inline-block; font-size: .7rem; letter-spacing: .1em;
+    text-transform: uppercase; font-weight: 500; padding: .25rem .8rem;
+    border-radius: 99px; margin-bottom: 1.4rem;
+  }
+  .quien-fase-badge.recol { background: rgba(201,168,76,.15); color: var(--fg-mid); }
+  .quien-fase-badge.vot   { background: rgba(26,45,34,.12);   color: var(--green); }
+
+  .quien-form { display: flex; flex-direction: column; gap: .75rem; margin-bottom: 1.4rem; }
+  .quien-input {
+    padding: .75rem 1rem; border: 1.5px solid var(--div); border-radius: 10px;
+    font-family: 'Jost', sans-serif; font-size: .88rem; color: var(--fg);
+    background: var(--white); outline: none; width: 100%;
+  }
+  .quien-input:focus { border-color: var(--gold); }
+  .quien-send {
+    padding: .85rem; background: var(--green); color: var(--gold-lt);
+    border: none; border-radius: 10px; font-family: 'Jost', sans-serif;
+    font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .quien-count { font-size: .75rem; color: var(--fg-muted); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .8rem; }
+  .quien-pregunta-list { display: flex; flex-direction: column; gap: .5rem; }
+  .quien-pregunta-item {
+    padding: .7rem .9rem; background: var(--white); border-radius: 8px;
+    border: 1px solid var(--div);
+  }
+  .quien-pregunta-txt  { font-size: .84rem; line-height: 1.5; color: var(--fg); }
+  .quien-pregunta-autor { font-size: .7rem; color: var(--fg-muted); margin-top: .15rem; }
+  .quien-admin-panel {
+    margin-top: 1.5rem; padding: 1rem; background: var(--green);
+    border-radius: 12px; display: none;
+  }
+  .quien-admin-panel.open { display: block; }
+  .quien-admin-label { font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: rgba(240,228,200,.5); margin-bottom: .8rem; }
+  .quien-admin-btn {
+    width: 100%; padding: .8rem; background: var(--gold); color: var(--green);
+    border: none; border-radius: 8px; font-family: 'Jost', sans-serif;
+    font-size: .85rem; font-weight: 500; cursor: pointer;
+  }
+  .quien-voted-done { text-align: center; padding: 2rem 1rem; animation: up .6s both; }
+
+  /* Game 2 — Adivina el lugar */
+  .adivina-photo { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 12px; margin-bottom: 1.2rem; display: block; }
+  .adivina-q { font-weight: 500; color: var(--fg); font-size: .95rem; margin-bottom: 1rem; }
+  .adivina-opts { display: flex; flex-direction: column; gap: .6rem; }
+  .adivina-opt {
+    padding: .85rem 1rem; border: 1.5px solid var(--div); border-radius: 10px;
+    background: var(--white); cursor: pointer; font-family: 'Jost', sans-serif;
+    font-size: .88rem; color: var(--fg); text-align: left;
+    transition: border-color .15s, background .15s; -webkit-tap-highlight-color: transparent;
+  }
+  .adivina-opt.correct { border-color: #2d8a4e; background: rgba(45,138,78,.1); color: #1a5c30; }
+  .adivina-opt.wrong   { border-color: #c0392b; background: rgba(192,57,43,.08); color: #7a2319; }
+  .adivina-opt:disabled { cursor: default; }
+  .adivina-progress { text-align: center; font-size: .75rem; letter-spacing: .12em; color: var(--fg-muted); text-transform: uppercase; margin-bottom: 1.2rem; }
+  .adivina-feedback { font-size: .82rem; color: var(--fg-mid); margin-top: .8rem; margin-bottom: 1.2rem; min-height: 1.2rem; }
+  .adivina-next {
+    width: 100%; padding: .9rem; background: var(--green); color: var(--gold-lt);
+    border: none; border-radius: 10px; font-family: 'Jost', sans-serif;
+    font-size: .88rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
+    margin-top: .4rem; display: none;
+  }
+  .adivina-score {
+    text-align: center; padding: 2rem 1rem; animation: up .6s both;
+  }
+  .adivina-score-num { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 3.5rem; color: var(--green); line-height: 1; }
+  .adivina-score-label { font-size: .8rem; letter-spacing: .1em; color: var(--fg-muted); text-transform: uppercase; margin-bottom: 1rem; }
+  .adivina-score-msg { font-size: .9rem; color: var(--fg-mid); line-height: 1.6; }
+  .adivina-replay {
+    margin-top: 1.5rem; padding: .9rem 2rem; background: none; border: 1.5px solid var(--green);
+    border-radius: 10px; color: var(--green); font-family: 'Jost', sans-serif;
+    font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
+  }
+
+  /* ── Animations ── */
+  @keyframes up {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-pre, .hero-names, .hero-date, .hero-cta { animation: none; opacity: 1; }
+  }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ TAB: INICIO ══════════════ -->
+<section class="tab active" id="tab-inicio">
+  <div class="hero" id="hero">
+    <div class="hero-content">
+      <p class="hero-pre">Bienvenidos a nuestra boda</p>
+      <h1 class="hero-names">
+        Susy<span class="hero-amp">&amp;</span>Luis
+      </h1>
+      <p class="hero-date">06 · Noviembre · 2026</p>
+      <button class="hero-cta" onclick="switchTab('itinerario')">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Ver el itinerario
+      </button>
+    </div>
+  </div>
+
+  <div class="welcome-band">
+    <p>¡Estamos tan felices de que estés aquí! Esta página es para que vivas cada momento de hoy con nosotros.</p>
+  </div>
+
+  <div class="feature-grid">
+    <button class="ftile" onclick="switchTab('itinerario')">
+      <div class="ftile-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="8.01" y2="14"/><line x1="12" y1="14" x2="12.01" y2="14"/><line x1="16" y1="14" x2="16.01" y2="14"/></svg>
+      </div>
+      <div class="ftile-name">Itinerario</div>
+      <div class="ftile-desc">El plan del día</div>
+    </button>
+    <button class="ftile" onclick="switchTab('jam')">
+      <div class="ftile-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      </div>
+      <div class="ftile-name">El Jam</div>
+      <div class="ftile-desc">Nuestra playlist</div>
+    </button>
+    <button class="ftile" onclick="switchTab('fotos')">
+      <div class="ftile-icon">
+        <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      </div>
+      <div class="ftile-name">Fotos POV</div>
+      <div class="ftile-desc">Tu perspectiva</div>
+    </button>
+    <button class="ftile" onclick="switchTab('recuerdos')">
+      <div class="ftile-icon">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </div>
+      <div class="ftile-name">Recuerdos</div>
+      <div class="ftile-desc">Déjanos un mensaje</div>
+    </button>
+  </div>
+</section>
+
+
+<!-- ══════════════ TAB: ITINERARIO ══════════════ -->
+<section class="tab" id="tab-itinerario">
+  <div class="tab-header pad">
+    <div class="inner">
+      <span class="gold-label">06 · Noviembre · 2026</span>
+      <h2>El plan<br><em>de hoy</em></h2>
+    </div>
+  </div>
+
+  <div class="venues">
+    <div class="venue-card">
+      <img src="boda_legal.jpg" alt="Lugar de la ceremonia" loading="lazy">
+      <div class="venue-overlay">
+        <span class="venue-tag">Ceremonia</span>
+        <div class="venue-name">Sede de la boda civil</div>
+      </div>
+    </div>
+    <div class="venue-card">
+      <img src="recepcion.jpg" alt="Lugar de la recepción" loading="lazy">
+      <div class="venue-overlay">
+        <span class="venue-tag">Recepción</span>
+        <div class="venue-name">AC Hotels Marriott</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="timeline-wrap pad">
+    <div class="inner">
+      <div class="tl" id="tl"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════ TAB: JAM ══════════════ -->
+<section class="tab" id="tab-jam">
+  <div class="tab-header pad">
+    <div class="inner">
+      <span class="gold-label">Música</span>
+      <h2>El Jam de<br><em>Susy &amp; Luis</em></h2>
+    </div>
+  </div>
+  <div class="jam-content pad">
+    <div class="inner">
+      <div class="spotify-frame" id="spotify-wrap">
+        <!-- Se reemplaza con iframe si SPOTIFY_ID está definido -->
+        <div class="spotify-ph" id="spotify-ph">
+          <svg viewBox="0 0 168 168" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#1DB954" d="M84 0C37.6 0 0 37.6 0 84s37.6 84 84 84 84-37.6 84-84S130.4 0 84 0zm38.6 121.2a5.23 5.23 0 0 1-7.2 1.7c-19.8-12.1-44.7-14.8-74-8.1a5.23 5.23 0 0 1-2.3-10.2c32.1-7.3 59.6-4.2 81.8 9.4a5.23 5.23 0 0 1 1.7 7.2zm10.3-22.9a6.53 6.53 0 0 1-9 2.1c-22.7-13.9-57.2-18-84-9.8a6.53 6.53 0 0 1-3.8-12.5c30.7-9.3 68.9-4.8 95 11.2a6.53 6.53 0 0 1 1.8 9zm.9-23.8C107.7 57.1 64.8 55.6 40.1 63.1a7.84 7.84 0 1 1-4.5-15c28.8-8.7 76.7-7 106.9 10.9a7.84 7.84 0 0 1-7.7 13.5z"/>
+          </svg>
+          <div class="spotify-ph-title">Playlist próximamente</div>
+          <div class="spotify-ph-sub">Pon el ID del playlist de Spotify en la variable <code style="font-size:.75rem;background:rgba(255,255,255,.1);padding:2px 6px;border-radius:3px">SPOTIFY_ID</code> dentro del script</div>
+        </div>
+      </div>
+      <div class="info-box">
+        🎶 <strong>¿Quieres pedir una canción?</strong> Acércate a nuestro DJ — ¡también es tu fiesta y queremos que la disfrutes al máximo!
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════ TAB: FOTOS ══════════════ -->
+<section class="tab" id="tab-fotos">
+  <div class="tab-header pad">
+    <div class="inner">
+      <span class="gold-label">Tu perspectiva</span>
+      <h2>Fotos <em>POV</em></h2>
+    </div>
+  </div>
+  <div class="fotos-content pad">
+    <div class="inner">
+      <label class="upload-btn">
+        <input type="file" id="foto-input" accept="image/*" multiple>
+        <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        <div class="upload-btn-text">Tomar o subir foto</div>
+        <div class="upload-btn-hint">Desde tu cámara o galería</div>
+      </label>
+      <div class="foto-grid" id="foto-grid"></div>
+      <p class="foto-empty" id="foto-empty">Las fotos que tomes aparecerán aquí ✦</p>
+      <div class="info-box" style="margin-top:1.2rem">
+        📷 <strong>¿Ves la cámara de la mesa?</strong> ¡Úsala sin pena! Capta los momentos divertidos, las risas y todo lo que pase. ¡Sean nuestros fotógrafos oficiales!
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════ TAB: RECUERDOS ══════════════ -->
+<section class="tab" id="tab-recuerdos">
+  <div class="recuerdos-hero pad">
+    <div class="inner">
+      <span class="gold-label" style="color:var(--gold-lt)">Libro de recuerdos</span>
+      <h2>Déjanos un<br>mensaje</h2>
+      <p style="margin-top:.6rem">Queremos hacer contigo nuestro libro de recuerdos. Escríbenos con todo tu cariño.</p>
+    </div>
+  </div>
+
+  <div id="recuerdo-form-wrap" class="recuerdos-form pad">
+    <div class="inner">
+      <form id="msg-form" novalidate>
+        <div class="fg2">
+          <label class="fl2" for="m-nombre">Tu nombre</label>
+          <input class="fi2" type="text" id="m-nombre" placeholder="¿Cómo te llamas?" required>
+        </div>
+        <div class="fg2">
+          <label class="fl2" for="m-texto">Tu mensaje</label>
+          <textarea class="fta2" id="m-texto" placeholder="Escribe algo especial para Susy y Luis…" required></textarea>
+        </div>
+        <button type="submit" class="btn-send">Dejar mi mensaje 💌</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="messages pad">
+    <div class="inner">
+      <div class="msg-divider"><span>Mensajes de los invitados</span></div>
+      <div id="msg-list"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════ TAB: JUEGOS ══════════════ -->
+<section id="tab-juegos" class="tab-section">
+
+  <!-- Selector de juego -->
+  <div id="game-selector">
+    <div class="tab-header pad">
+      <p class="tab-eyebrow">Diversión</p>
+      <h2>Los juegos <em>de hoy</em></h2>
+    </div>
+    <div class="game-cards pad">
+      <button class="game-card" onclick="startGame('quien')">
+        <div class="game-card-icon">🤔</div>
+        <div>
+          <div class="game-card-title">¿Quién lo hace más?</div>
+          <div class="game-card-sub">Sugiere preguntas — luego todos votan y la pareja responde en vivo</div>
+        </div>
+      </button>
+      <button class="game-card" onclick="startGame('adivina')">
+        <div class="game-card-icon">📍</div>
+        <div>
+          <div class="game-card-title">Adivina el lugar</div>
+          <div class="game-card-sub">¿Reconoces dónde fue cada foto? Gana quien más acierte</div>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Juego 1: ¿Quién lo hace más? ── -->
+  <div id="game-quien" class="game-view pad" hidden>
+    <button class="game-back" onclick="showGameSelector()">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Volver
+    </button>
+    <div id="quien-screen"><!-- se rellena con JS --></div>
+  </div>
+
+  <!-- ── Juego 2: Adivina el lugar ── -->
+  <div id="game-adivina" class="game-view pad" hidden>
+    <button class="game-back" onclick="showGameSelector()">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Volver
+    </button>
+    <div id="adivina-screen"><!-- se rellena con JS --></div>
+  </div>
+
+</section>
+
+
+<!-- ══════════════ BOTTOM NAV ══════════════ -->
+<nav class="bnav" aria-label="Navegación">
+  <button class="nb on" id="nb-inicio"      onclick="switchTab('inicio')">
+    <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+    <span>Inicio</span>
+  </button>
+  <button class="nb" id="nb-itinerario" onclick="switchTab('itinerario')">
+    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <span>Itinerario</span>
+  </button>
+  <button class="nb" id="nb-jam"        onclick="switchTab('jam')">
+    <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+    <span>Jam</span>
+  </button>
+  <button class="nb" id="nb-fotos"      onclick="switchTab('fotos')">
+    <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+    <span>Fotos</span>
+  </button>
+  <button class="nb" id="nb-recuerdos"  onclick="switchTab('recuerdos')">
+    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    <span>Recuerdos</span>
+  </button>
+  <button class="nb" id="nb-juegos"     onclick="switchTab('juegos')">
+    <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="3"/><path d="M6 12h4M8 10v4"/><circle cx="16" cy="11" r="1" fill="currentColor"/><circle cx="18" cy="13" r="1" fill="currentColor"/></svg>
+    <span>Juegos</span>
+  </button>
+</nav>
+
+<!-- Firebase SDKs — se activan solo si configuras FB_CONFIG abajo -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   CONFIGURACIÓN — edita estos dos bloques antes de publicar
+   ══════════════════════════════════════════════════════════ */
+
+/* 1. Spotify — pega el ID del playlist (parte final del link) */
+const SPOTIFY_ID = ''; // Ej: '37i9dQZF1DXcBWIGoYBM5M'
+
+/* 2. Firebase — crea proyecto en console.firebase.google.com,
+      activa Realtime Database, copia la config aquí.
+      Si lo dejas vacío, los mensajes se guardan solo en este dispositivo. */
+const FB_CONFIG = {
+  apiKey:            '',
+  authDomain:        '',
+  databaseURL:       '',   // Ej: 'https://mi-boda-xxxxx.firebaseio.com'
+  projectId:         '',
+  storageBucket:     '',
+  messagingSenderId: '',
+  appId:             ''
+};
+
+/* ══════════════════════════════════════════════════════════ */
+
+/* ── Firebase / localStorage adapter ── */
+let fbDb = null;
+const FB_READY = FB_CONFIG.databaseURL !== '';
+
+if (FB_READY) {
+  try {
+    firebase.initializeApp(FB_CONFIG);
+    fbDb = firebase.database();
+  } catch(e) { console.warn('Firebase init failed:', e); }
+}
+
+function showFbNotice() {
+  if (FB_READY || document.getElementById('fb-notice')) return;
+  const n = document.createElement('div');
+  n.id = 'fb-notice';
+  n.className = 'fb-notice';
+  n.innerHTML = '💡 <strong>Nota:</strong> Los mensajes se guardan en este dispositivo. Para que todos los invitados vean los mensajes en tiempo real, configura Firebase en el código.';
+  document.getElementById('msg-list').before(n);
+}
+
+/* ── Spotify ── */
+if (SPOTIFY_ID) {
+  document.getElementById('spotify-wrap').innerHTML =
+    `<iframe src="https://open.spotify.com/embed/playlist/${SPOTIFY_ID}?utm_source=generator&theme=0"
+      height="380" frameborder="0" allowtransparency="true"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy"></iframe>`;
+}
+
+/* ── Itinerario — edita los horarios aquí ── */
+const SCHEDULE = [
+  { t: '12:00', e: 'Llegada de invitados',  n: 'Les esperamos para empezar juntos',         i: '🥂' },
+  { t: '13:00', e: 'Boda civil',            n: 'El momento más especial del día',            i: '💍' },
+  { t: '14:30', e: 'Aperitivo & fotos',     n: 'Cóctel de bienvenida y sesión fotográfica',  i: '🍾' },
+  { t: '15:30', e: 'Comida',                n: 'Una mesa llena de buena compañía',           i: '🍽️' },
+  { t: '17:30', e: 'Postre & tarta',        n: '¡Momento dulce imperdible!',                 i: '🎂' },
+  { t: '18:30', e: '¡A bailar!',            n: 'La pista es tuya — ¡sin guardar energía!',   i: '🕺' },
+  { t: '22:00', e: 'Cierre de fiesta',      n: 'Gracias por hacer este día perfecto',        i: '🌙' },
+];
+
+(function buildTimeline() {
+  const now = new Date();
+  const tl = document.getElementById('tl');
+  tl.innerHTML = SCHEDULE.map((s, i) => {
+    const [hh, mm] = s.t.split(':').map(Number);
+    const evDate = new Date(2026, 10, 6, hh, mm);
+    const next   = SCHEDULE[i + 1];
+    const nextDate = next ? new Date(2026, 10, 6, ...next.t.split(':').map(Number)) : null;
+    const isNow = now >= evDate && (!nextDate || now < nextDate);
+    return `<div class="tl-row">
+      <div class="tl-bullet"><div class="tl-dot${isNow ? ' now' : ''}"></div></div>
+      <div class="tl-body">
+        <div class="tl-time">${s.t} &nbsp;${s.i}</div>
+        <div class="tl-event">${s.e}</div>
+        <div class="tl-note">${s.n}</div>
+      </div>
+    </div>`;
+  }).join('');
+})();
+
+/* ── Tab switcher ── */
+const TABS = ['inicio','itinerario','jam','fotos','recuerdos','juegos'];
+function switchTab(id) {
+  TABS.forEach(t => {
+    document.getElementById('tab-' + t).classList.toggle('active', t === id);
+    document.getElementById('nb-'  + t).classList.toggle('on',     t === id);
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ── Fotos ── */
+document.getElementById('foto-input').addEventListener('change', function () {
+  const grid  = document.getElementById('foto-grid');
+  const empty = document.getElementById('foto-empty');
+  Array.from(this.files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      img.className = 'foto-img';
+      img.alt = 'Foto';
+      grid.appendChild(img);
+      empty.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  });
+});
+
+/* ── Recuerdos ── */
+const MKEY = 'susy_luis_msgs_v1';
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function renderMsgs(msgs) {
+  const list = document.getElementById('msg-list');
+  list.innerHTML = msgs.length
+    ? msgs.map(m =>
+        `<div class="msg-card"><div class="msg-name">${esc(m.nombre)}</div><div class="msg-text">${esc(m.texto)}</div></div>`
+      ).join('')
+    : '<p class="msg-empty">Sé el primero en dejar un mensaje ✦</p>';
+}
+
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast'; t.className = 'toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function showFormSuccess(nombre) {
+  const wrap = document.getElementById('recuerdo-form-wrap');
+  wrap.innerHTML = `
+    <div class="form-success">
+      <span class="form-success-icon">💌</span>
+      <div class="form-success-title">¡Gracias, ${esc(nombre)}!</div>
+      <p class="form-success-sub">Tu mensaje quedó guardado para siempre.</p>
+    </div>`;
+}
+
+/* localStorage helpers — always defined; only used when Firebase is off */
+function loadMsgs() { try { return JSON.parse(localStorage.getItem(MKEY) || '[]'); } catch { return []; } }
+function saveMsgs(m) { try { localStorage.setItem(MKEY, JSON.stringify(m)); } catch {} }
+
+if (FB_READY && fbDb) {
+  fbDb.ref('mensajes').orderByChild('ts').on('value', snap => {
+    const msgs = [];
+    snap.forEach(child => msgs.unshift(child.val()));
+    renderMsgs(msgs);
+  });
+} else {
+  renderMsgs(loadMsgs().slice().reverse());
+  showFbNotice();
+}
+
+/* ══════════════════════════════════════════════════════════
+   MINI-JUEGOS — edita los datos aquí
+   ══════════════════════════════════════════════════════════ */
+
+/* Juego 1: ¿Quién lo hace más? — dos fases (recolección → votación) */
+
+/* Juego 2: Adivina el lugar
+   foto    → ruta relativa a la imagen (pon tus propias fotos)
+   loc     → nombre real del lugar (mostrado tras responder)
+   opciones → 3 alternativas (la primera debe ser la correcta)
+   IMPORTANTE: mezcla las opciones en el código para que la correcta
+   no siempre sea la primera — el índice `correcta` indica cuál es. */
+const ADIVINA_FOTOS = [
+  {
+    foto: 'boda_legal.jpg',
+    pregunta: '¿Dónde se casaron legalmente?',
+    opciones: ['Registro Civil', 'Iglesia La Merced', 'Notaría Central'],
+    correcta: 0,
+    loc: 'Registro Civil'
+  },
+  {
+    foto: 'recepcion.jpg',
+    pregunta: '¿En qué hotel es la recepción?',
+    opciones: ['Hotel Marriott', 'Hotel Intercontinental', 'Hotel Sheraton'],
+    correcta: 0,
+    loc: 'AC Hotels Marriott'
+  },
+  {
+    foto: 'pareja.jpg',
+    pregunta: '¿En qué ciudad fue esta sesión de fotos?',
+    opciones: ['Ciudad A', 'Ciudad B', 'Ciudad C'],
+    correcta: 0,
+    loc: 'Ciudad A'
+  },
+  {
+    foto: 'pareja2.jpg',
+    pregunta: '¿Dónde fue esta foto al atardecer?',
+    opciones: ['Lugar A', 'Lugar B', 'Lugar C'],
+    correcta: 0,
+    loc: 'Lugar A'
+  },
+];
+
+/* ── Juego 1 logic ── */
+const FB_J1_FASE  = 'juego1/fase';
+const FB_J1_PREGS = 'juego1/preguntas';
+const FB_J1_VOTOS = 'juego1/votos';
+const LS_J1_FASE  = 'j1_fase';
+const LS_J1_PREGS = 'j1_preguntas';
+
+function getDeviceId() {
+  let id = localStorage.getItem('_devid');
+  if (!id) { id = Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('_devid', id); }
+  return id;
+}
+
+let j1Fase      = 'recoleccion'; // 'recoleccion' | 'votacion'
+let j1Preguntas = [];            // [{id, texto, autor, ts}]
+let j1MisVotos  = {};            // {preguntaId: 'susy'|'luis'}
+let j1CurrId    = null;          // id of question currently shown in voting phase
+let j1LpTimer   = null;
+
+function j1LpStart() { j1LpTimer = setTimeout(() => { const p = document.getElementById('quien-admin-panel'); if (p) p.classList.add('open'); }, 1800); }
+function j1LpEnd()   { clearTimeout(j1LpTimer); }
+
+function initJuego1() {
+  j1MisVotos = {}; j1CurrId = null;
+  if (FB_READY && fbDb) {
+    fbDb.ref(FB_J1_FASE).on('value', snap => { j1Fase = snap.val() || 'recoleccion'; renderJuego1(); });
+    fbDb.ref(FB_J1_PREGS).orderByChild('ts').on('value', snap => {
+      j1Preguntas = [];
+      snap.forEach(c => j1Preguntas.push({ id: c.key, ...c.val() }));
+      renderJuego1();
+    });
+  } else {
+    j1Fase      = localStorage.getItem(LS_J1_FASE) || 'recoleccion';
+    j1Preguntas = JSON.parse(localStorage.getItem(LS_J1_PREGS) || '[]');
+    renderJuego1();
+  }
+}
+
+function renderJuego1() {
+  const screen = document.getElementById('quien-screen');
+  if (!screen) return;
+  j1Fase === 'recoleccion' ? renderJ1Recol(screen) : renderJ1Vot(screen);
+}
+
+function renderJ1Recol(screen) {
+  const lista = j1Preguntas.slice().reverse().map(p =>
+    `<div class="quien-pregunta-item">
+      <div class="quien-pregunta-txt">${esc(p.texto)}</div>
+      <div class="quien-pregunta-autor">— ${esc(p.autor)}</div>
+    </div>`
+  ).join('');
+  const n = j1Preguntas.length;
+  screen.innerHTML = `
+    <span class="quien-fase-badge recol">✦ Recolección de preguntas</span>
+    <p class="quien-q" onpointerdown="j1LpStart()" onpointerup="j1LpEnd()" onpointerleave="j1LpEnd()" style="cursor:default">
+      "¿Quién lo hace más?"
+    </p>
+    <p style="font-size:.82rem;color:var(--fg-muted);text-align:center;margin-bottom:1.4rem">
+      Sugiere una pregunta — la pareja la responde en vivo
+    </p>
+    <form class="quien-form" onsubmit="j1Enviar(event)">
+      <input class="quien-input" id="j1-nombre"   placeholder="Tu nombre"     maxlength="40"  required autocomplete="off">
+      <input class="quien-input" id="j1-pregunta" placeholder="¿Quién…?"      maxlength="120" required autocomplete="off">
+      <button class="quien-send" type="submit">Enviar pregunta ✦</button>
+    </form>
+    <p class="quien-count">${n} pregunta${n !== 1 ? 's' : ''} enviada${n !== 1 ? 's' : ''}</p>
+    <div class="quien-pregunta-list">${lista}</div>
+    <div class="quien-admin-panel" id="quien-admin-panel">
+      <p class="quien-admin-label">Panel del organizador</p>
+      <button class="quien-admin-btn" onclick="j1CambiarFase()">
+        Activar votación → ${n} pregunta${n !== 1 ? 's' : ''}
+      </button>
+    </div>`;
+}
+
+function j1Enviar(e) {
+  e.preventDefault();
+  const nombre = document.getElementById('j1-nombre').value.trim();
+  const texto  = document.getElementById('j1-pregunta').value.trim();
+  if (!nombre || !texto) return;
+  const entry = { texto, autor: nombre, ts: Date.now() };
+  if (FB_READY && fbDb) {
+    fbDb.ref(FB_J1_PREGS).push(entry)
+      .then(() => showToast('¡Pregunta enviada! 🙌'))
+      .catch(() => showToast('Error — intenta de nuevo'));
+  } else {
+    j1Preguntas.push({ id: Date.now().toString(), ...entry });
+    localStorage.setItem(LS_J1_PREGS, JSON.stringify(j1Preguntas));
+    showToast('¡Pregunta guardada! 🙌');
+    renderJuego1();
+  }
+  e.target.reset();
+}
+
+function j1CambiarFase() {
+  if (FB_READY && fbDb) {
+    fbDb.ref(FB_J1_FASE).set('votacion');
+  } else {
+    j1Fase = 'votacion';
+    localStorage.setItem(LS_J1_FASE, 'votacion');
+    renderJuego1();
+  }
+}
+
+function renderJ1Vot(screen) {
+  const sinVotar = j1Preguntas.filter(p => !j1MisVotos[p.id]);
+  if (sinVotar.length === 0) {
+    const filas = j1Preguntas.map(p =>
+      `<div class="quien-answer-row"><span>${esc(p.texto)}</span><strong>${j1MisVotos[p.id] === 'susy' ? 'Susy' : 'Luis'}</strong></div>`
+    ).join('');
+    screen.innerHTML = `<div class="quien-voted-done">
+      <span style="font-size:2.8rem;display:block;margin-bottom:.8rem">🎉</span>
+      <div class="quien-result-title">¡Ya votaste todo!</div>
+      <p class="quien-result-sub">Esperá la dinámica en vivo con Susy &amp; Luis para ver si acertaste.</p>
+      <div class="quien-answers" style="margin-top:1.5rem">${filas}</div>
+    </div>`;
+    return;
+  }
+  if (j1Preguntas.length === 0) {
+    screen.innerHTML = `<div class="quien-voted-done">
+      <p class="quien-result-sub" style="margin-top:2rem">Aún no hay preguntas enviadas.</p>
+    </div>`;
+    return;
+  }
+  const p = sinVotar[0];
+  j1CurrId = p.id;
+  const total   = j1Preguntas.length;
+  const votadas = Object.keys(j1MisVotos).length;
+  screen.innerHTML = `
+    <span class="quien-fase-badge vot">▶ Votación en vivo</span>
+    <p class="quien-progress">Pregunta ${votadas + 1} de ${total}</p>
+    <p class="quien-q">"${esc(p.texto)}"</p>
+    <p style="font-size:.78rem;color:var(--fg-muted);text-align:center;margin-bottom:1.5rem">— ${esc(p.autor)}</p>
+    <div class="quien-btns">
+      <button class="quien-btn" onclick="j1Votar('susy')">
+        <span class="quien-btn-emoji">💕</span><span>Susy</span>
+      </button>
+      <button class="quien-btn" onclick="j1Votar('luis')">
+        <span class="quien-btn-emoji">🤵</span><span>Luis</span>
+      </button>
+    </div>`;
+}
+
+function j1Votar(voto) {
+  if (!j1CurrId) return;
+  j1MisVotos[j1CurrId] = voto;
+  if (FB_READY && fbDb) fbDb.ref(`${FB_J1_VOTOS}/${j1CurrId}/${getDeviceId()}`).set(voto).catch(() => {});
+  renderJuego1();
+}
+
+function showGameSelector() {
+  document.getElementById('game-selector').hidden = false;
+  document.getElementById('game-quien').hidden   = true;
+  document.getElementById('game-adivina').hidden = true;
+}
+
+function startGame(type) {
+  document.getElementById('game-selector').hidden = true;
+  if (type === 'quien') {
+    document.getElementById('game-quien').hidden = false;
+    initJuego1();
+  } else {
+    adivinaIdx = 0; adivinaScore = 0;
+    document.getElementById('game-adivina').hidden = false;
+    renderAdivinaRonda();
+  }
+}
+
+/* ── Juego 2 logic ── */
+let adivinaIdx = 0;
+let adivinaScore = 0;
+
+function renderAdivinaRonda() {
+  const screen = document.getElementById('adivina-screen');
+  if (adivinaIdx >= ADIVINA_FOTOS.length) {
+    const pct = Math.round((adivinaScore / ADIVINA_FOTOS.length) * 100);
+    const msg = pct === 100 ? '¡Perfecto! Eres un experto en la historia de Susy & Luis 🏆'
+              : pct >= 75  ? '¡Muy bien! Conoces muy bien a los novios 🌟'
+              : pct >= 50  ? '¡No está mal! Algo sabes de su historia 😊'
+              :               'Cuéntate más historias de la pareja 😄';
+    screen.innerHTML = `<div class="adivina-score">
+      <div class="adivina-score-num">${adivinaScore}/${ADIVINA_FOTOS.length}</div>
+      <div class="adivina-score-label">Respuestas correctas</div>
+      <p class="adivina-score-msg">${msg}</p>
+      <button class="adivina-replay" onclick="startGame('adivina')">Jugar de nuevo</button>
+    </div>`;
+    return;
+  }
+  const r = ADIVINA_FOTOS[adivinaIdx];
+  const opts = r.opciones.map((o, i) =>
+    `<button class="adivina-opt" data-idx="${i}" onclick="responderAdivina(this,${i},${r.correcta},'${esc(r.loc)}')">${esc(o)}</button>`
+  ).join('');
+  screen.innerHTML = `
+    <p class="adivina-progress">Foto ${adivinaIdx + 1} de ${ADIVINA_FOTOS.length}</p>
+    <img class="adivina-photo" src="${r.foto}" alt="Foto ${adivinaIdx + 1}" loading="lazy">
+    <p class="adivina-q">${esc(r.pregunta)}</p>
+    <div class="adivina-opts">${opts}</div>
+    <p class="adivina-feedback" id="adivina-feedback"></p>
+    <button class="adivina-next" id="adivina-next" onclick="siguienteAdivina()">
+      ${adivinaIdx + 1 < ADIVINA_FOTOS.length ? 'Siguiente foto →' : 'Ver resultado'}
+    </button>`;
+}
+
+function responderAdivina(btn, elegida, correcta, loc) {
+  const opts = btn.closest('.adivina-opts').querySelectorAll('.adivina-opt');
+  opts.forEach(b => { b.disabled = true; });
+  const fb = document.getElementById('adivina-feedback');
+  if (elegida === correcta) {
+    btn.classList.add('correct');
+    adivinaScore++;
+    fb.textContent = '✓ ¡Correcto! ' + loc;
+    fb.style.color = '#2d8a4e';
+  } else {
+    btn.classList.add('wrong');
+    opts[correcta].classList.add('correct');
+    fb.textContent = '✗ Era: ' + loc;
+    fb.style.color = '#c0392b';
+  }
+  document.getElementById('adivina-next').style.display = 'block';
+}
+
+function siguienteAdivina() {
+  adivinaIdx++;
+  renderAdivinaRonda();
+}
+
+/* ══════════════════════════════════════════════════════════ */
+
+document.getElementById('msg-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const nombre = document.getElementById('m-nombre').value.trim();
+  const texto  = document.getElementById('m-texto').value.trim();
+  if (!nombre || !texto) return;
+
+  const entry = { nombre, texto, ts: Date.now() };
+
+  if (FB_READY && fbDb) {
+    fbDb.ref('mensajes').push(entry)
+      .then(() => { showFormSuccess(nombre); showToast('¡Mensaje enviado! 💌'); })
+      .catch(() => showToast('Error al enviar — intenta de nuevo'));
+  } else {
+    const msgs = loadMsgs();
+    msgs.push(entry);
+    saveMsgs(msgs);
+    renderMsgs(msgs.slice().reverse());
+    showFormSuccess(nombre);
+    showToast('¡Mensaje guardado! 💌');
+  }
+});
+</script>
+</body>
+</html>
