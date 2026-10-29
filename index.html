@@ -813,9 +813,6 @@
   </button>
 </nav>
 
-<!-- Firebase SDKs — se activan solo si configuras FB_CONFIG abajo -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
 <script>
 /* ══════════════════════════════════════════════════════════
@@ -825,40 +822,13 @@
 /* 1. Spotify — pega el ID del playlist (parte final del link) */
 const SPOTIFY_ID = '03jnqjPqOpwzNtaXwLvFlt';
 
-/* 2. Firebase — crea proyecto en console.firebase.google.com,
-      activa Realtime Database, copia la config aquí.
-      Si lo dejas vacío, los mensajes se guardan solo en este dispositivo. */
-const FB_CONFIG = {
-  apiKey:            '',
-  authDomain:        '',
-  databaseURL:       'PENDIENTE',   // reemplaza con 'https://mi-boda-xxxxx.firebaseio.com'
-  projectId:         '',
-  storageBucket:     '',
-  messagingSenderId: '',
-  appId:             ''
-};
-
 /* ══════════════════════════════════════════════════════════ */
 
-/* ── Firebase / localStorage adapter ── */
-let fbDb = null;
-const FB_READY = FB_CONFIG.databaseURL !== '';
+/* ── localStorage adapter ── */
+const fbDb = null;
+const FB_READY = false;
 
-if (FB_READY) {
-  try {
-    firebase.initializeApp(FB_CONFIG);
-    fbDb = firebase.database();
-  } catch(e) { console.warn('Firebase init failed:', e); }
-}
-
-function showFbNotice() {
-  if (FB_READY || document.getElementById('fb-notice')) return;
-  const n = document.createElement('div');
-  n.id = 'fb-notice';
-  n.className = 'fb-notice';
-  n.innerHTML = '💡 <strong>Nota:</strong> Los mensajes se guardan en este dispositivo. Para que todos los invitados vean los mensajes en tiempo real, configura Firebase en el código.';
-  document.getElementById('msg-list').before(n);
-}
+function showFbNotice() {}
 
 /* ── Spotify ── */
 if (SPOTIFY_ID) {
