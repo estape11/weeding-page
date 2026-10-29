@@ -789,17 +789,11 @@
     <p class="tab-eyebrow" style="margin-bottom:.4rem">Próximamente</p>
     <div class="prox-banner">
       <div class="prox-icon">🤔</div>
-      <div>
-        <div class="prox-title">¿Quién lo hace más? <span class="prox-badge">Próximamente</span></div>
-        <div style="font-size:.78rem;color:var(--fg-muted)">Sugiere preguntas — la pareja responde en vivo</div>
-      </div>
+      <div><span class="prox-badge">Próximamente</span></div>
     </div>
     <div class="prox-banner">
       <div class="prox-icon">📍</div>
-      <div>
-        <div class="prox-title">Adivina el lugar <span class="prox-badge">Próximamente</span></div>
-        <div style="font-size:.78rem;color:var(--fg-muted)">¿Reconoces dónde fue cada foto?</div>
-      </div>
+      <div><span class="prox-badge">Próximamente</span></div>
     </div>
   </div>
 
@@ -848,11 +842,53 @@
 /* 1. Spotify — pega el ID del playlist (parte final del link) */
 const SPOTIFY_ID = '03jnqjPqOpwzNtaXwLvFlt';
 
+/* 2. Firebase Realtime Database — REST endpoint (no SDK needed) */
+const DB_URL = 'https://boda-luis-susy-default-rtdb.europe-west1.firebasedatabase.app';
+
 /* ══════════════════════════════════════════════════════════ */
 
-/* ── localStorage adapter ── */
-const fbDb = null;
-const FB_READY = false;
+/* ── Firebase REST adapter (mimics SDK interface) ── */
+const FB_READY = true;
+
+const fbDb = (() => {
+  function ref(path) {
+    let _order = null;
+    const self = {
+      orderByChild(f) { _order = f; return self; },
+      on(_ev, cb) {
+        const poll = () => {
+          let url = `${DB_URL}/${path}.json`;
+          if (_order) url += `?orderBy=%22${_order}%22&limitToLast=100`;
+          fetch(url).then(r => r.ok ? r.json() : null).then(data => {
+            if (!data) { cb({ val:()=>null, forEach:()=>{} }); return; }
+            const entries = Object.entries(data).map(([k,v]) => ({ key:k, _v:v }));
+            if (_order) entries.sort((a,b) => (a._v[_order]||0) - (b._v[_order]||0));
+            cb({
+              val: () => data,
+              forEach: fn => entries.forEach(e => fn({ key:e.key, val:()=>e._v }))
+            });
+          }).catch(()=>{});
+        };
+        poll();
+        return setInterval(poll, 6000);
+      },
+      push(data) {
+        return fetch(`${DB_URL}/${path}.json`, {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify(data)
+        }).then(r => r.ok ? r.json() : Promise.reject('push failed'));
+      },
+      set(data) {
+        return fetch(`${DB_URL}/${path}.json`, {
+          method:'PUT', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify(data)
+        }).then(r => r.ok ? r.json() : Promise.reject('set failed'));
+      }
+    };
+    return self;
+  }
+  return { ref };
+})();
 
 function showFbNotice() {}
 
