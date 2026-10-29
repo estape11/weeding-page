@@ -445,11 +445,26 @@
   .msg-divider::before, .msg-divider::after { content: ''; flex: 1; height: 1px; background: var(--div); }
   .msg-divider span { font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--fg-muted); white-space: nowrap; }
   .msg-card {
-    background: var(--white); border: 1px solid var(--div);
-    padding: 1.1rem 1.2rem; margin-bottom: .9rem;
+    background: #FDFCF7; border: 1px solid var(--div);
+    border-top: 2px solid var(--gold);
+    padding: 1.3rem 1.4rem 1.1rem; margin-bottom: 1rem;
+    border-radius: 2px;
   }
-  .msg-name { font-family: 'DM Serif Display', serif; font-style: italic; color: var(--green); font-size: .95rem; margin-bottom: .4rem; }
-  .msg-text { font-size: .85rem; color: var(--fg-mid); line-height: 1.65; }
+  .msg-text {
+    font-family: 'DM Serif Display', serif; font-style: italic;
+    font-size: .95rem; color: var(--fg); line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+  .msg-firma {
+    display: flex; align-items: center; gap: .6rem;
+    padding-top: .7rem; border-top: 1px solid var(--div);
+  }
+  .msg-firma-deco { color: var(--gold); font-size: .75rem; flex-shrink: 0; }
+  .msg-firma-line { flex: 1; height: 1px; background: var(--div); }
+  .msg-name {
+    font-family: 'DM Serif Display', serif; font-style: italic;
+    color: var(--green); font-size: .95rem; flex-shrink: 0;
+  }
   .msg-empty { text-align: center; padding: 1.5rem; font-size: .85rem; color: var(--fg-muted); font-style: italic; }
 
   /* ── Form success state ── */
@@ -1101,7 +1116,7 @@ function renderMsgs(msgs) {
   const list = document.getElementById('msg-list');
   list.innerHTML = msgs.length
     ? msgs.map(m =>
-        `<div class="msg-card"><div class="msg-name">${esc(m.nombre)}</div><div class="msg-text">${esc(m.texto)}</div></div>`
+        `<div class="msg-card"><p class="msg-text">&ldquo;${esc(m.texto)}&rdquo;</p><div class="msg-firma"><span class="msg-firma-deco">✦</span><span class="msg-firma-line"></span><span class="msg-name">${esc(m.nombre)}</span></div></div>`
       ).join('')
     : '<p class="msg-empty">Sé el primero en dejar un mensaje ✦</p>';
 }
