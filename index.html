@@ -1081,6 +1081,7 @@ const SCHEDULE = [
   }).join('');
 })();
 
+/* exported switchTab */
 /* ── Tab switcher ── */
 const TABS = ['inicio','itinerario','jam','fotos','recuerdos','juegos'];
 function switchTab(id) {
@@ -1226,6 +1227,7 @@ let j1MisVotos  = {};            // {preguntaId: 'susy'|'luis'}
 let j1CurrId    = null;          // id of question currently shown in voting phase
 let j1LpTimer   = null;
 
+/* exported j1LpStart, j1LpEnd, j1Enviar, j1CambiarFase, j1Votar */
 function j1LpStart() { j1LpTimer = setTimeout(() => { const p = document.getElementById('quien-admin-panel'); if (p) p.classList.add('open'); }, 1800); }
 function j1LpEnd()   { clearTimeout(j1LpTimer); }
 
@@ -1357,12 +1359,7 @@ function j1Votar(voto) {
   renderJuego1();
 }
 
-function showGameSelector() {
-  document.getElementById('game-selector').hidden = false;
-  document.getElementById('game-quien').hidden   = true;
-  document.getElementById('game-adivina').hidden = true;
-}
-
+/* exported startGame, responderAdivina, siguienteAdivina */
 function startGame(type) {
   document.getElementById('game-selector').hidden = true;
   if (type === 'quien') {
@@ -1441,7 +1438,6 @@ function siguienteAdivina() {
 
   const GREEN  = getComputedStyle(document.documentElement).getPropertyValue('--green').trim()  || '#1A2D22';
   const GOLD   = getComputedStyle(document.documentElement).getPropertyValue('--gold').trim()   || '#C9A84C';
-  const IVORY  = getComputedStyle(document.documentElement).getPropertyValue('--ivory').trim()  || '#F7F2E8';
   const IVORY2 = getComputedStyle(document.documentElement).getPropertyValue('--ivory2').trim() || '#EDE8DC';
 
   function rnd(n) { return Math.floor(Math.random() * n); }
