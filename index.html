@@ -1044,7 +1044,7 @@ function showFbNotice() {}
 /* ── Spotify ── */
 if (SPOTIFY_ID) {
   document.getElementById('spotify-wrap').innerHTML =
-    `<iframe src="https://open.spotify.com/embed/playlist/${SPOTIFY_ID}?utm_source=generator&theme=0"
+    `<iframe src="https://open.spotify.com/embed/playlist/${esc(SPOTIFY_ID)}?utm_source=generator&theme=0"
       height="380" frameborder="0" allowtransparency="true"
       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
       loading="lazy"></iframe>`;
