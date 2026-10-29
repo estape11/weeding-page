@@ -276,6 +276,8 @@
   .tl-time { font-size: .68rem; font-weight: 400; color: var(--gold); letter-spacing: .05em; font-variant-numeric: tabular-nums; }
   .tl-event { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--fg); margin: .1rem 0 .2rem; }
   .tl-note { font-size: .78rem; color: var(--fg-muted); line-height: 1.55; }
+  a.tl-maps { text-decoration: none; -webkit-tap-highlight-color: transparent; transition: color .15s; }
+  a.tl-maps:active { color: var(--gold); }
 
   /* ════════════════════════════════════════════════
      TAB 3 — JAM
@@ -315,7 +317,8 @@
     position: relative;
     transition: background .2s;
     -webkit-tap-highlight-color: transparent;
-    margin-bottom: 1.2rem;
+    text-decoration: none;
+    margin-bottom: .75rem;
   }
   .upload-btn:hover { background: var(--green2); }
   .upload-btn input[type="file"] {
@@ -328,6 +331,15 @@
   .foto-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin-bottom: 1.2rem; }
   .foto-img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
   .foto-empty { text-align: center; padding: 1.5rem; font-size: .85rem; color: var(--fg-muted); font-style: italic; }
+  .fotos-album-link {
+    display: flex; align-items: center; gap: .75rem;
+    padding: .9rem 1.2rem; margin-bottom: 1.2rem;
+    border: 1.5px solid var(--div); border-radius: 12px;
+    color: var(--fg-mid); text-decoration: none; font-size: .88rem;
+    -webkit-tap-highlight-color: transparent; transition: border-color .15s;
+  }
+  .fotos-album-link svg { width: 22px; height: 22px; flex-shrink: 0; stroke: var(--gold); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .fotos-album-link:active { border-color: var(--gold); color: var(--fg); }
 
   /* ════════════════════════════════════════════════
      TAB 5 — RECUERDOS
@@ -717,15 +729,16 @@
   </div>
   <div class="fotos-content pad">
     <div class="inner">
-      <label class="upload-btn">
-        <input type="file" id="foto-input" accept="image/*" multiple>
+      <a class="upload-btn" id="fotos-pov-btn" href="#" target="_blank" rel="noopener noreferrer">
         <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        <div class="upload-btn-text">Tomar o subir foto</div>
-        <div class="upload-btn-hint">Desde tu cámara o galería</div>
-      </label>
-      <div class="foto-grid" id="foto-grid"></div>
-      <p class="foto-empty" id="foto-empty">Las fotos que tomes aparecerán aquí ✦</p>
-      <div class="info-box" style="margin-top:1.2rem">
+        <div class="upload-btn-text">Subir tus fotos</div>
+        <div class="upload-btn-hint">Abre POV Camera para el evento</div>
+      </a>
+      <a class="fotos-album-link" id="fotos-album-btn" href="#" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" stroke="none"/><polyline points="21 15 16 10 5 21"/></svg>
+        Ver álbum de Google Photos
+      </a>
+      <div class="info-box">
         📷 <strong>¿Ves la cámara de la mesa?</strong> ¡Úsala sin pena! Capta los momentos divertidos, las risas y todo lo que pase. ¡Sean nuestros fotógrafos oficiales!
       </div>
     </div>
@@ -845,6 +858,14 @@ const SPOTIFY_ID = '03jnqjPqOpwzNtaXwLvFlt';
 /* 2. Firebase Realtime Database — REST endpoint (no SDK needed) */
 const DB_URL = 'https://boda-luis-susy-default-rtdb.europe-west1.firebasedatabase.app';
 
+/* 3. Fotos — links de la tab de fotos */
+const FOTOS_POV_URL   = 'https://pov.camera/qr/31C12325-27F0-49CF-B60B-668E838593F3';
+const FOTOS_ALBUM_URL = 'https://photos.app.goo.gl/yrzkjxTZXioT9QwV7';
+
+/* 4. Venue — pega el link "Compartir" de Google Maps (déjalo '' para no mostrar enlace) */
+const MAPS_CIVIL = ''; /* Registro Civil → pega aquí */
+const MAPS_HOTEL = ''; /* Hotel / Venue  → pega aquí */
+
 /* ══════════════════════════════════════════════════════════ */
 
 /* ── Firebase REST adapter (mimics SDK interface) ── */
@@ -903,12 +924,12 @@ if (SPOTIFY_ID) {
 
 /* ── Itinerario — edita los horarios aquí ── */
 const SCHEDULE = [
-  { t: '11:00', e: 'Firma Civil',      n: 'Registro Civil',                                          i: '📝' },
-  { t: '13:00', e: 'La Ceremonia',     n: 'Nos vemos en el hotel para nuestro "sí, quiero".',        i: '💍' },
-  { t: '13:30', e: 'Espacio Musical',  n: 'Un momento muy especial acompañados por la voz en directo', i: '🎶' },
-  { t: '14:00', e: 'Cóctel & Brindis', n: 'Aperitivos, copas y nuestro primer brindis juntos.',      i: '🥂' },
-  { t: '15:00', e: 'El Banquete',      n: 'Nos sentamos a la mesa para disfrutar de la comida.',     i: '🍽️' },
-  { t: '18:00', e: '¡A Bailar!',       n: 'Comienza la fiesta y se abre la pista de baile.',         i: '🕺' },
+  { t: '11:00', e: 'Firma Civil',      n: 'Registro Civil',                                          i: '📝', maps: MAPS_CIVIL },
+  { t: '13:00', e: 'La Ceremonia',     n: 'Nos vemos en el hotel para nuestro "sí, quiero".',        i: '💍', maps: MAPS_HOTEL },
+  { t: '13:30', e: 'Espacio Musical',  n: 'Un momento muy especial acompañados por la voz en directo', i: '🎶', maps: MAPS_HOTEL },
+  { t: '14:00', e: 'Cóctel & Brindis', n: 'Aperitivos, copas y nuestro primer brindis juntos.',      i: '🥂', maps: MAPS_HOTEL },
+  { t: '15:00', e: 'El Banquete',      n: 'Nos sentamos a la mesa para disfrutar de la comida.',     i: '🍽️', maps: MAPS_HOTEL },
+  { t: '18:00', e: '¡A Bailar!',       n: 'Comienza la fiesta y se abre la pista de baile.',         i: '🕺', maps: MAPS_HOTEL },
   { t: '20:30', e: 'Cierre',           n: 'Fin de un día inolvidable.',                               i: '🌙' },
 ];
 
@@ -926,7 +947,10 @@ const SCHEDULE = [
       <div class="tl-body">
         <div class="tl-time">${s.t} &nbsp;${s.i}</div>
         <div class="tl-event">${s.e}</div>
-        <div class="tl-note">${s.n}</div>
+        ${s.maps
+          ? `<a class="tl-note tl-maps" href="${s.maps}" target="_blank" rel="noopener noreferrer">${s.n} 📍</a>`
+          : `<div class="tl-note">${s.n}</div>`
+        }
       </div>
     </div>`;
   }).join('');
@@ -945,22 +969,8 @@ function switchTab(id) {
 }
 
 /* ── Fotos ── */
-document.getElementById('foto-input').addEventListener('change', function () {
-  const grid  = document.getElementById('foto-grid');
-  const empty = document.getElementById('foto-empty');
-  Array.from(this.files).forEach(file => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      const img = document.createElement('img');
-      img.src = e.target.result;
-      img.className = 'foto-img';
-      img.alt = 'Foto';
-      grid.appendChild(img);
-      empty.style.display = 'none';
-    };
-    reader.readAsDataURL(file);
-  });
-});
+if (FOTOS_POV_URL)   document.getElementById('fotos-pov-btn').href   = FOTOS_POV_URL;
+if (FOTOS_ALBUM_URL) document.getElementById('fotos-album-btn').href = FOTOS_ALBUM_URL;
 
 /* ── Recuerdos ── */
 const MKEY = 'susy_luis_msgs_v1';
