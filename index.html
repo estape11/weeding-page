@@ -352,6 +352,46 @@
   .fotos-gph-btn svg { width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
   .fotos-gph-btn:active { border-color: var(--gold); color: var(--fg); }
 
+  /* Modal */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(26,45,34,.55); backdrop-filter: blur(4px);
+    display: flex; align-items: flex-end;
+  }
+  .modal-overlay[hidden] { display: none; }
+  .modal-sheet {
+    width: 100%; background: var(--ivory); border-radius: 20px 20px 0 0;
+    padding: 1.5rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom,0px));
+    position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: none; border: none; padding: .4rem; cursor: pointer;
+    color: var(--fg-muted); -webkit-tap-highlight-color: transparent;
+  }
+  .modal-close svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; }
+  .modal-header { margin-bottom: 1.2rem; }
+  .modal-header h3 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--fg); margin: .15rem 0 0; }
+  .upload-steps { list-style: none; padding: 0; margin: 0 0 1.4rem; display: flex; flex-direction: column; gap: .9rem; }
+  .upload-steps li { display: flex; align-items: flex-start; gap: .85rem; }
+  .step-num {
+    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+    background: var(--green); color: var(--gold); font-size: .8rem; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-body { display: flex; flex-direction: column; gap: .1rem; padding-top: .2rem; }
+  .step-body strong { font-size: .9rem; color: var(--fg); font-weight: 500; }
+  .step-body span { font-size: .78rem; color: var(--fg-muted); }
+  .modal-cta {
+    display: flex; align-items: center; justify-content: center; gap: .6rem;
+    width: 100%; padding: .95rem; border-radius: 14px;
+    background: var(--green); color: var(--gold);
+    font-size: .95rem; font-weight: 500; text-decoration: none;
+    -webkit-tap-highlight-color: transparent; transition: opacity .15s;
+  }
+  .modal-cta svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .modal-cta:active { opacity: .8; }
+
   /* ════════════════════════════════════════════════
      TAB 5 — RECUERDOS
   ════════════════════════════════════════════════ */
@@ -842,6 +882,55 @@
 </section>
 
 
+<!-- ══════════════ MODAL: CÓMO SUBIR A GPHOTOS ══════════════ -->
+<div id="upload-modal" class="modal-overlay" hidden>
+  <div class="modal-sheet">
+    <button class="modal-close" onclick="document.getElementById('upload-modal').hidden=true" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-header">
+      <span class="gold-label">Google Photos</span>
+      <h3>Cómo subir tus fotos</h3>
+    </div>
+    <ol class="upload-steps">
+      <li>
+        <span class="step-num">1</span>
+        <div class="step-body">
+          <strong>Abre el álbum compartido</strong>
+          <span>Toca el botón de abajo para abrirlo en Google Photos</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-num">2</span>
+        <div class="step-body">
+          <strong>Toca «Agregar fotos»</strong>
+          <span>Busca el botón con un <em>+</em> en la parte superior del álbum</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-num">3</span>
+        <div class="step-body">
+          <strong>Selecciona tus fotos</strong>
+          <span>Elige las fotos que quieras compartir desde tu galería</span>
+        </div>
+      </li>
+      <li>
+        <span class="step-num">4</span>
+        <div class="step-body">
+          <strong>Confirma y ¡listo!</strong>
+          <span>Todos los invitados podrán ver tus fotos en el álbum</span>
+        </div>
+      </li>
+    </ol>
+    <a id="upload-modal-btn" class="modal-cta" href="#" target="_blank" rel="noopener noreferrer"
+       onclick="document.getElementById('upload-modal').hidden=true">
+      Abrir Google Photos
+      <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+</div>
+
+
 <!-- ══════════════ BOTTOM NAV ══════════════ -->
 <nav class="bnav" aria-label="Navegación">
   <button class="nb on" id="nb-inicio"      onclick="switchTab('inicio')">
@@ -994,10 +1083,14 @@ if (MAPS_CIVIL) document.getElementById('venue-civil').href = MAPS_CIVIL;
 if (MAPS_HOTEL) document.getElementById('venue-hotel').href = MAPS_HOTEL;
 
 /* ── Fotos ── */
-if (FOTOS_POV_URL)   document.getElementById('fotos-pov-btn').href    = FOTOS_POV_URL;
+if (FOTOS_POV_URL) document.getElementById('fotos-pov-btn').href = FOTOS_POV_URL;
 if (FOTOS_ALBUM_URL) {
-  document.getElementById('fotos-upload-btn').href = FOTOS_ALBUM_URL;
   document.getElementById('fotos-album-btn').href  = FOTOS_ALBUM_URL;
+  document.getElementById('upload-modal-btn').href = FOTOS_ALBUM_URL;
+  document.getElementById('fotos-upload-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('upload-modal').hidden = false;
+  });
 }
 
 /* ── Recuerdos ── */
