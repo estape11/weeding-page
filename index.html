@@ -679,7 +679,7 @@
         Susy<span class="hero-amp">&amp;</span>Luis
       </h1>
       <p class="hero-date">06 · Noviembre · 2026</p>
-      <button class="hero-cta" onclick="switchTab('itinerario')">
+      <button class="hero-cta" data-tab="itinerario">
         <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         Ver el itinerario
       </button>
@@ -691,28 +691,28 @@
   </div>
 
   <div class="feature-grid">
-    <button class="ftile" onclick="switchTab('itinerario')">
+    <button class="ftile" data-tab="itinerario">
       <span class="ftile-icon">
         <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="8.01" y2="14"/><line x1="12" y1="14" x2="12.01" y2="14"/><line x1="16" y1="14" x2="16.01" y2="14"/></svg>
       </span>
       <span class="ftile-name">Itinerario</span>
       <span class="ftile-desc">El plan del día</span>
     </button>
-    <button class="ftile" onclick="switchTab('jam')">
+    <button class="ftile" data-tab="jam">
       <span class="ftile-icon">
         <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
       </span>
       <span class="ftile-name">El Jam</span>
       <span class="ftile-desc">Nuestra playlist</span>
     </button>
-    <button class="ftile" onclick="switchTab('fotos')">
+    <button class="ftile" data-tab="fotos">
       <span class="ftile-icon">
         <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
       </span>
       <span class="ftile-name">Fotos POV</span>
       <span class="ftile-desc">Tu perspectiva</span>
     </button>
-    <button class="ftile" onclick="switchTab('recuerdos')">
+    <button class="ftile" data-tab="recuerdos">
       <span class="ftile-icon">
         <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       </span>
@@ -873,7 +873,7 @@
     <div class="snake-score">Puntos: <span id="snake-pts">0</span></div>
     <canvas id="snake-canvas" width="300" height="300"></canvas>
     <p class="snake-msg" id="snake-msg">¡Toca para empezar!</p>
-    <button class="snake-btn" id="snake-start-btn" onclick="snakeStart()">Jugar</button>
+    <button class="snake-btn" id="snake-start-btn">Jugar</button>
   </div>
 
   <!-- Próximamente -->
@@ -900,7 +900,7 @@
 <!-- ══════════════ MODAL: CÓMO SUBIR A GPHOTOS ══════════════ -->
 <div id="upload-modal" class="modal-overlay" hidden>
   <div class="modal-sheet">
-    <button class="modal-close" onclick="document.getElementById('upload-modal').hidden=true" aria-label="Cerrar">
+    <button class="modal-close" id="modal-close-btn" aria-label="Cerrar">
       <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
     <div class="modal-header">
@@ -937,8 +937,7 @@
         </div>
       </li>
     </ol>
-    <a id="upload-modal-btn" class="modal-cta" href="#" target="_blank" rel="noopener noreferrer"
-       onclick="document.getElementById('upload-modal').hidden=true">
+    <a id="upload-modal-btn" class="modal-cta" href="#" target="_blank" rel="noopener noreferrer">
       Abrir Google Photos
       <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
     </a>
@@ -948,27 +947,27 @@
 
 <!-- ══════════════ BOTTOM NAV ══════════════ -->
 <nav class="bnav" aria-label="Navegación">
-  <button class="nb on" id="nb-inicio"      onclick="switchTab('inicio')">
+  <button class="nb on" id="nb-inicio" data-tab="inicio">
     <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
     <span>Inicio</span>
   </button>
-  <button class="nb" id="nb-itinerario" onclick="switchTab('itinerario')">
+  <button class="nb" id="nb-itinerario" data-tab="itinerario">
     <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
     <span>Itinerario</span>
   </button>
-  <button class="nb" id="nb-jam"        onclick="switchTab('jam')">
+  <button class="nb" id="nb-jam" data-tab="jam">
     <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
     <span>Jam</span>
   </button>
-  <button class="nb" id="nb-fotos"      onclick="switchTab('fotos')">
+  <button class="nb" id="nb-fotos" data-tab="fotos">
     <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
     <span>Fotos</span>
   </button>
-  <button class="nb" id="nb-recuerdos"  onclick="switchTab('recuerdos')">
+  <button class="nb" id="nb-recuerdos" data-tab="recuerdos">
     <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
     <span>Recuerdos</span>
   </button>
-  <button class="nb" id="nb-juegos"     onclick="switchTab('juegos')">
+  <button class="nb" id="nb-juegos" data-tab="juegos">
     <svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="3"/><path d="M6 12h4M8 10v4"/><circle cx="16" cy="11" r="1" fill="currentColor"/><circle cx="18" cy="13" r="1" fill="currentColor"/></svg>
     <span>Juegos</span>
   </button>
@@ -1081,7 +1080,6 @@ const SCHEDULE = [
   }).join('');
 })();
 
-/* exported switchTab */
 /* ── Tab switcher ── */
 const TABS = ['inicio','itinerario','jam','fotos','recuerdos','juegos'];
 function switchTab(id) {
@@ -1093,6 +1091,9 @@ function switchTab(id) {
   if (id !== 'juegos') window._snakePause && window._snakePause();
   window.scrollTo(0, 0);
 }
+document.querySelectorAll('[data-tab]').forEach(function(btn) {
+  btn.addEventListener('click', function() { switchTab(btn.dataset.tab); });
+});
 
 /* ── Venue Maps links ── */
 if (MAPS_CIVIL) document.getElementById('venue-civil').href = MAPS_CIVIL;
@@ -1108,6 +1109,12 @@ if (FOTOS_ALBUM_URL) {
     document.getElementById('upload-modal').hidden = false;
   });
 }
+document.getElementById('modal-close-btn').addEventListener('click', function() {
+  document.getElementById('upload-modal').hidden = true;
+});
+document.getElementById('upload-modal-btn').addEventListener('click', function() {
+  document.getElementById('upload-modal').hidden = true;
+});
 
 /* ── Recuerdos ── */
 const MKEY = 'susy_luis_msgs_v1';
@@ -1227,7 +1234,6 @@ let j1MisVotos  = {};            // {preguntaId: 'susy'|'luis'}
 let j1CurrId    = null;          // id of question currently shown in voting phase
 let j1LpTimer   = null;
 
-/* exported j1LpStart, j1LpEnd, j1Enviar, j1CambiarFase, j1Votar */
 function j1LpStart() { j1LpTimer = setTimeout(() => { const p = document.getElementById('quien-admin-panel'); if (p) p.classList.add('open'); }, 1800); }
 function j1LpEnd()   { clearTimeout(j1LpTimer); }
 
@@ -1263,13 +1269,13 @@ function renderJ1Recol(screen) {
   const n = j1Preguntas.length;
   screen.innerHTML = `
     <span class="quien-fase-badge recol">✦ Recolección de preguntas</span>
-    <p class="quien-q" onpointerdown="j1LpStart()" onpointerup="j1LpEnd()" onpointerleave="j1LpEnd()" style="cursor:default">
+    <p class="quien-q" id="j1-lp-target" style="cursor:default">
       "¿Quién lo hace más?"
     </p>
     <p style="font-size:.82rem;color:var(--fg-muted);text-align:center;margin-bottom:1.4rem">
       Sugiere una pregunta — la pareja la responde en vivo
     </p>
-    <form class="quien-form" onsubmit="j1Enviar(event)">
+    <form class="quien-form">
       <input class="quien-input" id="j1-nombre"   placeholder="Tu nombre"     maxlength="40"  required autocomplete="off">
       <input class="quien-input" id="j1-pregunta" placeholder="¿Quién…?"      maxlength="120" required autocomplete="off">
       <button class="quien-send" type="submit">Enviar pregunta ✦</button>
@@ -1278,10 +1284,20 @@ function renderJ1Recol(screen) {
     <div class="quien-pregunta-list">${lista}</div>
     <div class="quien-admin-panel" id="quien-admin-panel">
       <p class="quien-admin-label">Panel del organizador</p>
-      <button class="quien-admin-btn" onclick="j1CambiarFase()">
+      <button class="quien-admin-btn">
         Activar votación → ${n} pregunta${n !== 1 ? 's' : ''}
       </button>
     </div>`;
+  const lpEl = screen.querySelector('#j1-lp-target');
+  if (lpEl) {
+    lpEl.addEventListener('pointerdown', j1LpStart);
+    lpEl.addEventListener('pointerup', j1LpEnd);
+    lpEl.addEventListener('pointerleave', j1LpEnd);
+  }
+  const frm = screen.querySelector('.quien-form');
+  if (frm) frm.addEventListener('submit', j1Enviar);
+  const adminBtn = screen.querySelector('.quien-admin-btn');
+  if (adminBtn) adminBtn.addEventListener('click', j1CambiarFase);
 }
 
 function j1Enviar(e) {
@@ -1343,13 +1359,16 @@ function renderJ1Vot(screen) {
     <p class="quien-q">"${esc(p.texto)}"</p>
     <p style="font-size:.78rem;color:var(--fg-muted);text-align:center;margin-bottom:1.5rem">— ${esc(p.autor)}</p>
     <div class="quien-btns">
-      <button class="quien-btn" onclick="j1Votar('susy')">
+      <button class="quien-btn" data-vote="susy">
         <span class="quien-btn-emoji">💕</span><span>Susy</span>
       </button>
-      <button class="quien-btn" onclick="j1Votar('luis')">
+      <button class="quien-btn" data-vote="luis">
         <span class="quien-btn-emoji">🤵</span><span>Luis</span>
       </button>
     </div>`;
+  screen.querySelectorAll('.quien-btn[data-vote]').forEach(function(btn) {
+    btn.addEventListener('click', function() { j1Votar(btn.dataset.vote); });
+  });
 }
 
 function j1Votar(voto) {
@@ -1359,7 +1378,6 @@ function j1Votar(voto) {
   renderJuego1();
 }
 
-/* exported startGame, responderAdivina, siguienteAdivina */
 function startGame(type) {
   document.getElementById('game-selector').hidden = true;
   if (type === 'quien') {
@@ -1388,13 +1406,14 @@ function renderAdivinaRonda() {
       <div class="adivina-score-num">${adivinaScore}/${ADIVINA_FOTOS.length}</div>
       <div class="adivina-score-label">Respuestas correctas</div>
       <p class="adivina-score-msg">${msg}</p>
-      <button class="adivina-replay" onclick="startGame('adivina')">Jugar de nuevo</button>
+      <button class="adivina-replay" id="adivina-replay">Jugar de nuevo</button>
     </div>`;
+    screen.querySelector('#adivina-replay').addEventListener('click', function() { startGame('adivina'); });
     return;
   }
   const r = ADIVINA_FOTOS[adivinaIdx];
   const opts = r.opciones.map((o, i) =>
-    `<button class="adivina-opt" data-idx="${i}" onclick="responderAdivina(this,${i},${r.correcta},'${esc(r.loc)}')">${esc(o)}</button>`
+    `<button class="adivina-opt" data-idx="${i}" data-correcta="${r.correcta}" data-loc="${esc(r.loc)}">${esc(o)}</button>`
   ).join('');
   screen.innerHTML = `
     <p class="adivina-progress">Foto ${adivinaIdx + 1} de ${ADIVINA_FOTOS.length}</p>
@@ -1402,9 +1421,15 @@ function renderAdivinaRonda() {
     <p class="adivina-q">${esc(r.pregunta)}</p>
     <div class="adivina-opts">${opts}</div>
     <p class="adivina-feedback" id="adivina-feedback"></p>
-    <button class="adivina-next" id="adivina-next" onclick="siguienteAdivina()">
+    <button class="adivina-next" id="adivina-next">
       ${adivinaIdx + 1 < ADIVINA_FOTOS.length ? 'Siguiente foto →' : 'Ver resultado'}
     </button>`;
+  screen.querySelectorAll('.adivina-opt').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      responderAdivina(btn, +btn.dataset.idx, +btn.dataset.correcta, btn.dataset.loc);
+    });
+  });
+  document.getElementById('adivina-next').addEventListener('click', siguienteAdivina);
 }
 
 function responderAdivina(btn, elegida, correcta, loc) {
@@ -1523,6 +1548,7 @@ function siguienteAdivina() {
     if (!(nd.x === -nextDir.x && nd.y === -nextDir.y)) nextDir = nd;
   }, { passive: true });
 })();
+document.getElementById('snake-start-btn').addEventListener('click', window.snakeStart);
 
 /* ══════════════════════════════════════════════════════════ */
 
