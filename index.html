@@ -231,12 +231,14 @@
   }
   .venue-card {
     position: relative; aspect-ratio: 4/3; overflow: hidden;
+    display: block; text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
   }
   .venue-card img {
     width: 100%; height: 100%; object-fit: cover;
     display: block; transition: transform .4s;
   }
-  .venue-card:hover img { transform: scale(1.04); }
+  .venue-card:hover img, .venue-card:active img { transform: scale(1.04); }
   .venue-overlay {
     position: absolute; inset: 0;
     background: linear-gradient(to top, rgba(15,25,18,.85) 40%, transparent 100%);
@@ -245,6 +247,7 @@
   }
   .venue-tag { font-size: .58rem; letter-spacing: .2em; text-transform: uppercase; color: var(--gold-lt); margin-bottom: .25rem; }
   .venue-name { font-family: 'DM Serif Display', serif; font-size: .95rem; color: #fff; line-height: 1.2; }
+  .venue-pin { font-size: .7rem; color: rgba(255,255,255,.55); margin-top: .3rem; letter-spacing: .05em; }
 
   /* Timeline */
   .timeline-wrap {
@@ -667,20 +670,22 @@
   </div>
 
   <div class="venues">
-    <div class="venue-card">
+    <a class="venue-card" id="venue-civil" href="#" target="_blank" rel="noopener noreferrer">
       <img src="boda_legal.jpg" alt="Lugar de la ceremonia" loading="lazy">
       <div class="venue-overlay">
         <span class="venue-tag">Ceremonia</span>
         <div class="venue-name">Registro Civil</div>
+        <div class="venue-pin">📍 Ver en Maps</div>
       </div>
-    </div>
-    <div class="venue-card">
+    </a>
+    <a class="venue-card" id="venue-hotel" href="#" target="_blank" rel="noopener noreferrer">
       <img src="recepcion.jpg" alt="Lugar de la recepción" loading="lazy">
       <div class="venue-overlay">
         <span class="venue-tag">Recepción</span>
         <div class="venue-name">AC Hotels Marriott</div>
+        <div class="venue-pin">📍 Ver en Maps</div>
       </div>
-    </div>
+    </a>
   </div>
 
   <div class="timeline-wrap pad">
@@ -947,10 +952,7 @@ const SCHEDULE = [
       <div class="tl-body">
         <div class="tl-time">${s.t} &nbsp;${s.i}</div>
         <div class="tl-event">${s.e}</div>
-        ${s.maps
-          ? `<a class="tl-note tl-maps" href="${s.maps}" target="_blank" rel="noopener noreferrer">${s.n} 📍</a>`
-          : `<div class="tl-note">${s.n}</div>`
-        }
+        <div class="tl-note">${s.n}</div>
       </div>
     </div>`;
   }).join('');
@@ -967,6 +969,10 @@ function switchTab(id) {
   if (id !== 'juegos') window._snakePause && window._snakePause();
   window.scrollTo(0, 0);
 }
+
+/* ── Venue Maps links ── */
+if (MAPS_CIVIL) document.getElementById('venue-civil').href = MAPS_CIVIL;
+if (MAPS_HOTEL) document.getElementById('venue-hotel').href = MAPS_HOTEL;
 
 /* ── Fotos ── */
 if (FOTOS_POV_URL)   document.getElementById('fotos-pov-btn').href   = FOTOS_POV_URL;
