@@ -413,13 +413,44 @@
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* ── Firebase placeholder notice ── */
-  .fb-notice {
-    background: var(--ivory2); border-left: 3px solid var(--gold);
-    padding: .8rem 1rem; font-size: .78rem; color: var(--fg-mid);
-    line-height: 1.6; margin-bottom: 1.5rem;
+  /* ── Mini-juegos ── */
+  .prox-banner {
+    display: flex; align-items: center; gap: .8rem;
+    background: var(--ivory2); border: 1.5px dashed var(--div);
+    border-radius: 14px; padding: 1.2rem 1.2rem;
+    opacity: .55;
   }
-  .fb-notice strong { color: var(--fg); font-weight: 500; }
+  .prox-icon { font-size: 2.2rem; flex-shrink: 0; }
+  .prox-title { font-weight: 500; color: var(--fg); font-size: .98rem; margin-bottom: .2rem; }
+  .prox-badge {
+    display: inline-block; font-size: .65rem; letter-spacing: .12em;
+    text-transform: uppercase; font-weight: 500; padding: .15rem .55rem;
+    border-radius: 99px; background: var(--ivory2); color: var(--fg-muted);
+    border: 1px solid var(--div);
+  }
+  .snake-wrap {
+    margin-block: 1.5rem;
+    display: flex; flex-direction: column; align-items: center; gap: 1rem;
+  }
+  #snake-canvas {
+    border-radius: 12px; border: 2px solid var(--div);
+    display: block; touch-action: none; max-width: 100%;
+  }
+  .snake-score {
+    font-family: 'Jost', sans-serif; font-size: .75rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--fg-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .snake-btn {
+    padding: .7rem 2rem; background: var(--green); color: var(--gold-lt);
+    border: none; border-radius: 10px; font-family: 'Jost', sans-serif;
+    font-size: .85rem; letter-spacing: .08em; text-transform: uppercase;
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+  .snake-msg {
+    font-family: 'DM Serif Display', serif; font-style: italic;
+    font-size: 1.15rem; color: var(--green); text-align: center;
+  }
 
   /* ── Mini-juegos ── */
   .game-cards { display: flex; flex-direction: column; gap: 1rem; padding-block: 1.5rem 2rem; }
@@ -740,47 +771,42 @@
 <!-- ══════════════ TAB: JUEGOS ══════════════ -->
 <section id="tab-juegos" class="tab-section">
 
-  <!-- Selector de juego -->
-  <div id="game-selector">
-    <div class="tab-header pad">
-      <p class="tab-eyebrow">Diversión</p>
-      <h2>Los juegos <em>de hoy</em></h2>
+  <div class="tab-header pad">
+    <p class="tab-eyebrow">Diversión</p>
+    <h2>Los juegos <em>de hoy</em></h2>
+  </div>
+
+  <!-- Snake game -->
+  <div class="snake-wrap pad">
+    <div class="snake-score">Puntos: <span id="snake-pts">0</span></div>
+    <canvas id="snake-canvas" width="300" height="300"></canvas>
+    <p class="snake-msg" id="snake-msg">¡Toca para empezar!</p>
+    <button class="snake-btn" id="snake-start-btn" onclick="snakeStart()">Jugar</button>
+  </div>
+
+  <!-- Próximamente -->
+  <div class="pad" style="display:flex;flex-direction:column;gap:.8rem;padding-bottom:2rem">
+    <p class="tab-eyebrow" style="margin-bottom:.4rem">Próximamente</p>
+    <div class="prox-banner">
+      <div class="prox-icon">🤔</div>
+      <div>
+        <div class="prox-title">¿Quién lo hace más? <span class="prox-badge">Próximamente</span></div>
+        <div style="font-size:.78rem;color:var(--fg-muted)">Sugiere preguntas — la pareja responde en vivo</div>
+      </div>
     </div>
-    <div class="game-cards pad">
-      <button class="game-card" onclick="startGame('quien')">
-        <div class="game-card-icon">🤔</div>
-        <div>
-          <div class="game-card-title">¿Quién lo hace más?</div>
-          <div class="game-card-sub">Sugiere preguntas — luego todos votan y la pareja responde en vivo</div>
-        </div>
-      </button>
-      <button class="game-card" onclick="startGame('adivina')">
-        <div class="game-card-icon">📍</div>
-        <div>
-          <div class="game-card-title">Adivina el lugar</div>
-          <div class="game-card-sub">¿Reconoces dónde fue cada foto? Gana quien más acierte</div>
-        </div>
-      </button>
+    <div class="prox-banner">
+      <div class="prox-icon">📍</div>
+      <div>
+        <div class="prox-title">Adivina el lugar <span class="prox-badge">Próximamente</span></div>
+        <div style="font-size:.78rem;color:var(--fg-muted)">¿Reconoces dónde fue cada foto?</div>
+      </div>
     </div>
   </div>
 
-  <!-- ── Juego 1: ¿Quién lo hace más? ── -->
-  <div id="game-quien" class="game-view pad" hidden>
-    <button class="game-back" onclick="showGameSelector()">
-      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-      Volver
-    </button>
-    <div id="quien-screen"><!-- se rellena con JS --></div>
-  </div>
-
-  <!-- ── Juego 2: Adivina el lugar ── -->
-  <div id="game-adivina" class="game-view pad" hidden>
-    <button class="game-back" onclick="showGameSelector()">
-      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-      Volver
-    </button>
-    <div id="adivina-screen"><!-- se rellena con JS --></div>
-  </div>
+  <!-- Hidden game views kept for JS completeness -->
+  <div id="game-selector" hidden></div>
+  <div id="game-quien"   hidden><div id="quien-screen"></div></div>
+  <div id="game-adivina" hidden><div id="adivina-screen"></div></div>
 
 </section>
 
@@ -1216,6 +1242,98 @@ function siguienteAdivina() {
   adivinaIdx++;
   renderAdivinaRonda();
 }
+
+/* ── Snake game ── */
+(function() {
+  const CELL = 20, COLS = 15, ROWS = 15;
+  const W = CELL * COLS, H = CELL * ROWS;
+  let canvas, ctx, snake, dir, nextDir, food, score, loop, running = false;
+
+  const GREEN  = getComputedStyle(document.documentElement).getPropertyValue('--green').trim()  || '#1A2D22';
+  const GOLD   = getComputedStyle(document.documentElement).getPropertyValue('--gold').trim()   || '#C9A84C';
+  const IVORY  = getComputedStyle(document.documentElement).getPropertyValue('--ivory').trim()  || '#F7F2E8';
+  const IVORY2 = getComputedStyle(document.documentElement).getPropertyValue('--ivory2').trim() || '#EDE8DC';
+
+  function rnd(n) { return Math.floor(Math.random() * n); }
+  function placeFood() {
+    let pos;
+    do { pos = { x: rnd(COLS), y: rnd(ROWS) }; }
+    while (snake.some(s => s.x === pos.x && s.y === pos.y));
+    food = pos;
+  }
+  function draw() {
+    ctx.fillStyle = IVORY2; ctx.fillRect(0, 0, W, H);
+    // Food
+    ctx.fillStyle = GOLD;
+    ctx.beginPath();
+    ctx.arc((food.x + .5) * CELL, (food.y + .5) * CELL, CELL * .4, 0, Math.PI * 2);
+    ctx.fill();
+    // Snake
+    snake.forEach((s, i) => {
+      ctx.fillStyle = i === 0 ? GREEN : `rgba(26,45,34,${.75 - i * .02})`;
+      const r = i === 0 ? 5 : 3;
+      ctx.beginPath();
+      ctx.roundRect(s.x * CELL + 1, s.y * CELL + 1, CELL - 2, CELL - 2, r);
+      ctx.fill();
+    });
+  }
+  function step() {
+    dir = nextDir;
+    const head = { x: (snake[0].x + dir.x + COLS) % COLS, y: (snake[0].y + dir.y + ROWS) % ROWS };
+    if (snake.some(s => s.x === head.x && s.y === head.y)) { endGame(); return; }
+    snake.unshift(head);
+    if (head.x === food.x && head.y === food.y) {
+      score++;
+      document.getElementById('snake-pts').textContent = score;
+      placeFood();
+    } else { snake.pop(); }
+    draw();
+  }
+  function endGame() {
+    clearInterval(loop); running = false;
+    const msg = score >= 20 ? '¡Increíble! 🏆' : score >= 10 ? '¡Muy bien! ✨' : score >= 5 ? '¡Bien jugado! 👏' : '¡Inténtalo de nuevo!';
+    document.getElementById('snake-msg').textContent = `${msg} ${score} pts`;
+    document.getElementById('snake-start-btn').textContent = 'Jugar de nuevo';
+    document.getElementById('snake-start-btn').hidden = false;
+  }
+  window.snakeStart = function() {
+    canvas = document.getElementById('snake-canvas');
+    canvas.width = W; canvas.height = H;
+    ctx = canvas.getContext('2d');
+    snake = [{ x: 7, y: 7 }, { x: 6, y: 7 }, { x: 5, y: 7 }];
+    dir = { x: 1, y: 0 }; nextDir = { x: 1, y: 0 };
+    score = 0;
+    document.getElementById('snake-pts').textContent = '0';
+    document.getElementById('snake-msg').textContent = '';
+    document.getElementById('snake-start-btn').hidden = true;
+    placeFood(); draw();
+    clearInterval(loop);
+    running = true;
+    loop = setInterval(step, 180);
+  };
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (!running) return;
+    const map = { ArrowUp:{x:0,y:-1}, ArrowDown:{x:0,y:1}, ArrowLeft:{x:-1,y:0}, ArrowRight:{x:1,y:0} };
+    const nd = map[e.key];
+    if (nd && !(nd.x === -dir.x && nd.y === -dir.y)) { nextDir = nd; e.preventDefault(); }
+  });
+  // Touch swipe
+  let tx = 0, ty = 0;
+  document.addEventListener('touchstart', e => {
+    if (!running) return;
+    tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', e => {
+    if (!running) return;
+    const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+    let nd;
+    if (Math.abs(dx) > Math.abs(dy)) nd = dx > 0 ? {x:1,y:0} : {x:-1,y:0};
+    else                              nd = dy > 0 ? {x:0,y:1} : {x:0,y:-1};
+    if (!(nd.x === -dir.x && nd.y === -dir.y)) nextDir = nd;
+  }, { passive: true });
+})();
 
 /* ══════════════════════════════════════════════════════════ */
 
