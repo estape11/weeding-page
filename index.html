@@ -334,15 +334,22 @@
   .foto-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin-bottom: 1.2rem; }
   .foto-img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
   .foto-empty { text-align: center; padding: 1.5rem; font-size: .85rem; color: var(--fg-muted); font-style: italic; }
-  .fotos-album-link {
-    display: flex; align-items: center; gap: .75rem;
-    padding: .9rem 1.2rem; margin-bottom: 1.2rem;
-    border: 1.5px solid var(--div); border-radius: 12px;
-    color: var(--fg-mid); text-decoration: none; font-size: .88rem;
-    -webkit-tap-highlight-color: transparent; transition: border-color .15s;
+  .fotos-gphotos { margin-bottom: 1.2rem; }
+  .fotos-gph-label {
+    font-size: .6rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--fg-muted); text-align: center; margin-bottom: .65rem;
   }
-  .fotos-album-link svg { width: 22px; height: 22px; flex-shrink: 0; stroke: var(--gold); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-  .fotos-album-link:active { border-color: var(--gold); color: var(--fg); }
+  .fotos-gph-row { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; }
+  .fotos-gph-btn {
+    display: flex; flex-direction: column; align-items: center; gap: .5rem;
+    padding: 1rem .8rem;
+    border: 1.5px solid var(--div); border-radius: 12px;
+    color: var(--fg-mid); text-decoration: none; font-size: .78rem;
+    text-align: center; line-height: 1.3;
+    -webkit-tap-highlight-color: transparent; transition: border-color .15s, color .15s;
+  }
+  .fotos-gph-btn svg { width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .fotos-gph-btn:active { border-color: var(--gold); color: var(--fg); }
 
   /* ════════════════════════════════════════════════
      TAB 5 — RECUERDOS
@@ -728,23 +735,34 @@
 <section class="tab" id="tab-fotos">
   <div class="tab-header pad">
     <div class="inner">
-      <span class="gold-label">Tu perspectiva</span>
-      <h2>Fotos <em>POV</em></h2>
+      <span class="gold-label">Recuerda este día</span>
+      <h2>Comparte<br><em>tus fotos</em></h2>
     </div>
   </div>
   <div class="fotos-content pad">
     <div class="inner">
+      <!-- POV Camera — cámara desechable digital de la mesa -->
       <a class="upload-btn" id="fotos-pov-btn" href="#" target="_blank" rel="noopener noreferrer">
-        <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        <div class="upload-btn-text">Subir tus fotos</div>
-        <div class="upload-btn-hint">Abre POV Camera para el evento</div>
+        <svg viewBox="0 0 24 24"><rect x="2" y="8" width="20" height="13" rx="2"/><path d="M7 8V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/><circle cx="12" cy="14" r="3"/><circle cx="19" cy="11" r="1" fill="currentColor" stroke="none"/></svg>
+        <div class="upload-btn-text">Cámara desechable</div>
+        <div class="upload-btn-hint">Usa la cámara de la mesa con POV</div>
       </a>
-      <a class="fotos-album-link" id="fotos-album-btn" href="#" target="_blank" rel="noopener noreferrer">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" stroke="none"/><polyline points="21 15 16 10 5 21"/></svg>
-        Ver y agregar fotos al álbum
-      </a>
+      <!-- Google Photos — fotos desde el propio celular -->
+      <div class="fotos-gphotos">
+        <div class="fotos-gph-label">Desde tu celular · Google Photos</div>
+        <div class="fotos-gph-row">
+          <a class="fotos-gph-btn" id="fotos-upload-btn" href="#" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+            Cargar<br>mis fotos
+          </a>
+          <a class="fotos-gph-btn" id="fotos-album-btn" href="#" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" stroke="none"/><polyline points="21 15 16 10 5 21"/></svg>
+            Ver el<br>álbum
+          </a>
+        </div>
+      </div>
       <div class="info-box">
-        📷 <strong>¿Ves la cámara de la mesa?</strong> ¡Úsala sin pena! Capta los momentos divertidos, las risas y todo lo que pase. ¡Sean nuestros fotógrafos oficiales!
+        🎞️ <strong>¿Ves la cámara de la mesa?</strong> ¡Es nuestra cámara desechable digital! Úsala sin pena para capturar tu perspectiva del día.
       </div>
     </div>
   </div>
@@ -975,8 +993,11 @@ if (MAPS_CIVIL) document.getElementById('venue-civil').href = MAPS_CIVIL;
 if (MAPS_HOTEL) document.getElementById('venue-hotel').href = MAPS_HOTEL;
 
 /* ── Fotos ── */
-if (FOTOS_POV_URL)   document.getElementById('fotos-pov-btn').href   = FOTOS_POV_URL;
-if (FOTOS_ALBUM_URL) document.getElementById('fotos-album-btn').href = FOTOS_ALBUM_URL;
+if (FOTOS_POV_URL)   document.getElementById('fotos-pov-btn').href    = FOTOS_POV_URL;
+if (FOTOS_ALBUM_URL) {
+  document.getElementById('fotos-upload-btn').href = FOTOS_ALBUM_URL;
+  document.getElementById('fotos-album-btn').href  = FOTOS_ALBUM_URL;
+}
 
 /* ── Recuerdos ── */
 const MKEY = 'susy_luis_msgs_v1';
