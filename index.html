@@ -883,7 +883,7 @@
   .jam-link-btn svg { width: 22px; height: 22px; flex-shrink: 0; }
   /* ── Proy panel flex column ── */
   .proy-quien-wrap { gap: 0; }
-  .proy-quien-wrap > #proy-quien-content { flex: 1; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; padding: 1.5rem 2rem; overflow-y: auto; }
+  .proy-quien-wrap > #proy-quien-content { flex: 1; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; padding: 1.5rem 2rem; overflow-y: auto; animation: proy-in .6s both; }
 
   .proy-open-btn {
     width: 100%; margin-top: 1rem; padding: .85rem;
@@ -1317,6 +1317,7 @@
       </div>
     </div>
     <div class="proy-quien-wrap" data-proy-panel="quien">
+      <div id="proy-quien-content"></div>
       <div class="proy-controls">
         <button class="proy-ctrl-btn" id="proy-quien-sm" title="Letra pequeña">A−</button>
         <button class="proy-ctrl-btn on" id="proy-quien-md" title="Letra normal">A</button>
@@ -1324,7 +1325,11 @@
         <div class="proy-ctrl-sep"></div>
         <button class="proy-ctrl-btn on" id="proy-quien-pause">⏸ En vivo</button>
       </div>
-      <div id="proy-quien-content"></div>
+      <div class="proy-nav">
+        <button class="proy-nav-btn" id="proy-quien-prev">‹</button>
+        <span class="proy-msg-counter" id="proy-quien-counter"></span>
+        <button class="proy-nav-btn" id="proy-quien-next">›</button>
+      </div>
     </div>
   </div>
 </div>
@@ -2462,7 +2467,7 @@ document.getElementById('proy-open-btn').addEventListener('click', function() {
 (function() {
   var view = document.getElementById('proyector-view');
   var msgs = [], msgIdx = 0;
-  var quienPregs = [], quienVotos = {};
+  var quienPregs = [], quienVotos = {}, quienIdx = 0;
   var currentPanel = 'msgs';
 
   // Controls state
@@ -2521,26 +2526,28 @@ document.getElementById('proy-open-btn').addEventListener('click', function() {
 
   function renderProyQuien() {
     var el = document.getElementById('proy-quien-content');
+    var ctr = document.getElementById('proy-quien-counter');
     if (!el) return;
     if (!quienPregs.length) {
       el.innerHTML = '<div class="proy-quien-title" style="font-size:' + QUIEN_SZ[proySzQuien] + '">¿Quién lo hace más?</div>' +
         '<p style="color:rgba(240,228,200,.4);font-size:.82rem;text-align:center">Esperando preguntas de los invitados…</p>';
+      if (ctr) ctr.textContent = '';
       return;
     }
-    var html = '';
-    quienPregs.forEach(function(p) {
-      var v = quienVotos[p.id] || {susy:0,luis:0};
-      var total = v.susy + v.luis;
-      var pS = total > 0 ? Math.round((v.susy / total) * 100) : 0;
-      var pL = total > 0 ? 100 - pS : 0;
-      html += '<div class="proy-quien-title" style="font-size:' + QUIEN_SZ[proySzQuien] + '">"' + esc(p.texto) + '"</div>' +
-        '<div class="proy-quien-bars-wrap">' +
-        '<div class="proy-quien-row"><div class="proy-quien-label"><span class="proy-quien-name">💕 Susy</span><span class="proy-quien-pct">' + pS + '%</span></div><div class="proy-quien-track"><div class="proy-quien-fill" style="width:' + pS + '%"></div></div></div>' +
-        '<div class="proy-quien-row"><div class="proy-quien-label"><span class="proy-quien-name">🤵 Luis</span><span class="proy-quien-pct">' + pL + '%</span></div><div class="proy-quien-track"><div class="proy-quien-fill" style="width:' + pL + '%"></div></div></div>' +
-        '</div>' +
-        '<div class="proy-quien-total">' + (v.susy + v.luis) + ' votos</div>';
-    });
-    el.innerHTML = html;
+    quienIdx = Math.max(0, Math.min(quienIdx, quienPregs.length - 1));
+    var p = quienPregs[quienIdx];
+    var v = quienVotos[p.id] || {susy:0,luis:0};
+    var total = v.susy + v.luis;
+    var pS = total > 0 ? Math.round((v.susy / total) * 100) : 0;
+    var pL = total > 0 ? 100 - pS : 0;
+    el.style.animation = 'none'; el.offsetHeight; el.style.animation = '';
+    el.innerHTML = '<div class="proy-quien-title" style="font-size:' + QUIEN_SZ[proySzQuien] + '">"' + esc(p.texto) + '"</div>' +
+      '<div class="proy-quien-bars-wrap">' +
+      '<div class="proy-quien-row"><div class="proy-quien-label"><span class="proy-quien-name">💕 Susy</span><span class="proy-quien-pct">' + pS + '%</span></div><div class="proy-quien-track"><div class="proy-quien-fill" style="width:' + pS + '%"></div></div></div>' +
+      '<div class="proy-quien-row"><div class="proy-quien-label"><span class="proy-quien-name">🤵 Luis</span><span class="proy-quien-pct">' + pL + '%</span></div><div class="proy-quien-track"><div class="proy-quien-fill" style="width:' + pL + '%"></div></div></div>' +
+      '</div>' +
+      '<div class="proy-quien-total">' + total + ' votos</div>';
+    if (ctr) ctr.textContent = (quienIdx + 1) + ' · ' + quienPregs.length;
   }
 
   function pollProyector() {
@@ -2603,6 +2610,17 @@ document.getElementById('proy-open-btn').addEventListener('click', function() {
     btn.textContent = proyQuienPaused ? '▶ Pausado' : '⏸ En vivo';
     btn.classList.toggle('on', !proyQuienPaused);
     if (!proyQuienPaused) renderProyQuien();
+  });
+  // Slide nav — quien
+  document.getElementById('proy-quien-prev').addEventListener('click', function() {
+    if (!quienPregs.length) return;
+    quienIdx = (quienIdx - 1 + quienPregs.length) % quienPregs.length;
+    renderProyQuien();
+  });
+  document.getElementById('proy-quien-next').addEventListener('click', function() {
+    if (!quienPregs.length) return;
+    quienIdx = (quienIdx + 1) % quienPregs.length;
+    renderProyQuien();
   });
 
   // Auto-advance: check every 500ms, advance when interval has passed
