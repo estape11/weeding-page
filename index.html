@@ -1929,12 +1929,13 @@ function j1Enviar(e) {
   e.target.reset();
 }
 
-function j1CambiarFase() {
+function j1CambiarFase(fase) {
+  fase = fase || 'votacion';
   if (FB_READY && fbDb) {
-    fbDb.ref(FB_J1_FASE).set('votacion');
+    fbDb.ref(FB_J1_FASE).set(fase);
   } else {
-    j1Fase = 'votacion';
-    localStorage.setItem(LS_J1_FASE, 'votacion');
+    j1Fase = fase;
+    localStorage.setItem(LS_J1_FASE, fase);
     renderJuego1();
   }
 }
