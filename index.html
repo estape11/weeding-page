@@ -1256,6 +1256,7 @@
           <option value="600">10 min</option>
         </select>
         <button class="org-anuncio-send" id="org-anuncio-send">Enviar →</button>
+        <button class="org-pin-clear" id="org-anuncio-clear">✕ Quitar</button>
       </div>
     </div>
     <div id="org-pin-wrap" class="org-pin-wrap" hidden>
@@ -2553,6 +2554,10 @@ if (new URLSearchParams(location.search).get('proyector') === 'true') openProyec
       fbDb.ref('anuncio').set({ texto: texto, duracion: dur, ts: Date.now() });
       document.getElementById('org-anuncio-texto').value = '';
     }
+  });
+  document.getElementById('org-anuncio-clear').addEventListener('click', function() {
+    if (FB_READY && fbDb) fbDb.ref('anuncio').set(null);
+    document.getElementById('org-anuncio-texto').value = '';
   });
   // Pin form
   document.getElementById('org-pin-wrap').hidden = false;
