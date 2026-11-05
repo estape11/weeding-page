@@ -612,6 +612,22 @@
   }
   .quien-pregunta-txt  { font-size: .84rem; line-height: 1.5; color: var(--fg); }
   .quien-pregunta-autor { font-size: .7rem; color: var(--fg-muted); margin-top: .15rem; }
+  .quien-org-row { display: flex; justify-content: center; margin-top: 1.5rem; }
+  .quien-org-toggle {
+    background: none; border: 1px solid var(--div); border-radius: 8px;
+    color: var(--fg-muted); font-family: 'Jost', sans-serif; font-size: .72rem;
+    letter-spacing: .08em; padding: .4rem .9rem; cursor: pointer;
+  }
+  .quien-org-inline { display: flex; gap: .5rem; justify-content: center; align-items: center; margin-top: 1.5rem; }
+  .quien-org-input {
+    padding: .5rem .8rem; border-radius: 8px; border: 1.5px solid var(--div);
+    background: var(--white); color: var(--fg); font-family: 'Jost', sans-serif; font-size: .85rem;
+    width: 160px;
+  }
+  .quien-org-confirm {
+    padding: .5rem .9rem; border-radius: 8px; background: var(--green); border: none;
+    color: var(--ivory); font-family: 'Jost', sans-serif; font-size: .82rem; cursor: pointer;
+  }
   .quien-admin-panel {
     margin-top: 1.5rem; padding: 1rem; background: var(--green);
     border-radius: 12px; display: none;
@@ -799,15 +815,19 @@
   .proy-panel { flex: 1; overflow: hidden; position: relative; }
   .proy-msgs-wrap, .proy-quien-wrap {
     position: absolute; inset: 0;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 2rem; opacity: 0; transition: opacity .5s; pointer-events: none; gap: 1.5rem;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+    padding: 0; opacity: 0; transition: opacity .5s; pointer-events: none; gap: 0;
   }
   .proy-msgs-wrap.active, .proy-quien-wrap.active { opacity: 1; pointer-events: auto; }
-  .proy-msg-card { text-align: center; max-width: 680px; width: 100%; animation: proy-in .6s both; }
+  .proy-msg-card {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; max-width: 760px; width: 100%; padding: 2.5rem 2rem;
+    animation: proy-in .6s both;
+  }
   .proy-msg-text {
     font-family: 'DM Serif Display', serif; font-style: italic;
-    font-size: clamp(1.5rem, 4.5vw, 2.8rem); color: var(--ivory);
-    line-height: 1.4; margin-bottom: 1rem;
+    font-size: clamp(2.5rem, 7vw, 5.5rem); color: var(--ivory);
+    line-height: 1.3; margin-bottom: 1rem;
   }
   .proy-msg-name { font-size: clamp(.75rem, 2vw, 1rem); letter-spacing: .18em; text-transform: uppercase; color: rgba(240,228,200,.6); }
   .proy-msg-deco { color: var(--gold); margin: 0 .4rem; }
@@ -862,7 +882,8 @@
   .jam-link-btn:hover { filter: brightness(1.1); }
   .jam-link-btn svg { width: 22px; height: 22px; flex-shrink: 0; }
   /* ── Proy panel flex column ── */
-  .proy-msgs-wrap, .proy-quien-wrap { flex-direction: column; }
+  .proy-quien-wrap { gap: 0; }
+  .proy-quien-wrap > #proy-quien-content { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; padding: 1.5rem 2rem; overflow-y: auto; }
 
   .proy-open-btn {
     width: 100%; margin-top: 1rem; padding: .85rem;
@@ -927,6 +948,36 @@
     25%  { transform: rotate(-15deg) scale(1.2); }
     75%  { transform: rotate(15deg) scale(1.2); }
   }
+
+  /* ── Nombre modal ── */
+  .nombre-modal-bg {
+    position: fixed; inset: 0; z-index: 900;
+    background: rgba(10,20,14,.88); backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+  }
+  .nombre-modal-box {
+    background: var(--green); border: 1px solid rgba(201,168,76,.3);
+    border-radius: 20px; padding: 2.5rem 2rem; max-width: 340px; width: 100%;
+    display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,.4);
+  }
+  .nombre-modal-emoji { font-size: 2.8rem; }
+  .nombre-modal-title { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.8rem; color: var(--ivory); line-height: 1.25; }
+  .nombre-modal-sub { font-size: .82rem; color: var(--fg-muted); line-height: 1.6; }
+  .nombre-modal-input {
+    width: 100%; padding: .75rem 1rem; border-radius: 10px;
+    border: 1.5px solid rgba(201,168,76,.3); background: rgba(0,0,0,.2);
+    color: var(--ivory); font-family: 'Jost', sans-serif; font-size: 1rem; text-align: center;
+  }
+  .nombre-modal-input::placeholder { color: rgba(240,228,200,.35); }
+  .nombre-modal-input:focus { outline: none; border-color: var(--gold); }
+  .nombre-modal-btn {
+    width: 100%; padding: .85rem; border-radius: 12px;
+    background: var(--gold); border: none; color: var(--green);
+    font-family: 'Jost', sans-serif; font-weight: 600; font-size: .95rem;
+    letter-spacing: .06em; cursor: pointer; transition: filter .15s;
+  }
+  .nombre-modal-btn:active { filter: brightness(.9); }
 
   /* ── Animations ── */
   @keyframes up {
@@ -1439,6 +1490,37 @@ const fbDb = (() => {
 
 function showFbNotice() {}
 
+/* ── User name ── */
+var MI_NOMBRE_KEY = 'boda_mi_nombre';
+var miNombre = '';
+(function() {
+  try { miNombre = localStorage.getItem(MI_NOMBRE_KEY) || ''; } catch(e){}
+  var modal = document.getElementById('nombre-modal');
+  var input = document.getElementById('nombre-input');
+  var btn   = document.getElementById('nombre-submit');
+  if (!modal) return;
+  if (!miNombre) {
+    modal.hidden = false;
+    setTimeout(function() { if (input) input.focus(); }, 350);
+  }
+  function guardarNombre() {
+    var val = input ? input.value.trim() : '';
+    if (!val) return;
+    miNombre = val;
+    try { localStorage.setItem(MI_NOMBRE_KEY, miNombre); } catch(e){}
+    modal.hidden = true;
+    var jNombre = document.getElementById('j1-nombre');
+    var mNombreEl = document.getElementById('m-nombre');
+    if (jNombre && !jNombre.value) jNombre.value = miNombre;
+    if (mNombreEl && !mNombreEl.value) mNombreEl.value = miNombre;
+  }
+  if (btn)   btn.addEventListener('click', guardarNombre);
+  if (input) input.addEventListener('keydown', function(e) { if (e.key === 'Enter') guardarNombre(); });
+  // Pre-fill static forms once nombre is known
+  var mNombreEl = document.getElementById('m-nombre');
+  if (mNombreEl && miNombre && !mNombreEl.value) mNombreEl.value = miNombre;
+})();
+
 /* ── Spotify ── */
 if (SPOTIFY_ID) {
   document.getElementById('spotify-wrap').innerHTML =
@@ -1673,10 +1755,8 @@ let j1Fase      = 'recoleccion'; // 'recoleccion' | 'votacion'
 let j1Preguntas = [];            // [{id, texto, autor, ts}]
 let j1MisVotos  = {};            // {preguntaId: 'susy'|'luis'}
 let j1CurrId    = null;          // id of question currently shown in voting phase
-let j1LpTimer   = null;
 
-function j1LpStart() { j1LpTimer = setTimeout(() => { const p = document.getElementById('quien-admin-panel'); if (p) p.classList.add('open'); }, 1800); }
-function j1LpEnd()   { clearTimeout(j1LpTimer); }
+
 
 function initJuego1() {
   try { j1MisVotos = JSON.parse(localStorage.getItem('boda_j1_votos') || '{}'); } catch(e) { j1MisVotos = {}; }
@@ -1723,14 +1803,14 @@ function renderJ1Recol(screen) {
 
   screen.innerHTML = `
     <span class="quien-fase-badge recol">✦ Recolección de preguntas</span>
-    <p class="quien-q" id="j1-lp-target" style="cursor:default">
+    <p class="quien-q">
       "¿Quién lo hace más?"
     </p>
     <p style="font-size:.82rem;color:var(--fg-muted);text-align:center;margin-bottom:1.4rem">
       Sugiere una pregunta — la pareja la responde en vivo
     </p>
     <form class="quien-form">
-      <input class="quien-input" id="j1-nombre"   placeholder="Tu nombre"     maxlength="40"  required autocomplete="off">
+      <input class="quien-input" id="j1-nombre"   placeholder="Tu nombre"     maxlength="40"  required autocomplete="off" value="${esc(miNombre)}">
       <input class="quien-input" id="j1-pregunta" placeholder="¿Quién…?"      maxlength="120" required autocomplete="off">
       <button class="quien-send" type="submit">Enviar pregunta ✦</button>
     </form>
@@ -1741,17 +1821,36 @@ function renderJ1Recol(screen) {
       <button class="quien-admin-btn">
         Activar votación → ${n} pregunta${n !== 1 ? 's' : ''}
       </button>
+    </div>
+    <div class="quien-org-row" id="quien-org-row">
+      <button class="quien-org-toggle" id="j1-org-btn">⚙ Organizador</button>
     </div>`;
-  const lpEl = screen.querySelector('#j1-lp-target');
-  if (lpEl) {
-    lpEl.addEventListener('pointerdown', j1LpStart);
-    lpEl.addEventListener('pointerup', j1LpEnd);
-    lpEl.addEventListener('pointerleave', j1LpEnd);
-  }
   const frm = screen.querySelector('.quien-form');
   if (frm) frm.addEventListener('submit', j1Enviar);
   const adminBtn = screen.querySelector('.quien-admin-btn');
   if (adminBtn) adminBtn.addEventListener('click', j1CambiarFase);
+  const orgBtn = screen.querySelector('#j1-org-btn');
+  if (orgBtn) orgBtn.addEventListener('click', function() {
+    orgBtn.closest('#quien-org-row').outerHTML = '<div class="quien-org-inline" id="quien-org-inline">' +
+      '<input class="quien-org-input" id="j1-org-pass" type="password" placeholder="Clave de organizador" maxlength="20" autocomplete="off">' +
+      '<button class="quien-org-confirm" id="j1-org-confirm">Entrar</button>' +
+      '</div>';
+    var confirmBtn = screen.querySelector('#j1-org-confirm');
+    var passInput  = screen.querySelector('#j1-org-pass');
+    if (!confirmBtn || !passInput) return;
+    function tryPass() {
+      if (passInput.value.trim().toLowerCase() === 'boda') {
+        var panel = screen.querySelector('#quien-admin-panel');
+        if (panel) panel.classList.add('open');
+        var inline = screen.querySelector('#quien-org-inline');
+        if (inline) inline.remove();
+      } else {
+        passInput.value = ''; passInput.placeholder = 'Clave incorrecta…';
+      }
+    }
+    confirmBtn.addEventListener('click', tryPass);
+    passInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') tryPass(); });
+  });
 }
 
 function j1Enviar(e) {
@@ -2396,7 +2495,7 @@ document.getElementById('proy-open-btn').addEventListener('click', function() {
   var currentPanel = 'msgs';
 
   // Controls state
-  var MSG_SZ  = ['1.3rem','2rem','2.9rem'];
+  var MSG_SZ  = ['1.8rem','clamp(2.5rem,7vw,5.5rem)','clamp(3.5rem,9vw,7rem)'];
   var QUIEN_SZ = ['0.85rem','1.2rem','1.65rem'];
   var proySzMsg = 1, proySzQuien = 1;
   var proySpeed = 8000, lastAdvanceMsgs = Date.now();
@@ -2573,5 +2672,15 @@ document.getElementById('msg-form').addEventListener('submit', function (e) {
   }
 });
 </script>
+
+<div id="nombre-modal" class="nombre-modal-bg" hidden>
+  <div class="nombre-modal-box">
+    <div class="nombre-modal-emoji">💍</div>
+    <h2 class="nombre-modal-title">¡Bienvenido<br>a la boda!</h2>
+    <p class="nombre-modal-sub">¿Cómo te llamas? Así sabemos quién eres 🎉</p>
+    <input class="nombre-modal-input" id="nombre-input" type="text" placeholder="Tu nombre" maxlength="40" autocomplete="off">
+    <button class="nombre-modal-btn" id="nombre-submit">Listo ✦</button>
+  </div>
+</div>
 </body>
 </html>
