@@ -1814,8 +1814,7 @@ function responderAdivina(btn, elegida, correcta, loc) {
     fb.style.color = '#2d8a4e';
   } else {
     btn.classList.add('wrong');
-    opts[correcta].classList.add('correct');
-    fb.textContent = '✗ Era: ' + loc;
+    fb.textContent = '✗ Incorrecto';
     fb.style.color = '#c0392b';
   }
   document.getElementById('adivina-next').style.display = 'block';
