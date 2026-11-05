@@ -774,20 +774,20 @@
     display: flex; flex-direction: column;
   }
   .proy-header {
-    display: flex; align-items: center; justify-content: space-between; gap: .6rem;
-    padding: 1rem 1.5rem; border-bottom: 1px solid rgba(240,228,200,.12);
-    flex-shrink: 0; flex-wrap: wrap;
+    display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+    padding: .6rem 1rem; border-bottom: 1px solid rgba(240,228,200,.12);
+    flex-shrink: 0; flex-wrap: nowrap; min-height: 52px;
   }
-  .proy-logo { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.25rem; color: var(--ivory); }
+  .proy-logo { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1rem; color: var(--ivory); white-space: nowrap; }
   .proy-logo em { opacity: .45; font-style: normal; }
   .proy-date-label { font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; opacity: .45; color: var(--ivory); }
   .proy-tabs { display: flex; gap: .4rem; }
   .proy-tab {
-    padding: .38rem .8rem; border: 1.5px solid rgba(240,228,200,.2);
+    padding: .3rem .6rem; border: 1.5px solid rgba(240,228,200,.2);
     color: rgba(240,228,200,.5); border-radius: 8px;
-    font-family: 'Jost', sans-serif; font-size: .7rem; letter-spacing: .08em;
+    font-family: 'Jost', sans-serif; font-size: .65rem; letter-spacing: .06em;
     text-transform: uppercase; cursor: pointer; transition: all .2s; background: none;
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: transparent; white-space: nowrap;
   }
   .proy-tab.active { background: rgba(240,228,200,.12); border-color: var(--ivory); color: var(--ivory); }
   .proy-close {
@@ -833,6 +833,37 @@
   .proy-quien-track { height: 8px; background: rgba(240,228,200,.12); border-radius: 4px; overflow: hidden; }
   .proy-quien-fill { height: 100%; background: var(--gold); border-radius: 4px; transition: width 1.2s cubic-bezier(.16,1,.3,1); }
   .proy-quien-total { font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: rgba(240,228,200,.4); text-align: center; }
+  /* ── Proyector controls bar ── */
+  .proy-controls {
+    display: flex; align-items: center; justify-content: center; gap: .35rem;
+    padding: .4rem .8rem; border-top: 1px solid rgba(240,228,200,.08);
+    flex-wrap: nowrap; flex-shrink: 0; width: 100%;
+  }
+  .proy-ctrl-btn {
+    background: rgba(240,228,200,.07); border: 1px solid rgba(240,228,200,.18);
+    border-radius: 6px; color: rgba(240,228,200,.55);
+    font-family: 'Jost', sans-serif; font-size: .72rem; font-weight: 500;
+    padding: .28rem .6rem; cursor: pointer; white-space: nowrap;
+    transition: background .15s, color .15s, border-color .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .proy-ctrl-btn:active { background: rgba(240,228,200,.14); }
+  .proy-ctrl-btn.on { background: rgba(201,168,76,.18); border-color: rgba(201,168,76,.7); color: var(--gold); }
+  .proy-ctrl-sep { width: 1px; height: 18px; background: rgba(240,228,200,.14); margin: 0 .1rem; align-self: center; flex-shrink:0; }
+  /* ── Jam link ── */
+  .jam-link-btn {
+    display: flex; align-items: center; justify-content: center; gap: .55rem;
+    width: 100%; padding: .85rem 1rem; border-radius: 12px;
+    background: #1DB954; color: #000; font-family: 'Jost', sans-serif;
+    font-weight: 500; font-size: .9rem; letter-spacing: .04em;
+    text-decoration: none; margin-top: .9rem;
+    transition: filter .15s;
+  }
+  .jam-link-btn:hover { filter: brightness(1.1); }
+  .jam-link-btn svg { width: 22px; height: 22px; flex-shrink: 0; }
+  /* ── Proy panel flex column ── */
+  .proy-msgs-wrap, .proy-quien-wrap { flex-direction: column; }
+
   .proy-open-btn {
     width: 100%; margin-top: 1rem; padding: .85rem;
     border: 1.5px solid var(--div); border-radius: 10px;
@@ -1019,7 +1050,11 @@
           <div class="spotify-ph-sub">Pon el ID del playlist de Spotify en la variable <code style="font-size:.75rem;background:rgba(255,255,255,.1);padding:2px 6px;border-radius:3px">SPOTIFY_ID</code> dentro del script</div>
         </div>
       </div>
-      <div class="info-box">
+      <a class="jam-link-btn" href="https://spotify.link/T3QfoXY5O7b" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.52 17.31a.75.75 0 0 1-1.03.24c-2.82-1.73-6.38-2.12-10.57-1.16a.75.75 0 0 1-.33-1.46c4.58-1.04 8.51-.59 11.69 1.35a.75.75 0 0 1 .24 1.03zm1.47-3.27a.94.94 0 0 1-1.29.3C14.84 12.37 10.3 11.84 6.86 12.84a.94.94 0 1 1-.55-1.8c3.98-1.21 8.95-.62 12.37 1.71a.94.94 0 0 1 .31 1.29zm.13-3.4C15.52 8.17 9.3 7.96 5.74 9.07a1.12 1.12 0 1 1-.65-2.14c4.1-1.25 10.96-1.01 15.29 1.57a1.12 1.12 0 0 1-1.1 1.94z"/></svg>
+        Únete al Jam · Pide tu canción
+      </a>
+      <div class="info-box" style="margin-top:.6rem">
         🎶 <strong>¿Quieres pedir una canción?</strong> Acércate a nuestro DJ — ¡también es tu fiesta y queremos que la disfrutes al máximo!
       </div>
     </div>
@@ -1232,6 +1267,15 @@
       <div id="proy-msg-card" class="proy-msg-card">
         <div class="proy-msg-text" style="opacity:.35;font-style:italic">Esperando mensajes…</div>
       </div>
+      <div class="proy-controls">
+        <button class="proy-ctrl-btn" id="proy-msg-sm" title="Letra pequeña">A−</button>
+        <button class="proy-ctrl-btn on" id="proy-msg-md" title="Letra normal">A</button>
+        <button class="proy-ctrl-btn" id="proy-msg-lg" title="Letra grande">A+</button>
+        <div class="proy-ctrl-sep"></div>
+        <button class="proy-ctrl-btn" id="proy-sp-slow" title="Lento (15s)">🐢</button>
+        <button class="proy-ctrl-btn on" id="proy-sp-mid" title="Normal (8s)">▶ Normal</button>
+        <button class="proy-ctrl-btn" id="proy-sp-fast" title="Rápido (4s)">🐇</button>
+      </div>
       <div class="proy-nav">
         <button class="proy-nav-btn" id="proy-prev-btn">‹</button>
         <span class="proy-msg-counter" id="proy-msg-counter"></span>
@@ -1239,6 +1283,13 @@
       </div>
     </div>
     <div class="proy-quien-wrap" data-proy-panel="quien">
+      <div class="proy-controls">
+        <button class="proy-ctrl-btn" id="proy-quien-sm" title="Letra pequeña">A−</button>
+        <button class="proy-ctrl-btn on" id="proy-quien-md" title="Letra normal">A</button>
+        <button class="proy-ctrl-btn" id="proy-quien-lg" title="Letra grande">A+</button>
+        <div class="proy-ctrl-sep"></div>
+        <button class="proy-ctrl-btn on" id="proy-quien-pause">⏸ En vivo</button>
+      </div>
       <div id="proy-quien-content"></div>
     </div>
   </div>
@@ -1628,7 +1679,8 @@ function j1LpStart() { j1LpTimer = setTimeout(() => { const p = document.getElem
 function j1LpEnd()   { clearTimeout(j1LpTimer); }
 
 function initJuego1() {
-  j1MisVotos = {}; j1CurrId = null;
+  try { j1MisVotos = JSON.parse(localStorage.getItem('boda_j1_votos') || '{}'); } catch(e) { j1MisVotos = {}; }
+  j1CurrId = null;
   if (FB_READY && fbDb) {
     fbDb.ref(FB_J1_FASE).on('value', snap => { j1Fase = snap.val() || 'recoleccion'; renderJuego1(); });
     fbDb.ref(FB_J1_PREGS).orderByChild('ts').on('value', snap => {
@@ -1776,6 +1828,7 @@ function renderJ1Vot(screen) {
 function j1Votar(voto) {
   if (!j1CurrId) return;
   j1MisVotos[j1CurrId] = voto;
+  try { localStorage.setItem('boda_j1_votos', JSON.stringify(j1MisVotos)); } catch(e){}
   if (FB_READY && fbDb) fbDb.ref(`${FB_J1_VOTOS}/${j1CurrId}/${getDeviceId()}`).set(voto).catch(() => {});
   renderJuego1();
 }
@@ -1809,7 +1862,10 @@ function startGame(type) {
     document.getElementById('game-scores').hidden = false;
     renderScores();
   } else {
-    adivinaIdx = 0; adivinaScore = 0;
+    var _adSaved = null;
+    try { _adSaved = JSON.parse(localStorage.getItem('boda_adivina_done')); } catch(e){}
+    if (_adSaved) { adivinaIdx = ADIVINA_FOTOS.length; adivinaScore = _adSaved.score || 0; }
+    else { adivinaIdx = 0; adivinaScore = 0; }
     document.getElementById('game-adivina').hidden = false;
     renderAdivinaRonda();
   }
@@ -1827,13 +1883,12 @@ function renderAdivinaRonda() {
               : pct >= 75  ? '¡Muy bien! Conoces muy bien a los novios 🌟'
               : pct >= 50  ? '¡No está mal! Algo sabes de su historia 😊'
               :               'Cuéntate más historias de la pareja 😄';
+    try { localStorage.setItem('boda_adivina_done', JSON.stringify({score: adivinaScore})); } catch(e){}
     screen.innerHTML = `<div class="adivina-score">
       <div class="adivina-score-num">${adivinaScore}/${ADIVINA_FOTOS.length}</div>
       <div class="adivina-score-label">Respuestas correctas</div>
       <p class="adivina-score-msg">${msg}</p>
-      <button class="adivina-replay" id="adivina-replay">Jugar de nuevo</button>
     </div>`;
-    screen.querySelector('#adivina-replay').addEventListener('click', function() { startGame('adivina'); });
     return;
   }
   const r = ADIVINA_FOTOS[adivinaIdx];
@@ -2340,6 +2395,37 @@ document.getElementById('proy-open-btn').addEventListener('click', function() {
   var quienPregs = [], quienVotos = {};
   var currentPanel = 'msgs';
 
+  // Controls state
+  var MSG_SZ  = ['1.3rem','2rem','2.9rem'];
+  var QUIEN_SZ = ['0.85rem','1.2rem','1.65rem'];
+  var proySzMsg = 1, proySzQuien = 1;
+  var proySpeed = 8000, lastAdvanceMsgs = Date.now();
+  var proyQuienPaused = false;
+
+  function setMsgSize(n) {
+    proySzMsg = Math.max(0, Math.min(2, n));
+    var btn = document.getElementById('proy-msg-card');
+    if (btn) { var t = btn.querySelector('.proy-msg-text'); if (t) t.style.fontSize = MSG_SZ[proySzMsg]; }
+    ['proy-msg-sm','proy-msg-md','proy-msg-lg'].forEach(function(id,i) {
+      var b = document.getElementById(id); if (b) b.classList.toggle('on', i === proySzMsg);
+    });
+  }
+  function setQuienSize(n) {
+    proySzQuien = Math.max(0, Math.min(2, n));
+    document.querySelectorAll('.proy-quien-title').forEach(function(el) { el.style.fontSize = QUIEN_SZ[proySzQuien]; });
+    ['proy-quien-sm','proy-quien-md','proy-quien-lg'].forEach(function(id,i) {
+      var b = document.getElementById(id); if (b) b.classList.toggle('on', i === proySzQuien);
+    });
+  }
+  function setSpeed(ms) {
+    proySpeed = ms;
+    lastAdvanceMsgs = Date.now();
+    var map = {'proy-sp-slow':15000,'proy-sp-mid':8000,'proy-sp-fast':4000};
+    Object.keys(map).forEach(function(id) {
+      var b = document.getElementById(id); if (b) b.classList.toggle('on', map[id] === ms);
+    });
+  }
+
   function switchPanel(p) {
     currentPanel = p;
     view.querySelectorAll('[data-proy-panel]').forEach(function(el) {
@@ -2357,8 +2443,8 @@ document.getElementById('proy-open-btn').addEventListener('click', function() {
     card.style.animation = 'none';
     card.offsetHeight;
     card.style.animation = '';
-    card.innerHTML = '<div class="proy-msg-text">“' + esc(m.texto) + '”</div>' +
-      '<div class="proy-msg-name"><span class="proy-msg-deco">✦</span>' + esc(m.nombre) + '<span class="proy-msg-deco">✦</span></div>';
+    card.innerHTML = '<div class=”proy-msg-text” style=”font-size:' + MSG_SZ[proySzMsg] + '”>”' + esc(m.texto) + '”</div>' +
+      '<div class=”proy-msg-name”><span class=”proy-msg-deco”>✦</span>' + esc(m.nombre) + '<span class=”proy-msg-deco”>✦</span></div>';
     var ctr = document.getElementById('proy-msg-counter');
     if (ctr) ctr.textContent = (msgIdx + 1) + ' · ' + msgs.length;
   }
@@ -2367,24 +2453,24 @@ document.getElementById('proy-open-btn').addEventListener('click', function() {
     var el = document.getElementById('proy-quien-content');
     if (!el) return;
     if (!quienPregs.length) {
-      el.innerHTML = '<div class="proy-quien-title">¿Quién lo hace más?</div>' +
-        '<p style="color:rgba(240,228,200,.4);font-size:.82rem;text-align:center">Esperando preguntas de los invitados…</p>';
+      el.innerHTML = '<div class=”proy-quien-title” style=”font-size:' + QUIEN_SZ[proySzQuien] + '”>¿Quién lo hace más?</div>' +
+        '<p style=”color:rgba(240,228,200,.4);font-size:.82rem;text-align:center”>Esperando preguntas de los invitados…</p>';
       return;
     }
     var html = '';
     quienPregs.forEach(function(p) {
       var v = quienVotos[p.id] || {susy:0,luis:0};
-      var total = v.susy + v.luis || 1;
-      var pS = Math.round((v.susy / total) * 100);
-      var pL = 100 - pS;
-      html += '<div class="proy-quien-title" style="font-size:clamp(.95rem,2.5vw,1.35rem)">"' + esc(p.texto) + '"</div>' +
-        '<div class="proy-quien-bars-wrap">' +
-        '<div class="proy-quien-row"><div class="proy-quien-label"><span class="proy-quien-name">💕 Susy</span><span class="proy-quien-pct">' + pS + '%</span></div><div class="proy-quien-track"><div class="proy-quien-fill" style="width:' + pS + '%"></div></div></div>' +
-        '<div class="proy-quien-row"><div class="proy-quien-label"><span class="proy-quien-name">🤵 Luis</span><span class="proy-quien-pct">' + pL + '%</span></div><div class="proy-quien-track"><div class="proy-quien-fill" style="width:' + pL + '%"></div></div></div>' +
+      var total = v.susy + v.luis;
+      var pS = total > 0 ? Math.round((v.susy / total) * 100) : 0;
+      var pL = total > 0 ? 100 - pS : 0;
+      html += '<div class=”proy-quien-title” style=”font-size:' + QUIEN_SZ[proySzQuien] + '”>”' + esc(p.texto) + '”</div>' +
+        '<div class=”proy-quien-bars-wrap”>' +
+        '<div class=”proy-quien-row”><div class=”proy-quien-label”><span class=”proy-quien-name”>💕 Susy</span><span class=”proy-quien-pct”>' + pS + '%</span></div><div class=”proy-quien-track”><div class=”proy-quien-fill” style=”width:' + pS + '%”></div></div></div>' +
+        '<div class=”proy-quien-row”><div class=”proy-quien-label”><span class=”proy-quien-name”>🤵 Luis</span><span class=”proy-quien-pct”>' + pL + '%</span></div><div class=”proy-quien-track”><div class=”proy-quien-fill” style=”width:' + pL + '%”></div></div></div>' +
         '</div>' +
-        '<div class="proy-quien-total">' + (v.susy + v.luis) + ' votos</div>';
+        '<div class=”proy-quien-total”>' + (v.susy + v.luis) + ' votos</div>';
     });
-    el.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;gap:1.5rem;width:100%;max-width:580px;overflow-y:auto;max-height:calc(100vh - 160px)">' + html + '</div>';
+    el.innerHTML = '<div style=”display:flex;flex-direction:column;align-items:center;gap:1.5rem;width:100%;max-width:580px;overflow-y:auto;max-height:calc(100vh - 200px)”>' + html + '</div>';
   }
 
   function pollProyector() {
@@ -2407,32 +2493,56 @@ document.getElementById('proy-open-btn').addEventListener('click', function() {
         quienVotos[pregId] = {susy:0,luis:0};
         Object.values(dv).forEach(function(v){ if(v==='susy') quienVotos[pregId].susy++; else if(v==='luis') quienVotos[pregId].luis++; });
       });
-      if (currentPanel === 'quien') renderProyQuien();
+      if (currentPanel === 'quien' && !proyQuienPaused) renderProyQuien();
     }).catch(function(){});
   }
 
   view.querySelectorAll('.proy-tab').forEach(function(tab) {
     tab.addEventListener('click', function() { switchPanel(tab.dataset.tab); });
   });
-  document.getElementById('proy-close-btn').addEventListener('click', function() {
-    view.hidden = true;
-  });
+  document.getElementById('proy-close-btn').addEventListener('click', function() { view.hidden = true; });
   document.getElementById('proy-prev-btn').addEventListener('click', function() {
     if (!msgs.length) return;
     msgIdx = (msgIdx - 1 + msgs.length) % msgs.length;
+    lastAdvanceMsgs = Date.now();
     renderProyMsg(msgs[msgIdx]);
   });
   document.getElementById('proy-next-btn').addEventListener('click', function() {
     if (!msgs.length) return;
     msgIdx = (msgIdx + 1) % msgs.length;
+    lastAdvanceMsgs = Date.now();
     renderProyMsg(msgs[msgIdx]);
   });
 
+  // Font size controls — msgs
+  document.getElementById('proy-msg-sm').addEventListener('click', function() { setMsgSize(proySzMsg - 1); });
+  document.getElementById('proy-msg-md').addEventListener('click', function() { setMsgSize(1); });
+  document.getElementById('proy-msg-lg').addEventListener('click', function() { setMsgSize(proySzMsg + 1); });
+  // Speed controls
+  document.getElementById('proy-sp-slow').addEventListener('click', function() { setSpeed(15000); });
+  document.getElementById('proy-sp-mid').addEventListener('click',  function() { setSpeed(8000); });
+  document.getElementById('proy-sp-fast').addEventListener('click', function() { setSpeed(4000); });
+  // Font size controls — quien
+  document.getElementById('proy-quien-sm').addEventListener('click', function() { setQuienSize(proySzQuien - 1); });
+  document.getElementById('proy-quien-md').addEventListener('click', function() { setQuienSize(1); });
+  document.getElementById('proy-quien-lg').addEventListener('click', function() { setQuienSize(proySzQuien + 1); });
+  // Pause quien
+  document.getElementById('proy-quien-pause').addEventListener('click', function() {
+    proyQuienPaused = !proyQuienPaused;
+    var btn = document.getElementById('proy-quien-pause');
+    btn.textContent = proyQuienPaused ? '▶ Pausado' : '⏸ En vivo';
+    btn.classList.toggle('on', !proyQuienPaused);
+    if (!proyQuienPaused) renderProyQuien();
+  });
+
+  // Auto-advance: check every 500ms, advance when interval has passed
   setInterval(function() {
     if (view.hidden || currentPanel !== 'msgs' || msgs.length < 2) return;
+    if (Date.now() - lastAdvanceMsgs < proySpeed) return;
+    lastAdvanceMsgs = Date.now();
     msgIdx = (msgIdx + 1) % msgs.length;
     renderProyMsg(msgs[msgIdx]);
-  }, 8000);
+  }, 500);
 
   setInterval(function() {
     if (!view.hidden) pollProyector();
