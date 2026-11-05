@@ -889,6 +889,11 @@
     -webkit-tap-highlight-color: transparent; transition: border-color .2s;
   }
   .proy-open-btn:active { border-color: var(--green); color: var(--green); }
+  .proy-org-btn { position: absolute; top: .6rem; right: 3.5rem; z-index: 5; font-size: .65rem; letter-spacing: .06em; text-transform: uppercase; padding: .3rem .7rem; border-radius: 20px; border: 1px solid rgba(240,228,200,.25); color: rgba(240,228,200,.5); background: rgba(15,30,20,.7); cursor: pointer; transition: color .2s, border-color .2s; }
+  .proy-org-btn:hover { color: rgba(240,228,200,.9); border-color: rgba(240,228,200,.5); }
+  .proy-org-panel { position: absolute; bottom: 3.5rem; left: 50%; transform: translateX(-50%); background: rgba(15,30,20,.95); border: 1px solid rgba(240,228,200,.2); border-radius: 12px; padding: 1rem 1.2rem; display: flex; flex-direction: column; gap: .7rem; min-width: 220px; z-index: 10; }
+  .proy-org-panel input { background: rgba(240,228,200,.1); border: 1px solid rgba(240,228,200,.25); color: var(--ivory); border-radius: 8px; padding: .5rem .75rem; font-family: 'Jost'; font-size: .9rem; outline: none; }
+  .proy-org-panel button { background: var(--gold); color: var(--green); border: none; border-radius: 8px; padding: .6rem 1rem; font-family: 'Jost'; font-size: .82rem; font-weight: 500; cursor: pointer; }
   @keyframes proy-in {
     from { opacity: 0; transform: translateY(16px); }
     to   { opacity: 1; transform: none; }
@@ -1309,6 +1314,7 @@
       </div>
     </div>
     <div class="proy-quien-wrap" data-proy-panel="quien">
+      <button class="proy-org-btn" id="proy-org-btn">⊛ Org</button>
       <div id="proy-quien-content"></div>
       <div class="proy-controls">
         <button class="proy-ctrl-btn" id="proy-quien-sm" title="Letra pequeña">A−</button>
@@ -2466,9 +2472,10 @@ document.getElementById('snake-save-score').addEventListener('click', function()
 });
 
 /* ── Proyector open ── */
-document.getElementById('proy-open-btn').addEventListener('click', function() {
-  document.getElementById('proyector-view').hidden = false;
-});
+function openProyector() { document.getElementById('proyector-view').hidden = false; }
+document.getElementById('proy-open-btn').addEventListener('click', openProyector);
+// Auto-open via URL: ?proyector=true
+if (new URLSearchParams(location.search).get('proyector') === 'true') openProyector();
 
 /* ── Proyector logic ── */
 (function() {
@@ -2630,6 +2637,48 @@ document.getElementById('proy-open-btn').addEventListener('click', function() {
     renderProyQuien();
   });
 
+  // Proyector org button — activate voting from dentro del proyector
+  (function() {
+    var orgBtn   = document.getElementById('proy-org-btn');
+    var orgPanel = null;
+    function closeOrgPanel() { if (orgPanel) { orgPanel.remove(); orgPanel = null; } }
+    orgBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (orgPanel) { closeOrgPanel(); return; }
+      orgPanel = document.createElement('div');
+      orgPanel.className = 'proy-org-panel';
+      orgPanel.innerHTML =
+        '<input id="proy-org-pwd" type="password" placeholder="Contraseña..." autocomplete="off">' +
+        '<button id="proy-org-submit">Entrar</button>';
+      document.querySelector('.proy-quien-wrap').appendChild(orgPanel);
+      document.getElementById('proy-org-pwd').focus();
+      document.getElementById('proy-org-submit').addEventListener('click', function(ev) {
+        ev.stopPropagation();
+        if (document.getElementById('proy-org-pwd').value === 'boda') {
+          orgPanel.innerHTML =
+            '<button id="proy-activar-btn">▶ Activar votación</button>' +
+            '<button id="proy-parar-btn" style="background:rgba(240,228,200,.15);color:var(--ivory)">■ Volver a recolección</button>';
+          document.getElementById('proy-activar-btn').addEventListener('click', function(ev2) {
+            ev2.stopPropagation();
+            if (typeof j1CambiarFase === 'function') j1CambiarFase();
+            closeOrgPanel();
+          });
+          document.getElementById('proy-parar-btn').addEventListener('click', function(ev2) {
+            ev2.stopPropagation();
+            if (FB_READY && fbDb) fbDb.ref(FB_J1_FASE).set('recoleccion');
+            closeOrgPanel();
+          });
+        } else {
+          document.getElementById('proy-org-pwd').value = '';
+          document.getElementById('proy-org-pwd').placeholder = 'Contraseña incorrecta…';
+        }
+      });
+    });
+    document.addEventListener('click', function(e) {
+      if (orgPanel && !orgPanel.contains(e.target) && e.target !== orgBtn) closeOrgPanel();
+    });
+  })();
+
   // Auto-advance: check every 500ms, advance when interval has passed
   setInterval(function() {
     if (view.hidden || currentPanel !== 'msgs' || msgs.length < 2) return;
@@ -2646,6 +2695,8 @@ document.getElementById('proy-open-btn').addEventListener('click', function() {
   document.getElementById('proy-open-btn').addEventListener('click', function() {
     setTimeout(pollProyector, 100);
   });
+  // Poll immediately if proyector was auto-opened via URL param
+  if (!view.hidden) setTimeout(pollProyector, 100);
 })();
 
 /* ══════════════════════════════════════════════════════════ */
