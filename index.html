@@ -34,6 +34,7 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
   html { height: 100%; }
   body {
     background: var(--ivory);
@@ -657,6 +658,195 @@
     font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
   }
 
+  /* ── Retos de foto ── */
+  .retos-header { text-align: center; margin-bottom: 1.5rem; }
+  .retos-title { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.45rem; color: var(--green); margin-bottom: .3rem; }
+  .retos-progress { font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--fg-muted); }
+  .retos-list { display: flex; flex-direction: column; gap: .6rem; }
+  .reto-item {
+    display: flex; align-items: center; gap: .9rem;
+    background: var(--white); border: 1.5px solid var(--div);
+    border-radius: 12px; padding: .9rem 1rem;
+    cursor: pointer; transition: border-color .2s, background .2s;
+    -webkit-tap-highlight-color: transparent; text-align: left; width: 100%;
+  }
+  .reto-item.done { background: rgba(26,45,34,.06); border-color: var(--green); }
+  .reto-emoji { font-size: 1.5rem; flex-shrink: 0; }
+  .reto-text { font-size: .88rem; color: var(--fg); line-height: 1.4; flex: 1; }
+  .reto-item.done .reto-text { color: var(--fg-muted); text-decoration: line-through; }
+  .reto-check {
+    width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--div);
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    font-size: .7rem; color: white; transition: background .2s, border-color .2s;
+  }
+  .reto-item.done .reto-check { background: var(--green); border-color: var(--green); }
+
+  /* ── Sudoku ── */
+  .sudoku-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+  .sudoku-timer { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.5rem; color: var(--green); font-variant-numeric: tabular-nums; }
+  .sudoku-score-disp { font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--fg-muted); text-align: right; }
+  .sudoku-score-val { font-weight: 500; color: var(--fg); display: block; font-size: .9rem; letter-spacing: 0; }
+  .sudoku-grid-wrap { display: flex; justify-content: center; margin-bottom: 1rem; }
+  .sudoku-grid {
+    display: grid; grid-template-columns: repeat(9, 1fr);
+    border: 2.5px solid var(--green); border-radius: 4px;
+    width: min(324px, calc(100vw - 2rem));
+  }
+  .sudoku-cell {
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Jost', sans-serif; font-size: clamp(.85rem, 3.2vw, 1.05rem);
+    cursor: pointer; border: 1px solid var(--div);
+    aspect-ratio: 1; -webkit-tap-highlight-color: transparent;
+    transition: background .15s; user-select: none;
+  }
+  .sudoku-cell.given { font-weight: 500; color: var(--fg); }
+  .sudoku-cell.user-val { color: var(--gold); }
+  .sudoku-cell.user-val.wrong { color: #c0392b; }
+  .sudoku-cell.selected { background: rgba(201,168,76,.2); }
+  .sudoku-cell.related { background: rgba(26,45,34,.06); }
+  .sudoku-cell.block-right  { border-right: 2px solid var(--green); }
+  .sudoku-cell.block-bottom { border-bottom: 2px solid var(--green); }
+  .sudoku-numpad {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: .4rem;
+    max-width: 324px; margin: 0 auto;
+  }
+  .sudoku-num-btn {
+    aspect-ratio: 1; border: 1.5px solid var(--div); border-radius: 8px;
+    background: var(--white); font-family: 'Jost', sans-serif; font-size: 1.1rem;
+    font-weight: 500; color: var(--fg); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    -webkit-tap-highlight-color: transparent; transition: border-color .15s, background .15s;
+  }
+  .sudoku-num-btn:active { border-color: var(--gold); background: rgba(201,168,76,.1); }
+  .sudoku-num-btn.erase { font-size: .9rem; color: var(--fg-muted); }
+  .sudoku-actions { display: flex; gap: .6rem; margin-top: .6rem; max-width: 324px; margin-inline: auto; }
+  .sudoku-action-btn {
+    flex: 1; padding: .55rem; border: 1.5px solid var(--div); border-radius: 8px;
+    background: var(--white); font-family: 'Jost', sans-serif; font-size: .72rem;
+    letter-spacing: .08em; text-transform: uppercase; cursor: pointer; color: var(--fg-mid);
+    -webkit-tap-highlight-color: transparent; transition: border-color .15s;
+  }
+  .sudoku-complete { text-align: center; padding: 1rem 0 1.5rem; animation: up .6s both; }
+  .sudoku-complete-icon { font-size: 2.5rem; margin-bottom: .4rem; }
+  .sudoku-complete-title { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.5rem; color: var(--green); margin-bottom: .3rem; }
+  .sudoku-complete-score { font-size: 1.8rem; font-weight: 500; color: var(--gold); margin: .4rem 0; }
+
+  /* ── Tabla de puntuaciones ── */
+  .scores-tabs { display: flex; gap: .5rem; margin-bottom: 1.2rem; }
+  .scores-tab {
+    flex: 1; padding: .55rem; border: 1.5px solid var(--div); border-radius: 8px;
+    background: var(--white); font-family: 'Jost', sans-serif; font-size: .78rem;
+    letter-spacing: .08em; text-transform: uppercase; cursor: pointer; color: var(--fg-mid);
+    transition: border-color .2s, color .2s; -webkit-tap-highlight-color: transparent;
+  }
+  .scores-tab.active { border-color: var(--green); color: var(--green); font-weight: 500; }
+  .scores-title { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.3rem; color: var(--green); margin-bottom: 1rem; }
+  .scores-list { display: flex; flex-direction: column; gap: .5rem; }
+  .score-row {
+    display: flex; align-items: center; gap: .8rem;
+    padding: .75rem 1rem; background: var(--white);
+    border: 1.5px solid var(--div); border-radius: 10px;
+  }
+  .score-rank { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.1rem; color: var(--gold); min-width: 1.6rem; text-align: center; }
+  .score-name { flex: 1; font-size: .9rem; font-weight: 500; color: var(--fg); }
+  .score-pts { font-size: .88rem; color: var(--fg-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .score-submit-inline { margin-top: .8rem; text-align: center; }
+  .score-submit-label { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--fg-muted); margin-bottom: .5rem; }
+  .score-submit-row { display: flex; gap: .5rem; max-width: 300px; margin: 0 auto; }
+  .score-submit-row input {
+    flex: 1; background: transparent; border: none; border-bottom: 1.5px solid var(--div);
+    color: var(--fg); font-family: 'Jost', sans-serif; font-size: .9rem;
+    padding: .45rem 0; outline: none; min-width: 0;
+  }
+  .score-submit-row input:focus { border-bottom-color: var(--gold); }
+  .score-submit-btn {
+    padding: .45rem 1rem; background: var(--green); color: var(--gold-lt);
+    border: none; border-radius: 8px; font-family: 'Jost', sans-serif;
+    font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
+    white-space: nowrap; -webkit-tap-highlight-color: transparent;
+  }
+  .scores-empty { text-align: center; padding: 2rem 1rem; color: var(--fg-muted); font-size: .85rem; }
+
+  /* ── Proyector ── */
+  #proyector-view {
+    position: fixed; inset: 0; z-index: 500;
+    background: var(--green);
+    display: flex; flex-direction: column;
+  }
+  .proy-header {
+    display: flex; align-items: center; justify-content: space-between; gap: .6rem;
+    padding: 1rem 1.5rem; border-bottom: 1px solid rgba(240,228,200,.12);
+    flex-shrink: 0; flex-wrap: wrap;
+  }
+  .proy-logo { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.25rem; color: var(--ivory); }
+  .proy-logo em { opacity: .45; font-style: normal; }
+  .proy-date-label { font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; opacity: .45; color: var(--ivory); }
+  .proy-tabs { display: flex; gap: .4rem; }
+  .proy-tab {
+    padding: .38rem .8rem; border: 1.5px solid rgba(240,228,200,.2);
+    color: rgba(240,228,200,.5); border-radius: 8px;
+    font-family: 'Jost', sans-serif; font-size: .7rem; letter-spacing: .08em;
+    text-transform: uppercase; cursor: pointer; transition: all .2s; background: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .proy-tab.active { background: rgba(240,228,200,.12); border-color: var(--ivory); color: var(--ivory); }
+  .proy-close {
+    background: none; border: 1.5px solid rgba(240,228,200,.2);
+    color: rgba(240,228,200,.55); width: 32px; height: 32px; border-radius: 50%;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; -webkit-tap-highlight-color: transparent; flex-shrink: 0;
+  }
+  .proy-panel { flex: 1; overflow: hidden; position: relative; }
+  .proy-msgs-wrap, .proy-quien-wrap {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 2rem; opacity: 0; transition: opacity .5s; pointer-events: none; gap: 1.5rem;
+  }
+  .proy-msgs-wrap.active, .proy-quien-wrap.active { opacity: 1; pointer-events: auto; }
+  .proy-msg-card { text-align: center; max-width: 680px; width: 100%; animation: proy-in .6s both; }
+  .proy-msg-text {
+    font-family: 'DM Serif Display', serif; font-style: italic;
+    font-size: clamp(1.5rem, 4.5vw, 2.8rem); color: var(--ivory);
+    line-height: 1.4; margin-bottom: 1rem;
+  }
+  .proy-msg-name { font-size: clamp(.75rem, 2vw, 1rem); letter-spacing: .18em; text-transform: uppercase; color: rgba(240,228,200,.6); }
+  .proy-msg-deco { color: var(--gold); margin: 0 .4rem; }
+  .proy-nav { display: flex; align-items: center; gap: 1.5rem; }
+  .proy-nav-btn {
+    background: none; border: 1.5px solid rgba(240,228,200,.2);
+    color: rgba(240,228,200,.5); width: 40px; height: 40px; border-radius: 50%;
+    cursor: pointer; font-size: 1.3rem; display: flex; align-items: center; justify-content: center;
+    -webkit-tap-highlight-color: transparent; transition: all .2s;
+  }
+  .proy-nav-btn:active { background: rgba(240,228,200,.1); }
+  .proy-msg-counter { font-size: .68rem; letter-spacing: .12em; color: rgba(240,228,200,.4); text-transform: uppercase; min-width: 60px; text-align: center; }
+  .proy-quien-title {
+    font-family: 'DM Serif Display', serif; font-style: italic;
+    font-size: clamp(1.2rem, 3vw, 2rem); color: var(--ivory);
+    text-align: center; max-width: 640px;
+  }
+  .proy-quien-bars-wrap { width: 100%; max-width: 540px; display: flex; flex-direction: column; gap: 1.2rem; }
+  .proy-quien-row { display: flex; flex-direction: column; gap: .4rem; }
+  .proy-quien-label { display: flex; justify-content: space-between; align-items: baseline; }
+  .proy-quien-name { font-size: clamp(.82rem, 2vw, 1rem); letter-spacing: .1em; text-transform: uppercase; color: rgba(240,228,200,.8); }
+  .proy-quien-pct { font-family: 'DM Serif Display', serif; font-size: clamp(1.3rem, 2.5vw, 1.7rem); color: var(--gold); }
+  .proy-quien-track { height: 8px; background: rgba(240,228,200,.12); border-radius: 4px; overflow: hidden; }
+  .proy-quien-fill { height: 100%; background: var(--gold); border-radius: 4px; transition: width 1.2s cubic-bezier(.16,1,.3,1); }
+  .proy-quien-total { font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: rgba(240,228,200,.4); text-align: center; }
+  .proy-open-btn {
+    width: 100%; margin-top: 1rem; padding: .85rem;
+    border: 1.5px solid var(--div); border-radius: 10px;
+    background: var(--white); color: var(--fg-mid);
+    font-family: 'Jost', sans-serif; font-size: .75rem; letter-spacing: .08em;
+    text-transform: uppercase; cursor: pointer;
+    -webkit-tap-highlight-color: transparent; transition: border-color .2s;
+  }
+  .proy-open-btn:active { border-color: var(--green); color: var(--green); }
+  @keyframes proy-in {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: none; }
+  }
+
   /* ── Animations ── */
   @keyframes up {
     from { opacity: 0; transform: translateY(16px); }
@@ -868,33 +1058,129 @@
     <h2>Los juegos <em>de hoy</em></h2>
   </div>
 
-  <!-- Snake game -->
-  <div class="snake-wrap pad">
-    <div class="snake-score">Puntos: <span id="snake-pts">0</span></div>
-    <canvas id="snake-canvas" width="300" height="300"></canvas>
-    <p class="snake-msg" id="snake-msg">¡Toca para empezar!</p>
-    <button class="snake-btn" id="snake-start-btn">Jugar</button>
+  <!-- Game selector -->
+  <div id="game-selector" class="pad">
+    <div class="game-cards">
+      <button class="game-card" data-game="snake">
+        <span class="game-card-icon">🐍</span>
+        <div><div class="game-card-title">Snake</div><div class="game-card-sub">Clásico: evita las paredes y crece</div></div>
+      </button>
+      <button class="game-card" data-game="sudoku">
+        <span class="game-card-icon">🔢</span>
+        <div><div class="game-card-title">Sudoku</div><div class="game-card-sub">Completa el tablero · tiempo cronometrado</div></div>
+      </button>
+      <button class="game-card" data-game="quien">
+        <span class="game-card-icon">🤔</span>
+        <div><div class="game-card-title">¿Quién lo hace más?</div><div class="game-card-sub">Vota entre Susy y Luis · en vivo</div></div>
+      </button>
+      <button class="game-card" data-game="retos">
+        <span class="game-card-icon">📸</span>
+        <div><div class="game-card-title">Retos de foto</div><div class="game-card-sub">20 misiones para el fotógrafo que llevas dentro</div></div>
+      </button>
+      <button class="game-card" data-game="adivina">
+        <span class="game-card-icon">📍</span>
+        <div><div class="game-card-title">Adivina el lugar</div><div class="game-card-sub">¿Conoces la historia de Susy y Luis?</div></div>
+      </button>
+      <button class="game-card" data-game="scores">
+        <span class="game-card-icon">🏆</span>
+        <div><div class="game-card-title">Tabla de puntuaciones</div><div class="game-card-sub">Snake y Sudoku · mejores del día</div></div>
+      </button>
+    </div>
+    <button id="proy-open-btn" class="proy-open-btn">🎬 Modo proyector</button>
   </div>
 
-  <!-- Próximamente -->
-  <div class="pad" style="display:flex;flex-direction:column;gap:.8rem;padding-bottom:2rem">
-    <p class="tab-eyebrow" style="margin-bottom:.4rem">Próximamente</p>
-    <div class="prox-banner">
-      <div class="prox-icon">🤔</div>
-      <div><span class="prox-badge">Próximamente</span></div>
+  <!-- Snake game view -->
+  <div id="game-snake" hidden class="game-view pad">
+    <button class="game-back" id="game-back-snake">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Juegos
+    </button>
+    <div class="snake-wrap">
+      <div class="snake-score">Puntos: <span id="snake-pts">0</span></div>
+      <canvas id="snake-canvas" width="300" height="300"></canvas>
+      <p class="snake-msg" id="snake-msg">¡Toca para empezar!</p>
+      <button class="snake-btn" id="snake-start-btn">Jugar</button>
     </div>
-    <div class="prox-banner">
-      <div class="prox-icon">📍</div>
-      <div><span class="prox-badge">Próximamente</span></div>
+    <div id="snake-submit" hidden class="score-submit-inline">
+      <p class="score-submit-label">¿Guardar tu puntuación?</p>
+      <div class="score-submit-row">
+        <input type="text" id="snake-nickname" placeholder="Tu apodo" maxlength="20" autocomplete="off">
+        <button class="score-submit-btn" id="snake-save-score">Guardar</button>
+      </div>
     </div>
   </div>
 
-  <!-- Hidden game views kept for JS completeness -->
-  <div id="game-selector" hidden></div>
-  <div id="game-quien"   hidden><div id="quien-screen"></div></div>
-  <div id="game-adivina" hidden><div id="adivina-screen"></div></div>
+  <!-- Sudoku game view -->
+  <div id="game-sudoku" hidden class="game-view pad">
+    <button class="game-back" id="game-back-sudoku">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Juegos
+    </button>
+    <div id="sudoku-screen"></div>
+  </div>
+
+  <!-- ¿Quién lo hace más? game view -->
+  <div id="game-quien" hidden class="game-view pad">
+    <button class="game-back" id="game-back-quien">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Juegos
+    </button>
+    <div id="quien-screen"></div>
+  </div>
+
+  <!-- Retos de foto game view -->
+  <div id="game-retos" hidden class="game-view pad">
+    <button class="game-back" id="game-back-retos">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Juegos
+    </button>
+    <div id="retos-screen"></div>
+  </div>
+
+  <!-- Adivina el lugar game view -->
+  <div id="game-adivina" hidden class="game-view pad">
+    <button class="game-back" id="game-back-adivina">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Juegos
+    </button>
+    <div id="adivina-screen"></div>
+  </div>
+
+  <!-- Tabla de puntuaciones -->
+  <div id="game-scores" hidden class="game-view pad">
+    <button class="game-back" id="game-back-scores">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Juegos
+    </button>
+    <div id="scores-screen"></div>
+  </div>
 
 </section>
+
+
+<!-- ══════════════ PROYECTOR VIEW ══════════════ -->
+<div id="proyector-view" hidden aria-label="Vista proyector">
+  <header class="proy-header">
+    <div class="proy-header-left">
+      <div class="proy-logo">Susy <em>&amp;</em> Luis</div>
+      <div class="proy-date-label">06 · XI · 2026</div>
+    </div>
+    <div class="proy-tabs">
+      <button class="proy-tab active" data-tab="msgs">💌 Mensajes</button>
+      <button class="proy-tab" data-tab="quien">🤔 ¿Quién?</button>
+    </div>
+    <button class="proy-close" id="proy-close-btn" aria-label="Cerrar">✕</button>
+  </header>
+  <div class="proy-panel">
+    <div class="proy-msgs-wrap active" data-proy-panel="msgs">
+      <div id="proy-msg-card" class="proy-msg-card">
+        <div class="proy-msg-text" style="opacity:.35;font-style:italic">Esperando mensajes…</div>
+      </div>
+      <div class="proy-nav">
+        <button class="proy-nav-btn" id="proy-prev-btn">‹</button>
+        <span class="proy-msg-counter" id="proy-msg-counter"></span>
+        <button class="proy-nav-btn" id="proy-next-btn">›</button>
+      </div>
+    </div>
+    <div class="proy-quien-wrap" data-proy-panel="quien">
+      <div id="proy-quien-content"></div>
+    </div>
+  </div>
+</div>
 
 
 <!-- ══════════════ MODAL: CÓMO SUBIR A GPHOTOS ══════════════ -->
@@ -1378,11 +1664,31 @@ function j1Votar(voto) {
   renderJuego1();
 }
 
+function showGameSelector() {
+  ['game-snake','game-sudoku','game-quien','game-retos','game-adivina','game-scores'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.hidden = true;
+  });
+  document.getElementById('game-selector').hidden = false;
+  document.getElementById('snake-submit').hidden = true;
+}
+
 function startGame(type) {
   document.getElementById('game-selector').hidden = true;
-  if (type === 'quien') {
+  if (type === 'snake') {
+    document.getElementById('game-snake').hidden = false;
+  } else if (type === 'sudoku') {
+    document.getElementById('game-sudoku').hidden = false;
+    renderSudoku();
+  } else if (type === 'quien') {
     document.getElementById('game-quien').hidden = false;
     initJuego1();
+  } else if (type === 'retos') {
+    document.getElementById('game-retos').hidden = false;
+    renderRetos();
+  } else if (type === 'scores') {
+    document.getElementById('game-scores').hidden = false;
+    renderScores();
   } else {
     adivinaIdx = 0; adivinaScore = 0;
     document.getElementById('game-adivina').hidden = false;
@@ -1506,6 +1812,7 @@ function siguienteAdivina() {
     document.getElementById('snake-msg').textContent = `${msg} ${score} pts`;
     document.getElementById('snake-start-btn').textContent = 'Jugar de nuevo';
     document.getElementById('snake-start-btn').hidden = false;
+    if (score > 0) document.getElementById('snake-submit').hidden = false;
   }
   window.snakeStart = function() {
     canvas = document.getElementById('snake-canvas');
@@ -1517,6 +1824,7 @@ function siguienteAdivina() {
     document.getElementById('snake-pts').textContent = '0';
     document.getElementById('snake-msg').textContent = '';
     document.getElementById('snake-start-btn').hidden = true;
+    document.getElementById('snake-submit').hidden = true;
     placeFood(); draw();
     clearInterval(loop);
     running = true;
@@ -1549,6 +1857,395 @@ function siguienteAdivina() {
   }, { passive: true });
 })();
 document.getElementById('snake-start-btn').addEventListener('click', window.snakeStart);
+
+/* ── Retos de foto ── */
+var PHOTO_RETOS = [
+  { emoji:'🤳', text:'Selfie con los novios en el mismo encuadre' },
+  { emoji:'🎂', text:'Foto del pastel de boda antes de cortarlo' },
+  { emoji:'💃', text:'Captura a alguien bailando con todo el estilo' },
+  { emoji:'🥂', text:'El brindis justo antes de que choquen las copas' },
+  { emoji:'🤫', text:'Foto de la novia sin que se dé cuenta' },
+  { emoji:'🕵️', text:'Foto del novio en un momento candid' },
+  { emoji:'👨‍👩‍👧‍👦', text:'Tres generaciones en una sola foto' },
+  { emoji:'😭', text:'Alguien llorando de emoción — es normal' },
+  { emoji:'🍽️', text:'El plato más rico del menú bien presentado' },
+  { emoji:'💐', text:'Detalle del ramo de flores de la novia' },
+  { emoji:'💍', text:'Los anillos de boda de cerca' },
+  { emoji:'🕺', text:'El mejor paso de baile de la noche' },
+  { emoji:'🤝', text:'Selfie con alguien que acabas de conocer hoy' },
+  { emoji:'👠', text:'Los zapatos de la novia (los detalles mandan)' },
+  { emoji:'✌️', text:'Selfie con otro invitado haciendo la V de la victoria' },
+  { emoji:'🎵', text:'La orquesta o DJ en plena acción' },
+  { emoji:'🌙', text:'Una foto que capture el ambiente mágico de la noche' },
+  { emoji:'👴', text:'Foto con el invitado de más edad' },
+  { emoji:'🎉', text:'El momento más divertido e inesperado del día' },
+  { emoji:'🏅', text:'Foto grupal con toda tu mesa' },
+];
+var LS_RETOS = 'boda_retos_v1';
+
+function renderRetos() {
+  var screen = document.getElementById('retos-screen');
+  var done;
+  try { done = JSON.parse(localStorage.getItem(LS_RETOS) || '[]'); } catch(e) { done = []; }
+  screen.innerHTML =
+    '<div class="retos-header">' +
+    '<div class="retos-title">Retos de foto</div>' +
+    '<div class="retos-progress">' + done.length + ' de ' + PHOTO_RETOS.length + ' completados</div>' +
+    '</div>' +
+    '<div class="retos-list">' +
+    PHOTO_RETOS.map(function(r, i) {
+      var isDone = done.indexOf(i) !== -1;
+      return '<button class="reto-item' + (isDone ? ' done' : '') + '" data-idx="' + i + '">' +
+        '<span class="reto-emoji">' + r.emoji + '</span>' +
+        '<span class="reto-text">' + esc(r.text) + '</span>' +
+        '<span class="reto-check">' + (isDone ? '✓' : '') + '</span>' +
+        '</button>';
+    }).join('') +
+    '</div>';
+  screen.querySelectorAll('.reto-item').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = +btn.dataset.idx;
+      var d;
+      try { d = JSON.parse(localStorage.getItem(LS_RETOS) || '[]'); } catch(e) { d = []; }
+      var pos = d.indexOf(idx);
+      if (pos !== -1) d.splice(pos, 1); else d.push(idx);
+      try { localStorage.setItem(LS_RETOS, JSON.stringify(d)); } catch(e) {}
+      renderRetos();
+    });
+  });
+}
+
+/* ── Sudoku ── */
+var SUDOKU_PUZZLES = [
+  {
+    p:[[5,3,0,0,7,0,0,0,0],[6,0,0,1,9,5,0,0,0],[0,9,8,0,0,0,0,6,0],
+       [8,0,0,0,6,0,0,0,3],[4,0,0,8,0,3,0,0,1],[7,0,0,0,2,0,0,0,6],
+       [0,6,0,0,0,0,2,8,0],[0,0,0,4,1,9,0,0,5],[0,0,0,0,8,0,0,7,9]],
+    s:[[5,3,4,6,7,8,9,1,2],[6,7,2,1,9,5,3,4,8],[1,9,8,3,4,2,5,6,7],
+       [8,5,9,7,6,1,4,2,3],[4,2,6,8,5,3,7,9,1],[7,1,3,9,2,4,8,5,6],
+       [9,6,1,5,3,7,2,8,4],[2,8,7,4,1,9,6,3,5],[3,4,5,2,8,6,1,7,9]]
+  },
+  {
+    p:[[0,0,0,2,6,0,7,0,1],[6,8,0,0,7,0,0,9,0],[1,9,0,0,0,4,5,0,0],
+       [8,2,0,1,0,0,0,4,0],[0,0,4,6,0,2,9,0,0],[0,5,0,0,0,3,0,2,8],
+       [0,0,9,3,0,0,0,7,4],[0,4,0,0,5,0,0,3,6],[7,0,3,0,1,8,0,0,0]],
+    s:[[4,3,5,2,6,9,7,8,1],[6,8,2,5,7,1,4,9,3],[1,9,7,8,3,4,5,6,2],
+       [8,2,6,1,9,5,3,4,7],[3,7,4,6,8,2,9,1,5],[9,5,1,7,4,3,6,2,8],
+       [5,1,9,3,2,6,8,7,4],[2,4,8,9,5,7,1,3,6],[7,6,3,4,1,8,2,5,9]]
+  },
+  {
+    p:[[0,2,0,0,0,0,0,0,0],[0,0,0,6,0,0,0,0,3],[0,7,4,0,8,0,0,0,0],
+       [0,0,0,0,0,3,0,0,2],[0,8,0,0,4,0,0,1,0],[6,0,0,5,0,0,0,0,0],
+       [0,0,0,0,1,0,7,8,0],[5,0,0,0,0,9,0,0,0],[0,0,0,0,0,0,0,4,0]],
+    s:[[1,2,6,4,3,7,9,5,8],[8,9,5,6,2,1,4,7,3],[3,7,4,9,8,5,1,2,6],
+       [4,5,7,1,9,3,8,6,2],[9,8,3,2,4,6,5,1,7],[6,1,2,5,7,8,3,9,4],
+       [2,6,9,3,1,4,7,8,5],[5,4,8,7,6,9,2,3,1],[7,3,1,8,5,2,6,4,9]]
+  }
+];
+var sudokuState = null;
+
+function renderSudoku() {
+  var pidx = Math.floor(Math.random() * SUDOKU_PUZZLES.length);
+  var puzzle = SUDOKU_PUZZLES[pidx];
+  var board = puzzle.p.map(function(row) { return row.slice(); });
+  var given = puzzle.p.map(function(row) { return row.map(function(v) { return v !== 0; }); });
+  var solution = puzzle.s;
+  var elapsed = 0;
+  var timerInterval = null;
+  var errors = 0;
+  var selectedR = -1, selectedC = -1;
+  var completed = false;
+
+  sudokuState = { stop: function() { clearInterval(timerInterval); } };
+
+  function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+  function timeStr() { return pad2(Math.floor(elapsed/60)) + ':' + pad2(elapsed % 60); }
+  function calcScore() { return Math.max(100, 10000 - elapsed * 8 - errors * 50); }
+
+  var screen = document.getElementById('sudoku-screen');
+
+  function renderGrid() {
+    if (completed) return;
+    var html = '<div class="sudoku-info">' +
+      '<div class="sudoku-timer" id="sudoku-timer">' + timeStr() + '</div>' +
+      '<div class="sudoku-score-disp">Puntos<span class="sudoku-score-val" id="sudoku-score-val">' + calcScore() + '</span></div>' +
+      '</div><div class="sudoku-grid-wrap"><div class="sudoku-grid" id="sudoku-grid">';
+    for (var r = 0; r < 9; r++) {
+      for (var c = 0; c < 9; c++) {
+        var cls = ['sudoku-cell'];
+        if (given[r][c]) cls.push('given');
+        else if (board[r][c] !== 0) {
+          cls.push('user-val');
+          if (board[r][c] !== solution[r][c]) cls.push('wrong');
+        }
+        if (r === selectedR && c === selectedC) cls.push('selected');
+        else if (selectedR >= 0 && (r === selectedR || c === selectedC ||
+          (Math.floor(r/3) === Math.floor(selectedR/3) && Math.floor(c/3) === Math.floor(selectedC/3))))
+          cls.push('related');
+        if (c === 2 || c === 5) cls.push('block-right');
+        if (r === 2 || r === 5) cls.push('block-bottom');
+        html += '<div class="' + cls.join(' ') + '" data-r="' + r + '" data-c="' + c + '">' +
+          (board[r][c] !== 0 ? board[r][c] : '') + '</div>';
+      }
+    }
+    html += '</div></div><div class="sudoku-numpad">';
+    for (var n = 1; n <= 9; n++) html += '<button class="sudoku-num-btn" data-n="' + n + '">' + n + '</button>';
+    html += '<button class="sudoku-num-btn erase" data-n="0">⌫</button></div>' +
+      '<div class="sudoku-actions">' +
+      '<button class="sudoku-action-btn" id="sudoku-new">Nueva partida</button>' +
+      '<button class="sudoku-action-btn" id="sudoku-verify">Verificar</button>' +
+      '</div>';
+    screen.innerHTML = html;
+    screen.querySelectorAll('.sudoku-cell').forEach(function(cell) {
+      cell.addEventListener('click', function() {
+        selectedR = +cell.dataset.r; selectedC = +cell.dataset.c; renderGrid();
+      });
+    });
+    screen.querySelectorAll('.sudoku-num-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        if (selectedR < 0 || given[selectedR][selectedC]) return;
+        board[selectedR][selectedC] = +btn.dataset.n;
+        checkComplete(); renderGrid();
+      });
+    });
+    var nb = document.getElementById('sudoku-new');
+    if (nb) nb.addEventListener('click', function() { clearInterval(timerInterval); renderSudoku(); });
+    var vb = document.getElementById('sudoku-verify');
+    if (vb) vb.addEventListener('click', function() {
+      var w = 0;
+      for (var r2 = 0; r2 < 9; r2++) for (var c2 = 0; c2 < 9; c2++) {
+        if (!given[r2][c2] && board[r2][c2] !== 0 && board[r2][c2] !== solution[r2][c2]) w++;
+      }
+      if (w === 0) showToast('¡Todo correcto hasta ahora! ✓');
+      else { errors += w; showToast(w + ' error' + (w > 1 ? 'es' : '') + ' encontrado' + (w > 1 ? 's' : '') + ' 🔍'); renderGrid(); }
+    });
+  }
+
+  function checkComplete() {
+    for (var r = 0; r < 9; r++) for (var c = 0; c < 9; c++) {
+      if (board[r][c] !== solution[r][c]) return;
+    }
+    completed = true;
+    clearInterval(timerInterval);
+    var fs = calcScore();
+    screen.innerHTML = '<div class="sudoku-complete">' +
+      '<div class="sudoku-complete-icon">🎉</div>' +
+      '<div class="sudoku-complete-title">¡Completado!</div>' +
+      '<div class="sudoku-complete-score">' + fs + ' pts</div>' +
+      '<p style="font-size:.78rem;color:var(--fg-muted);letter-spacing:.1em;text-transform:uppercase;margin:.5rem 0 .8rem">Tiempo: ' + timeStr() + '</p>' +
+      '<div class="score-submit-inline">' +
+      '<p class="score-submit-label">¿Guardar tu puntuación?</p>' +
+      '<div class="score-submit-row">' +
+      '<input type="text" id="sudoku-nickname" placeholder="Tu apodo" maxlength="20" autocomplete="off">' +
+      '<button class="score-submit-btn" id="sudoku-save-score">Guardar</button>' +
+      '</div></div>' +
+      '<button class="sudoku-action-btn" id="sudoku-new-after" style="margin-top:.8rem;width:100%;padding:.7rem">Nueva partida</button>' +
+      '</div>';
+    var saveBtn = document.getElementById('sudoku-save-score');
+    if (saveBtn) saveBtn.addEventListener('click', function() {
+      var nick = (document.getElementById('sudoku-nickname') || {}).value || '';
+      nick = nick.trim();
+      if (!nick) return;
+      submitScore('sudoku', nick, fs);
+      var si = screen.querySelector('.score-submit-inline');
+      if (si) si.innerHTML = '<p class="score-submit-label" style="color:var(--green)">¡Guardado! 🏆</p>';
+      showToast('¡Puntuación guardada! 🏆');
+    });
+    var na = document.getElementById('sudoku-new-after');
+    if (na) na.addEventListener('click', function() { renderSudoku(); });
+  }
+
+  renderGrid();
+  timerInterval = setInterval(function() {
+    if (completed) return;
+    elapsed++;
+    var t = document.getElementById('sudoku-timer');
+    var sv = document.getElementById('sudoku-score-val');
+    if (t) t.textContent = timeStr();
+    if (sv) sv.textContent = calcScore();
+  }, 1000);
+}
+
+/* ── Score submission ── */
+function submitScore(game, nickname, score) {
+  var entry = { nickname: nickname, score: score, ts: Date.now() };
+  if (FB_READY && fbDb) fbDb.ref('scores/' + game).push(entry).catch(function() {});
+}
+
+/* ── Leaderboard ── */
+var scoresCurrentTab = 'snake';
+
+function renderScores() {
+  var screen = document.getElementById('scores-screen');
+  screen.innerHTML = '<div class="scores-tabs">' +
+    '<button class="scores-tab' + (scoresCurrentTab === 'snake' ? ' active' : '') + '" data-stab="snake">🐍 Snake</button>' +
+    '<button class="scores-tab' + (scoresCurrentTab === 'sudoku' ? ' active' : '') + '" data-stab="sudoku">🔢 Sudoku</button>' +
+    '</div>' +
+    '<div class="scores-title">Top 10</div>' +
+    '<div class="scores-list" id="scores-list"><p class="scores-empty" style="font-size:.8rem;opacity:.6">Cargando…</p></div>';
+  screen.querySelectorAll('.scores-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() { scoresCurrentTab = tab.dataset.stab; renderScores(); });
+  });
+  if (FB_READY && fbDb) {
+    fetch(DB_URL + '/scores/' + scoresCurrentTab + '.json')
+      .then(function(r) { return r.ok ? r.json() : null; })
+      .then(function(data) {
+        var list = document.getElementById('scores-list');
+        if (!list) return;
+        if (!data) { list.innerHTML = '<p class="scores-empty">Aún no hay puntuaciones. ¡Sé el primero!</p>'; return; }
+        var entries = Object.values(data);
+        entries.sort(function(a, b) { return b.score - a.score; });
+        var top = entries.slice(0, 10);
+        var medals = ['🥇','🥈','🥉'];
+        list.innerHTML = top.map(function(e, i) {
+          return '<div class="score-row">' +
+            '<span class="score-rank">' + (medals[i] || (i+1) + '.') + '</span>' +
+            '<span class="score-name">' + esc(e.nickname || '—') + '</span>' +
+            '<span class="score-pts">' + (e.score || 0) + ' pts</span>' +
+            '</div>';
+        }).join('');
+      })
+      .catch(function() {
+        var list = document.getElementById('scores-list');
+        if (list) list.innerHTML = '<p class="scores-empty">Error al cargar. Intenta de nuevo.</p>';
+      });
+  } else {
+    document.getElementById('scores-list').innerHTML = '<p class="scores-empty">Sin conexión — las puntuaciones requieren internet.</p>';
+  }
+}
+
+/* ── Game selector wiring ── */
+document.querySelectorAll('[data-game]').forEach(function(card) {
+  card.addEventListener('click', function() { startGame(card.dataset.game); });
+});
+['snake','sudoku','quien','retos','adivina','scores'].forEach(function(game) {
+  var btn = document.getElementById('game-back-' + game);
+  if (btn) btn.addEventListener('click', function() {
+    if (game === 'sudoku' && sudokuState) sudokuState.stop();
+    showGameSelector();
+  });
+});
+
+/* ── Snake score submit ── */
+document.getElementById('snake-save-score').addEventListener('click', function() {
+  var nick = document.getElementById('snake-nickname').value.trim();
+  if (!nick) return;
+  var score = window._snakeState ? window._snakeState().score : 0;
+  submitScore('snake', nick, score);
+  document.getElementById('snake-submit').hidden = true;
+  showToast('¡Puntuación guardada! 🏆');
+});
+
+/* ── Proyector open ── */
+document.getElementById('proy-open-btn').addEventListener('click', function() {
+  document.getElementById('proyector-view').hidden = false;
+});
+
+/* ── Proyector logic ── */
+(function() {
+  var view = document.getElementById('proyector-view');
+  var msgs = [], msgIdx = 0;
+  var quienPregs = [], quienVotos = {};
+  var currentPanel = 'msgs';
+
+  function switchPanel(p) {
+    currentPanel = p;
+    view.querySelectorAll('[data-proy-panel]').forEach(function(el) {
+      el.classList.toggle('active', el.dataset.proyPanel === p);
+    });
+    view.querySelectorAll('.proy-tab').forEach(function(tab) {
+      tab.classList.toggle('active', tab.dataset.tab === p);
+    });
+    if (p === 'quien') renderProyQuien();
+  }
+
+  function renderProyMsg(m) {
+    var card = document.getElementById('proy-msg-card');
+    if (!card) return;
+    card.style.animation = 'none';
+    card.offsetHeight;
+    card.style.animation = '';
+    card.innerHTML = '<div class="proy-msg-text">“' + esc(m.texto) + '”</div>' +
+      '<div class="proy-msg-name"><span class="proy-msg-deco">✦</span>' + esc(m.nombre) + '<span class="proy-msg-deco">✦</span></div>';
+    var ctr = document.getElementById('proy-msg-counter');
+    if (ctr) ctr.textContent = (msgIdx + 1) + ' · ' + msgs.length;
+  }
+
+  function renderProyQuien() {
+    var el = document.getElementById('proy-quien-content');
+    if (!el) return;
+    if (!quienPregs.length) {
+      el.innerHTML = '<div class="proy-quien-title">¿Quién lo hace más?</div>' +
+        '<p style="color:rgba(240,228,200,.4);font-size:.82rem;text-align:center">Esperando preguntas de los invitados…</p>';
+      return;
+    }
+    var html = '';
+    quienPregs.forEach(function(p) {
+      var v = quienVotos[p.id] || {susy:0,luis:0};
+      var total = v.susy + v.luis || 1;
+      var pS = Math.round((v.susy / total) * 100);
+      var pL = 100 - pS;
+      html += '<div class="proy-quien-title" style="font-size:clamp(.95rem,2.5vw,1.35rem)">"' + esc(p.texto) + '"</div>' +
+        '<div class="proy-quien-bars-wrap">' +
+        '<div class="proy-quien-row"><div class="proy-quien-label"><span class="proy-quien-name">💕 Susy</span><span class="proy-quien-pct">' + pS + '%</span></div><div class="proy-quien-track"><div class="proy-quien-fill" style="width:' + pS + '%"></div></div></div>' +
+        '<div class="proy-quien-row"><div class="proy-quien-label"><span class="proy-quien-name">🤵 Luis</span><span class="proy-quien-pct">' + pL + '%</span></div><div class="proy-quien-track"><div class="proy-quien-fill" style="width:' + pL + '%"></div></div></div>' +
+        '</div>' +
+        '<div class="proy-quien-total">' + (v.susy + v.luis) + ' votos</div>';
+    });
+    el.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;gap:1.5rem;width:100%;max-width:580px;overflow-y:auto;max-height:calc(100vh - 160px)">' + html + '</div>';
+  }
+
+  function pollProyector() {
+    if (!DB_URL) return;
+    fetch(DB_URL + '/mensajes.json').then(function(r){return r.ok?r.json():null;}).then(function(data) {
+      if (!data) return;
+      msgs = Object.values(data).sort(function(a,b){return (a.ts||0)-(b.ts||0);});
+      if (msgs.length && currentPanel === 'msgs') renderProyMsg(msgs[msgIdx % msgs.length]);
+    }).catch(function(){});
+    fetch(DB_URL + '/juego1/preguntas.json').then(function(r){return r.ok?r.json():null;}).then(function(data) {
+      if (!data) return;
+      quienPregs = Object.entries(data).map(function(e){return Object.assign({id:e[0]},e[1]);});
+      quienPregs.sort(function(a,b){return (a.ts||0)-(b.ts||0);});
+    }).catch(function(){});
+    fetch(DB_URL + '/juego1/votos.json').then(function(r){return r.ok?r.json():null;}).then(function(data) {
+      if (!data) return;
+      quienVotos = {};
+      Object.entries(data).forEach(function(e) {
+        var pregId = e[0], dv = e[1];
+        quienVotos[pregId] = {susy:0,luis:0};
+        Object.values(dv).forEach(function(v){ if(v==='susy') quienVotos[pregId].susy++; else if(v==='luis') quienVotos[pregId].luis++; });
+      });
+      if (currentPanel === 'quien') renderProyQuien();
+    }).catch(function(){});
+  }
+
+  view.querySelectorAll('.proy-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() { switchPanel(tab.dataset.tab); });
+  });
+  document.getElementById('proy-close-btn').addEventListener('click', function() {
+    view.hidden = true;
+  });
+  document.getElementById('proy-prev-btn').addEventListener('click', function() {
+    if (!msgs.length) return;
+    msgIdx = (msgIdx - 1 + msgs.length) % msgs.length;
+    renderProyMsg(msgs[msgIdx]);
+  });
+  document.getElementById('proy-next-btn').addEventListener('click', function() {
+    if (!msgs.length) return;
+    msgIdx = (msgIdx + 1) % msgs.length;
+    renderProyMsg(msgs[msgIdx]);
+  });
+
+  setInterval(function() {
+    if (view.hidden || currentPanel !== 'msgs' || msgs.length < 2) return;
+    msgIdx = (msgIdx + 1) % msgs.length;
+    renderProyMsg(msgs[msgIdx]);
+  }, 8000);
+
+  setInterval(function() {
+    if (!view.hidden) pollProyector();
+  }, 6000);
+})();
 
 /* ══════════════════════════════════════════════════════════ */
 
