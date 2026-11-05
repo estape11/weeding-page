@@ -1534,32 +1534,74 @@ function initMsgListener() {
    no siempre sea la primera — el índice `correcta` indica cuál es. */
 const ADIVINA_FOTOS = [
   {
-    foto: 'boda_legal.jpg',
-    pregunta: '¿Dónde se casaron legalmente?',
-    opciones: ['Registro Civil', 'Iglesia La Merced', 'Notaría Central'],
+    foto: 'img/zurich.jpg',
+    pregunta: '¿En qué ciudad europea fue esta foto?',
+    opciones: ['Zúrich, Suiza', 'Viena, Austria', 'Ginebra, Suiza'],
     correcta: 0,
-    loc: 'Registro Civil'
+    loc: 'Zúrich, Suiza'
   },
   {
-    foto: 'recepcion.jpg',
-    pregunta: '¿En qué hotel es la recepción?',
-    opciones: ['Hotel Marriott', 'Hotel Intercontinental', 'Hotel Sheraton'],
+    foto: 'img/venecia.jpg',
+    pregunta: '¿Reconoces esta ciudad italiana?',
+    opciones: ['Venecia, Italia', 'Florencia, Italia', 'Ámsterdam, Países Bajos'],
     correcta: 0,
-    loc: 'AC Hotels Marriott'
+    loc: 'Venecia, Italia'
   },
   {
-    foto: 'pareja.jpg',
-    pregunta: '¿En qué país fue la propuesta de matrimonio?',
-    opciones: ['Grecia', 'Croacia', 'España'],
+    foto: 'img/paris.jpg',
+    pregunta: '¿En qué río fue esta foto?',
+    opciones: ['Río Sena, París', 'Río Támesis, Londres', 'Río Tíber, Roma'],
     correcta: 0,
-    loc: 'Grecia'
+    loc: 'Río Sena, París'
   },
   {
-    foto: 'pareja2.jpg',
-    pregunta: '¿Dónde posaron con el anillo al atardecer?',
-    opciones: ['Grecia', 'Italia', 'Portugal'],
+    foto: 'img/lisboa.jpg',
+    pregunta: '¿En qué capital ibérica fue esta foto?',
+    opciones: ['Lisboa, Portugal', 'Oporto, Portugal', 'Sevilla, España'],
     correcta: 0,
-    loc: 'Grecia'
+    loc: 'Lisboa, Portugal'
+  },
+  {
+    foto: 'img/funiculares.jpg',
+    pregunta: '¿Qué ciudad tiene estos funiculares históricos?',
+    opciones: ['Lisboa, Portugal', 'Zurich, Suiza', 'Montmartre, París'],
+    correcta: 0,
+    loc: 'Lisboa, Portugal'
+  },
+  {
+    foto: 'img/belen.jpg',
+    pregunta: '¿Cómo se llama esta torre junto al río Tajo?',
+    opciones: ['Torre de Belém, Lisboa', 'Torre del Oro, Sevilla', 'Torre de los Vientos, Atenas'],
+    correcta: 0,
+    loc: 'Torre de Belém, Lisboa'
+  },
+  {
+    foto: 'img/segovia.jpg',
+    pregunta: '¿Qué ciudad española aparece en la foto?',
+    opciones: ['Segovia, España', 'Ávila, España', 'Toledo, España'],
+    correcta: 0,
+    loc: 'Segovia, España'
+  },
+  {
+    foto: 'img/navacerrada.jpg',
+    pregunta: '¿En qué sierra madrileña está este lugar?',
+    opciones: ['Navacerrada, Madrid', 'Sierra Nevada, Granada', 'Picos de Europa, Asturias'],
+    correcta: 0,
+    loc: 'Navacerrada, Madrid'
+  },
+  {
+    foto: 'img/sabatini.jpg',
+    pregunta: '¿Cómo se llaman estos jardines frente al Palacio Real?',
+    opciones: ['Jardines de Sabatini, Madrid', 'Jardines del Retiro, Madrid', 'Jardines del Buen Retiro, Barcelona'],
+    correcta: 0,
+    loc: 'Jardines de Sabatini, Madrid'
+  },
+  {
+    foto: 'img/zurich2.jpg',
+    pregunta: '¿En qué ciudad suiza volvemos a estar?',
+    opciones: ['Zúrich, Suiza', 'Berna, Suiza', 'Basilea, Suiza'],
+    correcta: 0,
+    loc: 'Zúrich, Suiza'
   },
 ];
 
@@ -1615,6 +1657,18 @@ function renderJ1Recol(screen) {
     </div>`
   ).join('');
   const n = j1Preguntas.length;
+
+  // If form already rendered, only update dynamic parts to preserve input values
+  if (screen.querySelector('.quien-form')) {
+    const countEl = screen.querySelector('.quien-count');
+    const listEl  = screen.querySelector('.quien-pregunta-list');
+    const adminBtn = screen.querySelector('.quien-admin-btn');
+    if (countEl)   countEl.textContent = `${n} pregunta${n !== 1 ? 's' : ''} enviada${n !== 1 ? 's' : ''}`;
+    if (listEl)    listEl.innerHTML = lista;
+    if (adminBtn)  adminBtn.textContent = `Activar votación → ${n} pregunta${n !== 1 ? 's' : ''}`;
+    return;
+  }
+
   screen.innerHTML = `
     <span class="quien-fase-badge recol">✦ Recolección de preguntas</span>
     <p class="quien-q" id="j1-lp-target" style="cursor:default">
