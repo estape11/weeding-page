@@ -288,19 +288,14 @@
      TAB 3 — JAM
   ════════════════════════════════════════════════ */
   .jam-content { padding-block: 1.5rem 2rem; /* horizontal → .pad */ }
+  .jam-tabs { display: flex; gap: .45rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .jam-tab { font-family: 'Jost', sans-serif; font-size: .72rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; padding: .4rem .85rem; border-radius: 20px; border: 1.5px solid var(--gold); color: var(--gold); background: transparent; cursor: pointer; transition: background .18s, color .18s; }
+  .jam-tab.on { background: var(--gold); color: var(--green); }
   .spotify-frame {
     border-radius: 14px; overflow: hidden;
     background: #121212; margin-bottom: 1.5rem;
   }
   .spotify-frame iframe { display: block; width: 100%; border: none; }
-  .spotify-ph {
-    padding: 3rem 1.5rem;
-    display: flex; flex-direction: column;
-    align-items: center; gap: 1rem; text-align: center;
-  }
-  .spotify-ph svg { width: 52px; height: 52px; }
-  .spotify-ph-title { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 1.3rem; color: #fff; }
-  .spotify-ph-sub { font-size: .78rem; color: rgba(255,255,255,.5); max-width: 260px; line-height: 1.6; }
   .info-box {
     background: var(--ivory2);
     border-left: 3px solid var(--gold);
@@ -1008,7 +1003,7 @@
         <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
       </span>
       <span class="ftile-name">El Jam</span>
-      <span class="ftile-desc">Nuestra playlist</span>
+      <span class="ftile-desc">Nuestras playlists</span>
     </button>
     <button class="ftile" data-tab="fotos">
       <span class="ftile-icon">
@@ -1074,19 +1069,16 @@
   </div>
   <div class="jam-content pad">
     <div class="inner">
-      <div class="spotify-frame" id="spotify-wrap">
-        <!-- Se reemplaza con iframe si SPOTIFY_ID está definido -->
-        <div class="spotify-ph" id="spotify-ph">
-          <svg viewBox="0 0 168 168" xmlns="http://www.w3.org/2000/svg">
-            <path fill="#1DB954" d="M84 0C37.6 0 0 37.6 0 84s37.6 84 84 84 84-37.6 84-84S130.4 0 84 0zm38.6 121.2a5.23 5.23 0 0 1-7.2 1.7c-19.8-12.1-44.7-14.8-74-8.1a5.23 5.23 0 0 1-2.3-10.2c32.1-7.3 59.6-4.2 81.8 9.4a5.23 5.23 0 0 1 1.7 7.2zm10.3-22.9a6.53 6.53 0 0 1-9 2.1c-22.7-13.9-57.2-18-84-9.8a6.53 6.53 0 0 1-3.8-12.5c30.7-9.3 68.9-4.8 95 11.2a6.53 6.53 0 0 1 1.8 9zm.9-23.8C107.7 57.1 64.8 55.6 40.1 63.1a7.84 7.84 0 1 1-4.5-15c28.8-8.7 76.7-7 106.9 10.9a7.84 7.84 0 0 1-7.7 13.5z"/>
-          </svg>
-          <div class="spotify-ph-title">Playlist próximamente</div>
-          <div class="spotify-ph-sub">Pon el ID del playlist de Spotify en la variable <code style="font-size:.75rem;background:rgba(255,255,255,.1);padding:2px 6px;border-radius:3px">SPOTIFY_ID</code> dentro del script</div>
-        </div>
+      <div class="jam-tabs" id="jam-tabs">
+        <button class="jam-tab on" data-idx="0">Mix Boda</button>
+        <button class="jam-tab" data-idx="1">Cumbias</button>
+        <button class="jam-tab" data-idx="2">Fiesta</button>
+        <button class="jam-tab" data-idx="3">Merengue</button>
       </div>
-      <a class="jam-link-btn" href="https://spotify.link/pozSmQBeP7b" target="_blank" rel="noopener">
+      <div class="spotify-frame" id="spotify-wrap"></div>
+      <a class="jam-link-btn" id="jam-link-btn" href="https://open.spotify.com/playlist/4tpn48nOj75HkD6NgbNeaZ" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.52 17.31a.75.75 0 0 1-1.03.24c-2.82-1.73-6.38-2.12-10.57-1.16a.75.75 0 0 1-.33-1.46c4.58-1.04 8.51-.59 11.69 1.35a.75.75 0 0 1 .24 1.03zm1.47-3.27a.94.94 0 0 1-1.29.3C14.84 12.37 10.3 11.84 6.86 12.84a.94.94 0 1 1-.55-1.8c3.98-1.21 8.95-.62 12.37 1.71a.94.94 0 0 1 .31 1.29zm.13-3.4C15.52 8.17 9.3 7.96 5.74 9.07a1.12 1.12 0 1 1-.65-2.14c4.1-1.25 10.96-1.01 15.29 1.57a1.12 1.12 0 0 1-1.1 1.94z"/></svg>
-        Únete al Jam · Pide tu canción
+        Abrir playlist en Spotify
       </a>
       <div class="info-box" style="margin-top:.6rem">
         🎶 <strong>¿Quieres pedir una canción?</strong> Acércate a nuestro DJ — ¡también es tu fiesta y queremos que la disfrutes al máximo!
@@ -1427,8 +1419,13 @@
    CONFIGURACIÓN — edita estos dos bloques antes de publicar
    ══════════════════════════════════════════════════════════ */
 
-/* 1. Spotify — pega el ID del playlist (parte final del link) */
-const SPOTIFY_ID = '03jnqjPqOpwzNtaXwLvFlt';
+/* 1. Spotify — playlists de la boda */
+const PLAYLISTS = [
+  { id: '4tpn48nOj75HkD6NgbNeaZ', label: 'Mix Boda' },
+  { id: '162XY1ezTdkGacs0scpqVn', label: 'Cumbias'  },
+  { id: '014GUtkrQGXu5gwaUvz8HW', label: 'Fiesta'   },
+  { id: '02IwmjPFT8eeQyRAG4XFE8', label: 'Merengue' },
+];
 
 /* 2. Firebase Realtime Database — REST endpoint (no SDK needed) */
 const DB_URL = 'https://boda-luis-susy-default-rtdb.europe-west1.firebasedatabase.app';
@@ -1528,14 +1525,24 @@ function pedirNombreSiNecesario(tabId, callback) {
   if (mNombreEl && miNombre && !mNombreEl.value) mNombreEl.value = miNombre;
 })();
 
-/* ── Spotify ── */
-if (SPOTIFY_ID) {
-  document.getElementById('spotify-wrap').innerHTML =
-    `<iframe src="https://open.spotify.com/embed/playlist/${esc(SPOTIFY_ID)}?utm_source=generator&theme=0"
-      height="380" frameborder="0" allowtransparency="true"
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      loading="lazy"></iframe>`;
-}
+/* ── Spotify — multi-playlist tabs ── */
+(function() {
+  function switchJam(idx) {
+    var p = PLAYLISTS[idx];
+    document.getElementById('spotify-wrap').innerHTML =
+      '<iframe src="https://open.spotify.com/embed/playlist/' + p.id + '?utm_source=generator&theme=0"' +
+      ' height="380" frameborder="0" allowtransparency="true"' +
+      ' allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"' +
+      ' loading="lazy"></iframe>';
+    document.querySelectorAll('.jam-tab').forEach(function(t, i) { t.classList.toggle('on', i === idx); });
+    var btn = document.getElementById('jam-link-btn');
+    if (btn) btn.href = 'https://open.spotify.com/playlist/' + p.id;
+  }
+  document.querySelectorAll('.jam-tab').forEach(function(t, i) {
+    t.addEventListener('click', function() { switchJam(i); });
+  });
+  switchJam(0);
+})();
 
 /* ── Itinerario — edita los horarios aquí ── */
 const SCHEDULE = [
