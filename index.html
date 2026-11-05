@@ -1424,6 +1424,16 @@
 </nav>
 
 
+<div id="nombre-modal" class="nombre-modal-bg" hidden>
+  <div class="nombre-modal-box">
+    <div class="nombre-modal-emoji">💍</div>
+    <h2 class="nombre-modal-title">¡Bienvenido<br>a la boda!</h2>
+    <p class="nombre-modal-sub">¿Cómo te llamas? Así sabemos quién eres 🎉</p>
+    <input class="nombre-modal-input" id="nombre-input" type="text" placeholder="Tu nombre" maxlength="40" autocomplete="off">
+    <button class="nombre-modal-btn" id="nombre-submit">Listo ✦</button>
+  </div>
+</div>
+
 <script>
 /* ══════════════════════════════════════════════════════════
    CONFIGURACIÓN — edita estos dos bloques antes de publicar
@@ -1493,16 +1503,25 @@ function showFbNotice() {}
 /* ── User name ── */
 var MI_NOMBRE_KEY = 'boda_mi_nombre';
 var miNombre = '';
+var _pendingTab = null;
+try { miNombre = localStorage.getItem(MI_NOMBRE_KEY) || ''; } catch(e){}
+
+function pedirNombreSiNecesario(tabId, callback) {
+  if (miNombre) { callback(); return; }
+  _pendingTab = callback;
+  var modal = document.getElementById('nombre-modal');
+  var input = document.getElementById('nombre-input');
+  if (modal) {
+    modal.hidden = false;
+    setTimeout(function() { if (input) input.focus(); }, 200);
+  }
+}
+
 (function() {
-  try { miNombre = localStorage.getItem(MI_NOMBRE_KEY) || ''; } catch(e){}
   var modal = document.getElementById('nombre-modal');
   var input = document.getElementById('nombre-input');
   var btn   = document.getElementById('nombre-submit');
   if (!modal) return;
-  if (!miNombre) {
-    modal.hidden = false;
-    setTimeout(function() { if (input) input.focus(); }, 350);
-  }
   function guardarNombre() {
     var val = input ? input.value.trim() : '';
     if (!val) return;
@@ -1513,10 +1532,10 @@ var miNombre = '';
     var mNombreEl = document.getElementById('m-nombre');
     if (jNombre && !jNombre.value) jNombre.value = miNombre;
     if (mNombreEl && !mNombreEl.value) mNombreEl.value = miNombre;
+    if (_pendingTab) { _pendingTab(); _pendingTab = null; }
   }
   if (btn)   btn.addEventListener('click', guardarNombre);
   if (input) input.addEventListener('keydown', function(e) { if (e.key === 'Enter') guardarNombre(); });
-  // Pre-fill static forms once nombre is known
   var mNombreEl = document.getElementById('m-nombre');
   if (mNombreEl && miNombre && !mNombreEl.value) mNombreEl.value = miNombre;
 })();
@@ -1563,7 +1582,8 @@ const SCHEDULE = [
 
 /* ── Tab switcher ── */
 const TABS = ['inicio','itinerario','jam','fotos','recuerdos','juegos'];
-function switchTab(id) {
+const TABS_REQUIEREN_NOMBRE = ['fotos','recuerdos','juegos'];
+function _doSwitchTab(id) {
   TABS.forEach(t => {
     document.getElementById('tab-' + t).classList.toggle('active', t === id);
     document.getElementById('nb-'  + t).classList.toggle('on',     t === id);
@@ -1572,9 +1592,33 @@ function switchTab(id) {
   if (id !== 'juegos') window._snakePause && window._snakePause();
   window.scrollTo(0, 0);
 }
+function switchTab(id) {
+  if (TABS_REQUIEREN_NOMBRE.includes(id)) {
+    pedirNombreSiNecesario(id, function() { _doSwitchTab(id); });
+  } else {
+    _doSwitchTab(id);
+  }
+}
 document.querySelectorAll('[data-tab]').forEach(function(btn) {
+  if (btn.closest('#proyector-view')) return; // proy tabs handled separately
   btn.addEventListener('click', function() { switchTab(btn.dataset.tab); });
 });
+
+/* ── Long-press en Inicio → menú de sesión ── */
+(function() {
+  var nbInicio = document.getElementById('nb-inicio');
+  if (!nbInicio) return;
+  var lpT = null;
+  nbInicio.addEventListener('pointerdown', function() {
+    lpT = setTimeout(function() {
+      var confirmed = window.confirm('⚠️ ¿Borrar sesión?\n\nEsto limpiará tu nombre, votos y progreso guardado en este dispositivo.');
+      if (confirmed) { try { localStorage.clear(); } catch(e){} location.reload(); }
+    }, 1500);
+  });
+  nbInicio.addEventListener('pointerup',    function() { clearTimeout(lpT); });
+  nbInicio.addEventListener('pointerleave', function() { clearTimeout(lpT); });
+  nbInicio.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+})();
 
 /* ── Venue Maps links ── */
 if (MAPS_CIVIL) document.getElementById('venue-civil').href = MAPS_CIVIL;
@@ -2673,14 +2717,5 @@ document.getElementById('msg-form').addEventListener('submit', function (e) {
 });
 </script>
 
-<div id="nombre-modal" class="nombre-modal-bg" hidden>
-  <div class="nombre-modal-box">
-    <div class="nombre-modal-emoji">💍</div>
-    <h2 class="nombre-modal-title">¡Bienvenido<br>a la boda!</h2>
-    <p class="nombre-modal-sub">¿Cómo te llamas? Así sabemos quién eres 🎉</p>
-    <input class="nombre-modal-input" id="nombre-input" type="text" placeholder="Tu nombre" maxlength="40" autocomplete="off">
-    <button class="nombre-modal-btn" id="nombre-submit">Listo ✦</button>
-  </div>
-</div>
 </body>
 </html>
