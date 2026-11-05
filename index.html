@@ -950,6 +950,20 @@
   .proy-anuncio-text { font-family: 'Jost'; font-size: 2.2rem; font-weight: 400; line-height: 1.35; }
   .proy-anuncio-bar-wrap { margin-top: 1.4rem; height: 5px; background: rgba(26,45,34,.2); border-radius: 3px; overflow: hidden; }
   .proy-anuncio-bar { height: 100%; background: var(--green); width: 100%; }
+  /* Mensaje fijado — proyector */
+  .proy-pin-bar { position: absolute; bottom: 0; left: 0; right: 0; padding: .55rem 1.4rem; background: rgba(15,30,20,.88); border-top: 1px solid rgba(240,228,200,.15); display: flex; align-items: center; gap: .6rem; z-index: 8; }
+  .proy-pin-bar-icon { font-size: 1rem; flex-shrink: 0; }
+  .proy-pin-bar-text { font-family: 'Jost'; font-size: .95rem; font-weight: 400; color: var(--ivory); flex: 1; }
+  /* Mensaje fijado — tab mensajes invitados */
+  .msg-pin-banner { background: var(--ivory2); border-left: 3px solid var(--gold); border-radius: 10px; padding: .65rem .9rem; margin-bottom: .9rem; display: flex; align-items: flex-start; gap: .5rem; }
+  .msg-pin-banner-icon { font-size: 1rem; flex-shrink: 0; margin-top: .05rem; }
+  .msg-pin-banner-text { font-family: 'Jost'; font-size: .9rem; color: var(--green); line-height: 1.45; }
+  /* Org pin form */
+  .org-pin-wrap { margin: 1rem auto 0; max-width: 420px; background: var(--ivory2); border-radius: 14px; padding: 1.1rem 1.2rem; display: flex; flex-direction: column; gap: .7rem; }
+  .org-pin-row { display: flex; gap: .6rem; align-items: center; }
+  .org-pin-input { flex: 1; box-sizing: border-box; border: 1px solid rgba(26,45,34,.18); border-radius: 10px; padding: .6rem .85rem; font-family: 'Jost'; font-size: .92rem; color: var(--green); background: var(--ivory); outline: none; }
+  .org-pin-btn { background: var(--green); color: var(--ivory); border: none; border-radius: 10px; padding: .6rem 1rem; font-family: 'Jost'; font-size: .88rem; font-weight: 500; cursor: pointer; white-space: nowrap; }
+  .org-pin-clear { background: rgba(26,45,34,.12); color: var(--green); border: none; border-radius: 10px; padding: .6rem .9rem; font-family: 'Jost'; font-size: .88rem; cursor: pointer; white-space: nowrap; }
 
   /* ── Nombre modal ── */
   .nombre-modal-bg {
@@ -1179,6 +1193,10 @@
   <div class="messages pad">
     <div class="inner">
       <div class="msg-divider"><span>Mensajes de los invitados</span></div>
+      <div id="msg-pin-banner" class="msg-pin-banner" hidden>
+        <span class="msg-pin-banner-icon">📌</span>
+        <span id="msg-pin-banner-text" class="msg-pin-banner-text"></span>
+      </div>
       <div id="msg-list"></div>
     </div>
   </div>
@@ -1238,6 +1256,14 @@
           <option value="600">10 min</option>
         </select>
         <button class="org-anuncio-send" id="org-anuncio-send">Enviar →</button>
+      </div>
+    </div>
+    <div id="org-pin-wrap" class="org-pin-wrap" hidden>
+      <p class="org-anuncio-title">📌 Mensaje fijado en proyector y mensajes</p>
+      <div class="org-pin-row">
+        <input id="org-pin-input" class="org-pin-input" type="text" placeholder="Mensaje para fijar…" maxlength="160">
+        <button class="org-pin-btn" id="org-pin-send">📌 Fijar</button>
+        <button class="org-pin-clear" id="org-pin-clear">✕</button>
       </div>
     </div>
   </div>
@@ -1373,6 +1399,11 @@
         <div id="proy-anuncio-bar" class="proy-anuncio-bar"></div>
       </div>
     </div>
+  </div>
+  <!-- Pinned message bar -->
+  <div id="proy-pin-bar" class="proy-pin-bar" hidden>
+    <span class="proy-pin-bar-icon">📌</span>
+    <span id="proy-pin-bar-text" class="proy-pin-bar-text"></span>
   </div>
 </div>
 
@@ -1724,6 +1755,25 @@ function showFormSuccess(nombre) {
 /* localStorage helpers — always defined; only used when Firebase is off */
 function loadMsgs() { try { return JSON.parse(localStorage.getItem(MKEY) || '[]'); } catch { return []; } }
 function saveMsgs(m) { try { localStorage.setItem(MKEY, JSON.stringify(m)); } catch {} }
+
+/* Poll mensaje_fijado and update banner in Recuerdos tab */
+(function() {
+  function updatePinBanner() {
+    if (!DB_URL) return;
+    fetch(DB_URL + '/mensaje_fijado.json').then(function(r){return r.ok?r.json():null;}).then(function(data) {
+      var banner = document.getElementById('msg-pin-banner');
+      if (!banner) return;
+      if (data && data.texto) {
+        document.getElementById('msg-pin-banner-text').textContent = data.texto;
+        banner.hidden = false;
+      } else {
+        banner.hidden = true;
+      }
+    }).catch(function(){});
+  }
+  updatePinBanner();
+  setInterval(updatePinBanner, 10000);
+})();
 
 /* Lazy-init: guestbook Firebase listener starts only when Recuerdos tab is first opened */
 let _msgListenerStarted = false;
@@ -2490,7 +2540,7 @@ document.getElementById('proy-open-btn').addEventListener('click', openProyector
 // Auto-open via URL: ?proyector=true
 if (new URLSearchParams(location.search).get('proyector') === 'true') openProyector();
 
-/* ── Org: anuncio form ── */
+/* ── Org: anuncio + pin forms ── */
 (function() {
   var params = new URLSearchParams(location.search);
   if (params.get('org') !== 'true') return;
@@ -2503,6 +2553,20 @@ if (new URLSearchParams(location.search).get('proyector') === 'true') openProyec
       fbDb.ref('anuncio').set({ texto: texto, duracion: dur, ts: Date.now() });
       document.getElementById('org-anuncio-texto').value = '';
     }
+  });
+  // Pin form
+  document.getElementById('org-pin-wrap').hidden = false;
+  document.getElementById('org-pin-send').addEventListener('click', function() {
+    var texto = document.getElementById('org-pin-input').value.trim();
+    if (!texto) return;
+    if (FB_READY && fbDb) {
+      fbDb.ref('mensaje_fijado').set({ texto: texto, ts: Date.now() });
+      document.getElementById('org-pin-input').value = '';
+    }
+  });
+  document.getElementById('org-pin-clear').addEventListener('click', function() {
+    if (FB_READY && fbDb) fbDb.ref('mensaje_fijado').set(null);
+    document.getElementById('org-pin-input').value = '';
   });
 })();
 
@@ -2633,6 +2697,16 @@ if (new URLSearchParams(location.search).get('proyector') === 'true') openProyec
     if (!DB_URL) return;
     fetch(DB_URL + '/anuncio.json').then(function(r){return r.ok?r.json():null;}).then(function(data) {
       if (data && data.texto) showAnuncio(data); else hideAnuncio();
+    }).catch(function(){});
+    fetch(DB_URL + '/mensaje_fijado.json').then(function(r){return r.ok?r.json():null;}).then(function(data) {
+      var bar = document.getElementById('proy-pin-bar');
+      if (!bar) return;
+      if (data && data.texto) {
+        document.getElementById('proy-pin-bar-text').textContent = data.texto;
+        bar.hidden = false;
+      } else {
+        bar.hidden = true;
+      }
     }).catch(function(){});
     fetch(DB_URL + '/mensajes.json').then(function(r){return r.ok?r.json():null;}).then(function(data) {
       if (!data) return;
