@@ -1206,7 +1206,7 @@
         <div><div class="game-card-title">Tabla de puntuaciones</div><div class="game-card-sub">Snake y Sudoku · mejores del día</div></div>
       </button>
     </div>
-    <button id="proy-open-btn" class="proy-open-btn">🎬 Modo proyector</button>
+    <button id="proy-open-btn" class="proy-open-btn" hidden>🎬 Modo proyector</button>
   </div>
 
   <!-- Snake game view -->
@@ -1861,41 +1861,9 @@ function renderJ1Recol(screen) {
     </form>
     <p class="quien-count">${n} pregunta${n !== 1 ? 's' : ''} enviada${n !== 1 ? 's' : ''}</p>
     <div class="quien-pregunta-list">${lista}</div>
-    <div class="quien-admin-panel" id="quien-admin-panel">
-      <p class="quien-admin-label">Panel del organizador</p>
-      <button class="quien-admin-btn">
-        Activar votación → ${n} pregunta${n !== 1 ? 's' : ''}
-      </button>
-    </div>
-    <div class="quien-org-row" id="quien-org-row">
-      <button class="quien-org-toggle" id="j1-org-btn">⚙ Organizador</button>
-    </div>`;
+    `;
   const frm = screen.querySelector('.quien-form');
   if (frm) frm.addEventListener('submit', j1Enviar);
-  const adminBtn = screen.querySelector('.quien-admin-btn');
-  if (adminBtn) adminBtn.addEventListener('click', j1CambiarFase);
-  const orgBtn = screen.querySelector('#j1-org-btn');
-  if (orgBtn) orgBtn.addEventListener('click', function() {
-    orgBtn.closest('#quien-org-row').outerHTML = '<div class="quien-org-inline" id="quien-org-inline">' +
-      '<input class="quien-org-input" id="j1-org-pass" type="password" placeholder="Clave de organizador" maxlength="20" autocomplete="off">' +
-      '<button class="quien-org-confirm" id="j1-org-confirm">Entrar</button>' +
-      '</div>';
-    var confirmBtn = screen.querySelector('#j1-org-confirm');
-    var passInput  = screen.querySelector('#j1-org-pass');
-    if (!confirmBtn || !passInput) return;
-    function tryPass() {
-      if (passInput.value.trim().toLowerCase() === 'boda') {
-        var panel = screen.querySelector('#quien-admin-panel');
-        if (panel) panel.classList.add('open');
-        var inline = screen.querySelector('#quien-org-inline');
-        if (inline) inline.remove();
-      } else {
-        passInput.value = ''; passInput.placeholder = 'Clave incorrecta…';
-      }
-    }
-    confirmBtn.addEventListener('click', tryPass);
-    passInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') tryPass(); });
-  });
 }
 
 function j1Enviar(e) {
