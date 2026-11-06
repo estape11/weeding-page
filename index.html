@@ -899,6 +899,13 @@
   }
   .jam-link-btn:hover { filter: brightness(1.1); }
   .jam-link-btn svg { width: 22px; height: 22px; flex-shrink: 0; }
+  .jam-yt-label { font-family: 'Jost'; font-size: .72rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); margin: 1.4rem 0 .65rem; }
+  .jam-yt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .jam-yt-card { position: relative; border-radius: 10px; overflow: hidden; aspect-ratio: 16/9; display: block; text-decoration: none; background: #000; }
+  .jam-yt-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity .2s; }
+  .jam-yt-card:hover img { opacity: .8; }
+  .jam-yt-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .jam-yt-play svg { width: 36px; height: 36px; filter: drop-shadow(0 2px 6px rgba(0,0,0,.7)); }
   /* ── Proy panel flex column ── */
   .proy-quien-wrap { gap: 0; }
   .proy-quien-wrap > #proy-quien-content { flex: 1; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; padding: 1.5rem 2rem; overflow-y: auto; animation: proy-in .6s both; }
@@ -1143,6 +1150,29 @@
       </a>
       <div class="info-box" style="margin-top:.6rem">
         🎶 <strong>¿Quieres pedir una canción?</strong> Acércate a nuestro DJ — ¡también es tu fiesta y queremos que la disfrutes al máximo!
+      </div>
+      <p class="jam-yt-label">🎬 Videos</p>
+      <div class="jam-yt-grid">
+        <a class="jam-yt-card" href="https://youtu.be/MOvpOKepezY?t=5" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/MOvpOKepezY/mqdefault.jpg" alt="" loading="lazy">
+          <div class="jam-yt-play"><svg viewBox="0 0 68 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="68" height="48" rx="10" fill="#FF0000" fill-opacity=".9"/><path d="M28 16l20 12-20 12V16z" fill="#fff"/></svg></div>
+        </a>
+        <a class="jam-yt-card" href="https://youtu.be/SkBJs00aEXs?t=6" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/SkBJs00aEXs/mqdefault.jpg" alt="" loading="lazy">
+          <div class="jam-yt-play"><svg viewBox="0 0 68 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="68" height="48" rx="10" fill="#FF0000" fill-opacity=".9"/><path d="M28 16l20 12-20 12V16z" fill="#fff"/></svg></div>
+        </a>
+        <a class="jam-yt-card" href="https://youtu.be/EH9X02XDiDc?is=rRKr3OwjKufviEGN" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/EH9X02XDiDc/mqdefault.jpg" alt="" loading="lazy">
+          <div class="jam-yt-play"><svg viewBox="0 0 68 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="68" height="48" rx="10" fill="#FF0000" fill-opacity=".9"/><path d="M28 16l20 12-20 12V16z" fill="#fff"/></svg></div>
+        </a>
+        <a class="jam-yt-card" href="https://youtu.be/LvP3bO2ao1A?t=26" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/LvP3bO2ao1A/mqdefault.jpg" alt="" loading="lazy">
+          <div class="jam-yt-play"><svg viewBox="0 0 68 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="68" height="48" rx="10" fill="#FF0000" fill-opacity=".9"/><path d="M28 16l20 12-20 12V16z" fill="#fff"/></svg></div>
+        </a>
+        <a class="jam-yt-card" href="https://youtu.be/GpOnFOqltMU?t=9" target="_blank" rel="noopener">
+          <img src="https://img.youtube.com/vi/GpOnFOqltMU/mqdefault.jpg" alt="" loading="lazy">
+          <div class="jam-yt-play"><svg viewBox="0 0 68 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="68" height="48" rx="10" fill="#FF0000" fill-opacity=".9"/><path d="M28 16l20 12-20 12V16z" fill="#fff"/></svg></div>
+        </a>
       </div>
     </div>
   </div>
