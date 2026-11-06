@@ -847,6 +847,13 @@
   #proyector-view.video-on .proy-msgs-wrap .proy-controls,
   #proyector-view.video-on .proy-msgs-wrap .proy-nav { width: clamp(260px, 36%, 480px); }
   #proyector-view.video-on .proy-msg-text { font-size: clamp(1.4rem, 3vw, 2.6rem); line-height: 1.35; }
+  /* ── Video-on strip al lado derecho ── */
+  #proyector-view.video-on.strip-right .proy-msgs-wrap { align-items: flex-end; }
+  #proyector-view.video-on.strip-right .proy-msgs-wrap::before { inset: 0 0 0 auto; }
+  #proyector-view.video-on.strip-right .proy-msg-card { align-items: flex-end; text-align: right; padding: 2rem 2rem 2rem 1.6rem; }
+  #proy-side-toggle, #proy-side-sep { display: none; }
+  #proyector-view.video-on #proy-side-toggle { display: inline-flex; }
+  #proyector-view.video-on #proy-side-sep { display: block; }
   .proy-msg-name { font-size: clamp(.75rem, 2vw, 1rem); letter-spacing: .18em; text-transform: uppercase; color: rgba(240,228,200,.6); }
   .proy-msg-deco { color: var(--gold); margin: 0 .4rem; }
   .proy-nav { display: flex; align-items: center; gap: 1.5rem; }
@@ -1423,6 +1430,8 @@
         <button class="proy-ctrl-btn" id="proy-sp-slow" title="Lento (15s)">🐢</button>
         <button class="proy-ctrl-btn on" id="proy-sp-mid" title="Normal (8s)">▶ Normal</button>
         <button class="proy-ctrl-btn" id="proy-sp-fast" title="Rápido (4s)">🐇</button>
+        <div class="proy-ctrl-sep" id="proy-side-sep"></div>
+        <button class="proy-ctrl-btn" id="proy-side-toggle" title="Cambiar lado">◀▶</button>
       </div>
       <div class="proy-nav">
         <button class="proy-nav-btn" id="proy-prev-btn">‹</button>
@@ -2836,6 +2845,12 @@ if (new URLSearchParams(location.search).get('proyector') === 'true') openProyec
 
     // iOS Safari ignores loop on playsinline videos — force replay manually
     videoEl.addEventListener('ended', function() { videoEl.play(); });
+
+    var sideBtn = document.getElementById('proy-side-toggle');
+    sideBtn.addEventListener('click', function() {
+      view.classList.toggle('strip-right');
+      sideBtn.textContent = view.classList.contains('strip-right') ? '▶◀' : '◀▶';
+    });
 
     filePick.addEventListener('change', function() {
       var file = filePick.files[0];
