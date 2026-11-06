@@ -2834,6 +2834,9 @@ if (new URLSearchParams(location.search).get('proyector') === 'true') openProyec
     var videoEl   = document.getElementById('proy-video');
     var filePick  = document.getElementById('proy-video-pick');
 
+    // iOS Safari ignores loop on playsinline videos — force replay manually
+    videoEl.addEventListener('ended', function() { videoEl.play(); });
+
     filePick.addEventListener('change', function() {
       var file = filePick.files[0];
       if (!file) return;
