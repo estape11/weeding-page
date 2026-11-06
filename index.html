@@ -70,9 +70,8 @@
     -webkit-tap-highlight-color: transparent;
   }
   .nb.on { color: var(--gold-lt); }
-  .nb svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .nb svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
   .nb span { font-size: .5rem; letter-spacing: .08em; text-transform: uppercase; }
-  .nb svg { width: 18px; height: 18px; }
 
   /* ── Utility ── */
   .pad {
@@ -477,15 +476,15 @@
 
   /* ── Toast ── */
   .toast {
-    position: fixed; bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 12px);
-    left: 50%; transform: translateX(-50%) translateY(10px);
+    position: fixed; top: calc(env(safe-area-inset-top, 0px) + 12px); right: 16px;
+    transform: translateY(-8px);
     background: var(--green); color: var(--gold-lt);
     padding: .65rem 1.4rem; font-size: .8rem; letter-spacing: .05em;
     white-space: nowrap; z-index: 300;
     opacity: 0; transition: opacity .3s, transform .3s;
     pointer-events: none;
   }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.show { opacity: 1; transform: translateY(0); }
 
   /* ── Mini-juegos ── */
   .prox-banner {
@@ -809,11 +808,12 @@
   }
   .proy-panel { flex: 1; overflow: hidden; position: relative; }
   .proy-msgs-wrap, .proy-quien-wrap {
-    position: absolute; inset: 0;
+    position: absolute; inset: 0; z-index: 2;
     display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
     padding: 0; opacity: 0; transition: opacity .5s; pointer-events: none; gap: 0;
   }
   .proy-msgs-wrap.active, .proy-quien-wrap.active { opacity: 1; pointer-events: auto; }
+  #proy-video-toggle.video-active { background: rgba(240,228,200,.18); border-color: var(--ivory); color: var(--ivory); }
   .proy-msg-card {
     flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center; max-width: 760px; width: 100%; padding: 2.5rem 2rem; gap: 1rem;
@@ -824,6 +824,29 @@
     font-size: clamp(2.5rem, 7vw, 5.5rem); color: var(--ivory);
     line-height: 1.3;
   }
+  /* ── Video-on overrides: mensaje strip a la izquierda ── */
+  #proyector-view.video-on .proy-msgs-wrap {
+    align-items: flex-start;
+  }
+  #proyector-view.video-on .proy-msgs-wrap::before {
+    content: ''; position: absolute; inset: 0 auto 0 0;
+    width: clamp(260px, 36%, 480px);
+    background: rgba(12,26,18,.85); backdrop-filter: blur(5px);
+    z-index: 0;
+  }
+  #proyector-view.video-on .proy-msg-card,
+  #proyector-view.video-on .proy-msgs-wrap .proy-controls,
+  #proyector-view.video-on .proy-msgs-wrap .proy-nav {
+    position: relative; z-index: 1;
+  }
+  #proyector-view.video-on .proy-msg-card {
+    flex: 1; align-items: flex-start; justify-content: center;
+    text-align: left; width: clamp(260px, 36%, 480px); max-width: none;
+    padding: 2rem 1.6rem 2rem 2rem;
+  }
+  #proyector-view.video-on .proy-msgs-wrap .proy-controls,
+  #proyector-view.video-on .proy-msgs-wrap .proy-nav { width: clamp(260px, 36%, 480px); }
+  #proyector-view.video-on .proy-msg-text { font-size: clamp(1.4rem, 3vw, 2.6rem); line-height: 1.35; }
   .proy-msg-name { font-size: clamp(.75rem, 2vw, 1rem); letter-spacing: .18em; text-transform: uppercase; color: rgba(240,228,200,.6); }
   .proy-msg-deco { color: var(--gold); margin: 0 .4rem; }
   .proy-nav { display: flex; align-items: center; gap: 1.5rem; }
@@ -942,12 +965,12 @@
   .org-anuncio-send { background: var(--green); color: var(--ivory); border: none; border-radius: 10px; padding: .6rem 1.3rem; font-family: 'Jost'; font-size: .88rem; font-weight: 500; cursor: pointer; margin-left: auto; }
 
   /* Anuncio overlay in proyector */
-  .proy-anuncio { position: absolute; inset: 0; z-index: 20; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.55); }
-  .proy-anuncio-box { background: var(--gold); color: var(--green); border-radius: 20px; padding: 2.5rem 3rem; max-width: 72%; text-align: center; position: relative; box-shadow: 0 8px 48px rgba(0,0,0,.4); }
-  .proy-anuncio-dismiss { position: absolute; top: .8rem; right: 1rem; background: none; border: none; color: var(--green); font-size: 1.4rem; line-height: 1; cursor: pointer; opacity: .6; }
+  .proy-anuncio { position: absolute; top: 4rem; right: 1.2rem; z-index: 20; width: clamp(260px, 36%, 480px); }
+  .proy-anuncio-box { background: var(--gold); color: var(--green); border-radius: 16px; padding: 1.2rem 1.6rem 1.4rem; text-align: center; position: relative; box-shadow: 0 6px 28px rgba(0,0,0,.35); width: 100%; box-sizing: border-box; }
+  .proy-anuncio-dismiss { position: absolute; top: .5rem; right: .7rem; background: none; border: none; color: var(--green); font-size: 1.1rem; line-height: 1; cursor: pointer; opacity: .6; }
   .proy-anuncio-dismiss:hover { opacity: 1; }
-  .proy-anuncio-icon { font-size: 2.8rem; margin-bottom: .6rem; }
-  .proy-anuncio-text { font-family: 'Jost'; font-size: 2.2rem; font-weight: 400; line-height: 1.35; }
+  .proy-anuncio-icon { font-size: 1.4rem; margin-bottom: .3rem; }
+  .proy-anuncio-text { font-family: 'Jost'; font-size: 2.15rem; font-weight: 400; line-height: 1.35; text-align: center; }
   .proy-anuncio-bar-wrap { margin-top: 1.4rem; height: 5px; background: rgba(26,45,34,.2); border-radius: 3px; overflow: hidden; }
   .proy-anuncio-bar { height: 100%; background: var(--green); width: 100%; }
   /* Mensaje fijado — proyector */
@@ -1183,7 +1206,7 @@
         </div>
         <div class="fg2">
           <label class="fl2" for="m-texto">Tu mensaje</label>
-          <textarea class="fta2" id="m-texto" placeholder="Escribe algo especial para Susy y Luis…" required></textarea>
+          <textarea class="fta2" id="m-texto" placeholder="Escribe algo especial para Susy y Luis…" maxlength="50" required></textarea>
         </div>
         <button type="submit" class="btn-send">Dejar mi mensaje 💌</button>
       </form>
@@ -1207,8 +1230,10 @@
 <section id="tab-juegos" class="tab">
 
   <div class="tab-header pad">
-    <p class="tab-eyebrow">Diversión</p>
-    <h2>Los juegos <em>de hoy</em></h2>
+    <div class="inner">
+      <p class="tab-eyebrow">Diversión</p>
+      <h2>Los juegos <em>de hoy</em></h2>
+    </div>
   </div>
 
   <!-- Game selector -->
@@ -1350,7 +1375,9 @@
     <div class="proy-tabs">
       <button class="proy-tab active" data-tab="msgs">💌 Mensajes</button>
       <button class="proy-tab" data-tab="quien">🤔 ¿Quién?</button>
+      <button class="proy-tab" id="proy-video-toggle" data-tab="__video__">🎬</button>
     </div>
+    <button class="proy-close" id="proy-fs-btn" aria-label="Pantalla completa" title="Pantalla completa" style="right:3rem">⛶</button>
     <button class="proy-close" id="proy-close-btn" aria-label="Cerrar">✕</button>
   </header>
   <div class="proy-panel">
@@ -1389,6 +1416,12 @@
         <button class="proy-nav-btn" id="proy-quien-next">›</button>
       </div>
     </div>
+    <!-- Video background layer (local file) -->
+    <div id="proy-video-bg" style="position:absolute;inset:0;z-index:1;display:none;">
+      <video id="proy-video" loop muted playsinline
+        style="width:100%;height:100%;object-fit:cover;"></video>
+    </div>
+    <input id="proy-video-pick" type="file" accept="video/*" style="display:none;">
   </div>
   <!-- Announcement overlay -->
   <div id="proy-anuncio" class="proy-anuncio" hidden>
@@ -1736,6 +1769,8 @@ function showToast(msg) {
   if (!t) {
     t = document.createElement('div');
     t.id = 'toast'; t.className = 'toast';
+    t.setAttribute('role', 'status');
+    t.setAttribute('aria-live', 'polite');
     document.body.appendChild(t);
   }
   t.textContent = msg;
@@ -1745,12 +1780,22 @@ function showToast(msg) {
 
 function showFormSuccess(nombre) {
   const wrap = document.getElementById('recuerdo-form-wrap');
+  const origHTML = wrap.innerHTML;
   wrap.innerHTML = `
     <div class="form-success">
       <span class="form-success-icon">💌</span>
       <div class="form-success-title">¡Gracias, ${esc(nombre)}!</div>
       <p class="form-success-sub">Tu mensaje quedó guardado para siempre.</p>
     </div>`;
+  const btn = document.createElement('button');
+  btn.className = 'btn-send';
+  btn.style.cssText = 'margin-top:1rem;width:100%';
+  btn.textContent = 'Enviar otro mensaje 💌';
+  btn.addEventListener('click', function() {
+    wrap.innerHTML = origHTML;
+    wrap.querySelector('#msg-form').addEventListener('submit', msgFormSubmit);
+  });
+  wrap.appendChild(btn);
 }
 
 /* localStorage helpers — always defined; only used when Firebase is off */
@@ -1895,19 +1940,23 @@ let j1Fase      = 'recoleccion'; // 'recoleccion' | 'votacion'
 let j1Preguntas = [];            // [{id, texto, autor, ts}]
 let j1MisVotos  = {};            // {preguntaId: 'susy'|'luis'}
 let j1CurrId    = null;          // id of question currently shown in voting phase
-
-
+let _j1ListenerStarted = false;
 
 function initJuego1() {
   try { j1MisVotos = JSON.parse(localStorage.getItem('boda_j1_votos') || '{}'); } catch(e) { j1MisVotos = {}; }
   j1CurrId = null;
   if (FB_READY && fbDb) {
-    fbDb.ref(FB_J1_FASE).on('value', snap => { j1Fase = snap.val() || 'recoleccion'; renderJuego1(); });
-    fbDb.ref(FB_J1_PREGS).orderByChild('ts').on('value', snap => {
-      j1Preguntas = [];
-      snap.forEach(c => j1Preguntas.push({ id: c.key, ...c.val() }));
+    if (!_j1ListenerStarted) {
+      _j1ListenerStarted = true;
+      fbDb.ref(FB_J1_FASE).on('value', snap => { j1Fase = snap.val() || 'recoleccion'; renderJuego1(); });
+      fbDb.ref(FB_J1_PREGS).orderByChild('ts').on('value', snap => {
+        j1Preguntas = [];
+        snap.forEach(c => j1Preguntas.push({ id: c.key, ...c.val() }));
+        renderJuego1();
+      });
+    } else {
       renderJuego1();
-    });
+    }
   } else {
     j1Fase      = localStorage.getItem(LS_J1_FASE) || 'recoleccion';
     j1Preguntas = JSON.parse(localStorage.getItem(LS_J1_PREGS) || '[]');
@@ -2096,7 +2145,13 @@ function renderAdivinaRonda() {
       <div class="adivina-score-num">${adivinaScore}/${ADIVINA_FOTOS.length}</div>
       <div class="adivina-score-label">Respuestas correctas</div>
       <p class="adivina-score-msg">${msg}</p>
+      <button class="adivina-replay" id="adivina-replay-btn">Jugar de nuevo</button>
     </div>`;
+    document.getElementById('adivina-replay-btn').addEventListener('click', function() {
+      try { localStorage.removeItem('boda_adivina_done'); } catch(e){}
+      adivinaIdx = 0; adivinaScore = 0;
+      renderAdivinaRonda();
+    });
     return;
   }
   const r = ADIVINA_FOTOS[adivinaIdx];
@@ -2715,8 +2770,10 @@ if (new URLSearchParams(location.search).get('proyector') === 'true') openProyec
     }).catch(function(){});
     fetch(DB_URL + '/mensajes.json').then(function(r){return r.ok?r.json():null;}).then(function(data) {
       if (!data) return;
-      msgs = Object.values(data).sort(function(a,b){return (a.ts||0)-(b.ts||0);});
-      if (msgs.length && currentPanel === 'msgs') renderProyMsg(msgs[msgIdx % msgs.length]);
+      var newMsgs = Object.values(data).sort(function(a,b){return (a.ts||0)-(b.ts||0);});
+      var changed = newMsgs.length !== msgs.length;
+      msgs = newMsgs;
+      if (changed && msgs.length && currentPanel === 'msgs') renderProyMsg(msgs[msgIdx % msgs.length]);
     }).catch(function(){});
     fetch(DB_URL + '/juego1/preguntas.json').then(function(r){return r.ok?r.json():null;}).then(function(data) {
       if (!data) return;
@@ -2736,8 +2793,60 @@ if (new URLSearchParams(location.search).get('proyector') === 'true') openProyec
   }
 
   view.querySelectorAll('.proy-tab').forEach(function(tab) {
+    if (tab.id === 'proy-video-toggle') return; // handled separately
     tab.addEventListener('click', function() { switchPanel(tab.dataset.tab); });
   });
+  // Video background (local file)
+  (function() {
+    var videoOn = false;
+    var toggleBtn = document.getElementById('proy-video-toggle');
+    var videoBg   = document.getElementById('proy-video-bg');
+    var videoEl   = document.getElementById('proy-video');
+    var filePick  = document.getElementById('proy-video-pick');
+
+    filePick.addEventListener('change', function() {
+      var file = filePick.files[0];
+      if (!file) return;
+      videoEl.src = URL.createObjectURL(file);
+      videoEl.play();
+      videoOn = true;
+      videoBg.style.display = 'block';
+      view.classList.add('video-on');
+      toggleBtn.classList.add('video-active');
+    });
+
+    toggleBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (!videoEl.src) { filePick.click(); return; }
+      videoOn = !videoOn;
+      videoBg.style.display = videoOn ? 'block' : 'none';
+      view.classList.toggle('video-on', videoOn);
+      toggleBtn.classList.toggle('video-active', videoOn);
+      if (videoOn) videoEl.play(); else videoEl.pause();
+    });
+  })();
+
+  // Fullscreen
+  (function() {
+    var fsBtn = document.getElementById('proy-fs-btn');
+    fsBtn.addEventListener('click', function() {
+      if (!document.fullscreenElement) {
+        view.requestFullscreen().catch(function() {});
+        fsBtn.textContent = '⊡';
+        fsBtn.title = 'Salir de pantalla completa';
+      } else {
+        document.exitFullscreen();
+        fsBtn.textContent = '⛶';
+        fsBtn.title = 'Pantalla completa';
+      }
+    });
+    document.addEventListener('fullscreenchange', function() {
+      if (!document.fullscreenElement) {
+        fsBtn.textContent = '⛶';
+        fsBtn.title = 'Pantalla completa';
+      }
+    });
+  })();
   document.getElementById('proy-close-btn').addEventListener('click', function() { view.hidden = true; });
   document.getElementById('proy-prev-btn').addEventListener('click', function() {
     if (!msgs.length) return;
@@ -2848,7 +2957,7 @@ if (new URLSearchParams(location.search).get('proyector') === 'true') openProyec
 
 /* ══════════════════════════════════════════════════════════ */
 
-document.getElementById('msg-form').addEventListener('submit', function (e) {
+function msgFormSubmit(e) {
   e.preventDefault();
   const nombre = document.getElementById('m-nombre').value.trim();
   const texto  = document.getElementById('m-texto').value.trim();
@@ -2868,7 +2977,8 @@ document.getElementById('msg-form').addEventListener('submit', function (e) {
     showFormSuccess(nombre);
     showToast('¡Mensaje guardado! 💌');
   }
-});
+}
+document.getElementById('msg-form').addEventListener('submit', msgFormSubmit);
 </script>
 
 </body>
